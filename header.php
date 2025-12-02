@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+    <meta charset="<?php bloginfo( 'charset' ); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deoia - Sistema de Reservas Inteligente</title>
+    
+    <?php wp_head(); ?> 
+</head>
+<body <?php body_class( 'bg-slate-50 antialiased' ); ?>>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         NAVBAR FLOTANTE
+    ════════════════════════════════════════════════════════════════════════ -->
+    <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between bg-white/70 backdrop-blur-xl rounded-2xl px-6 py-3 shadow-lg shadow-slate-200/50 border border-white/50">
+            <!-- Logo -->
+            <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="flex items-center gap-2 group">
+                <?php if ( has_custom_logo() ) : ?>
+                    <div class="w-9 h-9 rounded-xl overflow-hidden shadow-lg shadow-violet-500/30 group-hover:shadow-violet-500/50 transition-all duration-300">
+                        <?php 
+                        $custom_logo_id = get_theme_mod( 'custom_logo' );
+                        $logo_image = wp_get_attachment_image( $custom_logo_id, 'full', false, array(
+                            'class' => 'w-full h-full object-cover',
+                        ) );
+                        echo $logo_image;
+                        ?>
+                    </div>
+                <?php else : ?>
+                    <div class="w-9 h-9 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-violet-500/30 group-hover:shadow-violet-500/50 transition-all duration-300">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                <?php endif; ?>
+                <span class="text-xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent"><?php bloginfo( 'name' ); ?></span>
+            </a>
+
+            <!-- CTA Button -->
+            <a href="#reservar" class="inline-flex items-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold px-5 py-2.5 rounded-xl shadow-lg shadow-violet-500/30 hover:shadow-violet-500/50 hover:scale-105 transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+                Agendar Cita
+            </a>
+        </div>
+    </nav>
