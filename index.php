@@ -15,24 +15,24 @@
                     <!-- Badge -->
                     <div class="inline-flex items-center gap-2 bg-violet-100 text-violet-700 font-medium text-sm px-4 py-2 rounded-full w-fit mb-6">
                         <span class="w-2 h-2 bg-violet-500 rounded-full animate-pulse"></span>
-                        Sistema de Reservas #1
+                        <?php echo esc_html( get_theme_mod( 'hero_badge_text', 'Sistema de Reservas #1' ) ); ?>
                     </div>
 
                     <!-- Headline -->
                     <h1 class="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-slate-900 leading-tight mb-6">
-                        Automatiza tu agenda y 
-                        <span class="bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">multiplica tus ingresos</span>
+                        <?php echo esc_html( get_theme_mod( 'hero_headline_main', 'Automatiza tu agenda y' ) ); ?> 
+                        <span class="bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent"><?php echo esc_html( get_theme_mod( 'hero_headline_accent', 'multiplica tus ingresos' ) ); ?></span>
                     </h1>
 
                     <!-- Subheadline -->
                     <p class="text-lg text-slate-600 mb-8 max-w-xl leading-relaxed">
-                        Olvídate de las llamadas perdidas y las citas olvidadas. Deja que tus clientes reserven 24/7 mientras tú te enfocas en lo que mejor haces.
+                        <?php echo esc_html( get_theme_mod( 'hero_subheadline', 'Olvídate de las llamadas perdidas y las citas olvidadas. Deja que tus clientes reserven 24/7 mientras tú te enfocas en lo que mejor haces.' ) ); ?>
                     </p>
 
                     <!-- CTAs -->
                     <div class="flex flex-wrap gap-4">
                         <a href="#demo" class="inline-flex items-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold px-8 py-4 rounded-2xl shadow-xl shadow-violet-500/30 hover:shadow-violet-500/50 hover:scale-105 transition-all duration-300">
-                            Comenzar Gratis
+                            <?php echo esc_html( get_theme_mod( 'hero_cta_text_1', 'Comenzar Gratis' ) ); ?>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                             </svg>
@@ -53,7 +53,7 @@
                                 <div class="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full border-2 border-white"></div>
                                 <div class="w-8 h-8 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full border-2 border-white"></div>
                             </div>
-                            <span class="text-sm text-slate-600"><strong class="text-slate-800">+2,500</strong> negocios activos</span>
+                            <span class="text-sm text-slate-600"><strong class="text-slate-800">+<?php echo esc_html( get_theme_mod( 'hero_trust_count', '2,500' ) ); ?></strong> negocios activos</span>
                         </div>
                         <div class="flex items-center gap-1">
                             <div class="flex">
@@ -63,7 +63,7 @@
                                 </svg>
                                 <?php endfor; ?>
                             </div>
-                            <span class="text-sm text-slate-600 ml-1"><strong class="text-slate-800">4.9</strong> (850+ reseñas)</span>
+                            <span class="text-sm text-slate-600 ml-1"><strong class="text-slate-800">4.9</strong> (<?php echo esc_html( get_theme_mod( 'hero_review_count', '850' ) ); ?>+ reseñas)</span>
                         </div>
                     </div>
                 </div>

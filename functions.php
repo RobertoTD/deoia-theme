@@ -62,6 +62,105 @@ function deoia_customize_register( $wp_customize ) {
 add_action( 'customize_register', 'deoia_customize_register' );
 
 /**
+ * Personalizador: Hero Section
+ */
+function deoia_hero_customizer( $wp_customize ) {
+    // Sección: Configuración del Hero
+    $wp_customize->add_section( 'hero_settings', array(
+        'title'       => __( 'Configuración del Hero', 'deoia' ),
+        'priority'    => 30,
+        'description' => __( 'Personaliza los textos y métricas de la sección principal.', 'deoia' ),
+    ) );
+
+    // Badge Text
+    $wp_customize->add_setting( 'hero_badge_text', array(
+        'default'           => 'Sistema de Reservas #1',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'hero_badge_text', array(
+        'label'    => __( 'Texto del Badge', 'deoia' ),
+        'section'  => 'hero_settings',
+        'type'     => 'text',
+        'priority' => 10,
+    ) );
+
+    // Headline Principal
+    $wp_customize->add_setting( 'hero_headline_main', array(
+        'default'           => 'Automatiza tu agenda y',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'hero_headline_main', array(
+        'label'    => __( 'Título Principal (línea 1)', 'deoia' ),
+        'section'  => 'hero_settings',
+        'type'     => 'text',
+        'priority' => 20,
+    ) );
+
+    // Headline Accent (con gradiente)
+    $wp_customize->add_setting( 'hero_headline_accent', array(
+        'default'           => 'multiplica tus ingresos',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'hero_headline_accent', array(
+        'label'    => __( 'Título Destacado (con gradiente)', 'deoia' ),
+        'section'  => 'hero_settings',
+        'type'     => 'text',
+        'priority' => 30,
+    ) );
+
+    // Subheadline
+    $wp_customize->add_setting( 'hero_subheadline', array(
+        'default'           => 'Olvídate de las llamadas perdidas y las citas olvidadas. Deja que tus clientes reserven 24/7 mientras tú te enfocas en lo que mejor haces.',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ) );
+    $wp_customize->add_control( 'hero_subheadline', array(
+        'label'    => __( 'Subtítulo / Descripción', 'deoia' ),
+        'section'  => 'hero_settings',
+        'type'     => 'textarea',
+        'priority' => 40,
+    ) );
+
+    // CTA Botón Principal
+    $wp_customize->add_setting( 'hero_cta_text_1', array(
+        'default'           => 'Comenzar Gratis',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'hero_cta_text_1', array(
+        'label'    => __( 'Texto Botón Principal', 'deoia' ),
+        'section'  => 'hero_settings',
+        'type'     => 'text',
+        'priority' => 50,
+    ) );
+
+    // Métrica: Negocios Activos
+    $wp_customize->add_setting( 'hero_trust_count', array(
+        'default'           => '2,500',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'hero_trust_count', array(
+        'label'       => __( 'Número de Negocios Activos', 'deoia' ),
+        'description' => __( 'Ej: 2,500', 'deoia' ),
+        'section'     => 'hero_settings',
+        'type'        => 'text',
+        'priority'    => 60,
+    ) );
+
+    // Métrica: Reseñas
+    $wp_customize->add_setting( 'hero_review_count', array(
+        'default'           => '850',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'hero_review_count', array(
+        'label'       => __( 'Número de Reseñas', 'deoia' ),
+        'description' => __( 'Ej: 850', 'deoia' ),
+        'section'     => 'hero_settings',
+        'type'        => 'text',
+        'priority'    => 70,
+    ) );
+}
+add_action( 'customize_register', 'deoia_hero_customizer' );
+
+/**
  * Custom Post Type: Servicios
  */
 function deoia_registrar_cpt_servicios() {
