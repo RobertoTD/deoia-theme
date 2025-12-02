@@ -19,6 +19,230 @@ function deoia_theme_setup() {
 }
 add_action( 'after_setup_theme', 'deoia_theme_setup' );
 
+/**
+ * Personalizador: Redes Sociales
+ */
+function deoia_customize_register( $wp_customize ) {
+    // Twitter URL
+    $wp_customize->add_setting( 'twitter_url', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ) );
+    $wp_customize->add_control( 'twitter_url', array(
+        'label'       => __( 'URL de Twitter / X', 'deoia' ),
+        'section'     => 'title_tagline',
+        'type'        => 'url',
+        'priority'    => 50,
+    ) );
+
+    // Instagram URL
+    $wp_customize->add_setting( 'instagram_url', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ) );
+    $wp_customize->add_control( 'instagram_url', array(
+        'label'       => __( 'URL de Instagram', 'deoia' ),
+        'section'     => 'title_tagline',
+        'type'        => 'url',
+        'priority'    => 51,
+    ) );
+
+    // LinkedIn URL
+    $wp_customize->add_setting( 'linkedin_url', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ) );
+    $wp_customize->add_control( 'linkedin_url', array(
+        'label'       => __( 'URL de LinkedIn', 'deoia' ),
+        'section'     => 'title_tagline',
+        'type'        => 'url',
+        'priority'    => 52,
+    ) );
+}
+add_action( 'customize_register', 'deoia_customize_register' );
+
+/**
+ * Custom Post Type: Servicios
+ */
+function deoia_registrar_cpt_servicios() {
+    $labels = array(
+        'name'                  => 'Servicios',
+        'singular_name'         => 'Servicio',
+        'menu_name'             => 'Servicios',
+        'add_new'               => 'Añadir Nuevo',
+        'add_new_item'          => 'Añadir Nuevo Servicio',
+        'edit_item'             => 'Editar Servicio',
+        'new_item'              => 'Nuevo Servicio',
+        'view_item'             => 'Ver Servicio',
+        'search_items'          => 'Buscar Servicios',
+        'not_found'             => 'No se encontraron servicios',
+        'not_found_in_trash'    => 'No hay servicios en la papelera',
+    );
+
+    $args = array(
+        'labels'             => $labels,
+        'public'             => true,
+        'publicly_queryable' => true,
+        'show_ui'            => true,
+        'show_in_menu'       => true,
+        'query_var'          => true,
+        'rewrite'            => array( 'slug' => 'servicios' ),
+        'capability_type'    => 'post',
+        'has_archive'        => true,
+        'hierarchical'       => false,
+        'menu_position'      => 5,
+        'menu_icon'          => 'dashicons-heart',
+        'supports'           => array( 'title', 'editor' ),
+    );
+
+    register_post_type( 'deoia_servicio', $args );
+}
+add_action( 'init', 'deoia_registrar_cpt_servicios' );
+
+/**
+ * Meta Boxes para Servicios
+ */
+function deoia_servicios_meta_boxes() {
+    add_meta_box(
+        'deoia_servicio_campos',
+        'Configuración de la Tarjeta',
+        'deoia_servicio_campos_callback',
+        'deoia_servicio',
+        'normal',
+        'high'
+    );
+}
+add_action( 'add_meta_boxes', 'deoia_servicios_meta_boxes' );
+
+function deoia_servicio_campos_callback( $post ) {
+    wp_nonce_field( 'deoia_servicio_nonce', 'deoia_servicio_nonce_field' );
+
+    $icono_clases = get_post_meta( $post->ID, 'servicio_icono_clases', true );
+    $icono_svg = get_post_meta( $post->ID, 'servicio_icono_svg', true );
+    $caracteristicas = get_post_meta( $post->ID, 'servicio_caracteristicas', true );
+    ?>
+    <style>
+        .deoia-meta-field { margin-bottom: 20px; }
+        .deoia-meta-field label { display: block; font-weight: 600; margin-bottom: 5px; }
+        .deoia-meta-field input[type="text"],
+        .deoia-meta-field textarea { width: 100%; }
+        .deoia-meta-field .description { color: #666; font-size: 12px; margin-top: 5px; }
+    </style>
+
+    <div class="deoia-meta-field">
+        <label for="servicio_icono_clases">Clases del Gradiente del Icono</label>
+        <input type="text" id="servicio_icono_clases" name="servicio_icono_clases" value="<?php echo esc_attr( $icono_clases ); ?>" placeholder="from-pink-500 to-rose-500">
+        <p class="description">Ejemplo: <code>from-pink-500 to-rose-500</code>, <code>from-sky-500 to-blue-600</code>, <code>from-emerald-500 to-teal-600</code>, <code>from-amber-500 to-orange-500</code></p>
+    </div>
+
+    <div class="deoia-meta-field">
+        <label for="servicio_icono_svg">Código SVG del Icono</label>
+        <textarea id="servicio_icono_svg" name="servicio_icono_svg" rows="4" placeholder='<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5..."/>'><?php echo esc_textarea( $icono_svg ); ?></textarea>
+        <p class="description">Pega solo el contenido interno del SVG (el <code>&lt;path&gt;</code>). El wrapper SVG se genera automáticamente.</p>
+    </div>
+
+    <div class="deoia-meta-field">
+        <label for="servicio_caracteristicas">Características (una por línea)</label>
+        <textarea id="servicio_caracteristicas" name="servicio_caracteristicas" rows="4" placeholder="Multi-empleados&#10;Catálogo de servicios"><?php echo esc_textarea( $caracteristicas ); ?></textarea>
+        <p class="description">Escribe una característica por línea. Se mostrarán como bullets con check verde.</p>
+    </div>
+    <?php
+}
+
+function deoia_guardar_servicio_meta( $post_id ) {
+    // Verificar nonce
+    if ( ! isset( $_POST['deoia_servicio_nonce_field'] ) || ! wp_verify_nonce( $_POST['deoia_servicio_nonce_field'], 'deoia_servicio_nonce' ) ) {
+        return;
+    }
+
+    // Verificar autosave
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+
+    // Verificar permisos
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        return;
+    }
+
+    // Guardar campos
+    if ( isset( $_POST['servicio_icono_clases'] ) ) {
+        update_post_meta( $post_id, 'servicio_icono_clases', sanitize_text_field( $_POST['servicio_icono_clases'] ) );
+    }
+
+    if ( isset( $_POST['servicio_icono_svg'] ) ) {
+        update_post_meta( $post_id, 'servicio_icono_svg', deoia_sanitize_svg( $_POST['servicio_icono_svg'] ) );
+    }
+
+    if ( isset( $_POST['servicio_caracteristicas'] ) ) {
+        update_post_meta( $post_id, 'servicio_caracteristicas', sanitize_textarea_field( $_POST['servicio_caracteristicas'] ) );
+    }
+}
+add_action( 'save_post_deoia_servicio', 'deoia_guardar_servicio_meta' );
+
+/**
+ * Sanitización personalizada para SVG
+ */
+function deoia_sanitize_svg( $svg ) {
+    // Permitir etiquetas y atributos SVG comunes
+    $allowed_html = array(
+        'path' => array(
+            'd'               => true,
+            'fill'            => true,
+            'fill-rule'       => true,
+            'clip-rule'       => true,
+            'stroke'          => true,
+            'stroke-width'    => true,
+            'stroke-linecap'  => true,
+            'stroke-linejoin' => true,
+        ),
+        'circle' => array(
+            'cx'           => true,
+            'cy'           => true,
+            'r'            => true,
+            'fill'         => true,
+            'stroke'       => true,
+            'stroke-width' => true,
+        ),
+        'rect' => array(
+            'x'            => true,
+            'y'            => true,
+            'width'        => true,
+            'height'       => true,
+            'rx'           => true,
+            'ry'           => true,
+            'fill'         => true,
+            'stroke'       => true,
+            'stroke-width' => true,
+        ),
+        'line' => array(
+            'x1'           => true,
+            'y1'           => true,
+            'x2'           => true,
+            'y2'           => true,
+            'stroke'       => true,
+            'stroke-width' => true,
+        ),
+        'polygon' => array(
+            'points' => true,
+            'fill'   => true,
+            'stroke' => true,
+        ),
+        'polyline' => array(
+            'points' => true,
+            'fill'   => true,
+            'stroke' => true,
+        ),
+        'g' => array(
+            'fill'         => true,
+            'stroke'       => true,
+            'stroke-width' => true,
+        ),
+    );
+
+    return wp_kses( $svg, $allowed_html );
+}
+
 function deoia_cargar_scripts() {
     // 1. Carga la hoja de estilo base (style.css) para que WP no se queje
     wp_enqueue_style( 'deoia-style', get_stylesheet_uri() );

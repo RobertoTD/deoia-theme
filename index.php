@@ -192,113 +192,75 @@
             <!-- Bento Grid Secundario -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 
-                <!-- Card 1: Estéticas / Spas -->
-                <div class="group bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100 hover:shadow-2xl hover:shadow-violet-500/10 hover:-translate-y-2 transition-all duration-500">
-                    <div class="w-14 h-14 bg-gradient-to-br from-pink-500 to-rose-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-pink-500/30 group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Estéticas & Spas</h3>
-                    <p class="text-slate-600 mb-4 leading-relaxed">
-                        Gestiona cortes, tratamientos faciales, masajes y más. Asigna estilistas específicos automáticamente.
-                    </p>
-                    <ul class="space-y-2 text-sm text-slate-500">
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                            Multi-empleados
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                            Catálogo de servicios
-                        </li>
-                    </ul>
-                </div>
+                <?php
+                $servicios_query = new WP_Query( array(
+                    'post_type'      => 'deoia_servicio',
+                    'posts_per_page' => -1,
+                    'orderby'        => 'menu_order',
+                    'order'          => 'ASC',
+                ) );
 
-                <!-- Card 2: Consultorios Médicos -->
+                if ( $servicios_query->have_posts() ) :
+                    while ( $servicios_query->have_posts() ) : $servicios_query->the_post();
+                        
+                        // Obtener meta fields
+                        $icono_clases = get_post_meta( get_the_ID(), 'servicio_icono_clases', true );
+                        $icono_svg = get_post_meta( get_the_ID(), 'servicio_icono_svg', true );
+                        $caracteristicas_raw = get_post_meta( get_the_ID(), 'servicio_caracteristicas', true );
+                        
+                        // Procesar características (una por línea)
+                        $caracteristicas = array_filter( array_map( 'trim', explode( "\n", $caracteristicas_raw ) ) );
+                        
+                        // Clases por defecto si no hay configuradas
+                        if ( empty( $icono_clases ) ) {
+                            $icono_clases = 'from-violet-500 to-indigo-500';
+                        }
+                        
+                        // Extraer el primer color para la sombra
+                        preg_match( '/from-([a-z]+-\d+)/', $icono_clases, $matches );
+                        $shadow_color = isset( $matches[1] ) ? $matches[1] : 'violet-500';
+                ?>
+                
                 <div class="group bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100 hover:shadow-2xl hover:shadow-violet-500/10 hover:-translate-y-2 transition-all duration-500">
-                    <div class="w-14 h-14 bg-gradient-to-br from-sky-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-sky-500/30 group-hover:scale-110 transition-transform duration-300">
+                    <div class="w-14 h-14 bg-gradient-to-br <?php echo esc_attr( $icono_clases ); ?> rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-<?php echo esc_attr( $shadow_color ); ?>/30 group-hover:scale-110 transition-transform duration-300">
+                        <?php if ( ! empty( $icono_svg ) ) : ?>
                         <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.5 12.75l6 6 9-13.5"/>
+                            <?php echo $icono_svg; ?>
                         </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Consultorios Médicos</h3>
-                    <p class="text-slate-600 mb-4 leading-relaxed">
-                        Optimiza la agenda de doctores y especialistas. Reduce ausencias con recordatorios SMS/Email.
-                    </p>
-                    <ul class="space-y-2 text-sm text-slate-500">
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                            Recordatorios automáticos
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                            Historial de pacientes
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Card 3: Gimnasios / Coaching -->
-                <div class="group bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100 hover:shadow-2xl hover:shadow-violet-500/10 hover:-translate-y-2 transition-all duration-500">
-                    <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform duration-300">
+                        <?php else : ?>
                         <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                         </svg>
+                        <?php endif; ?>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Gimnasios & Coaching</h3>
-                    <p class="text-slate-600 mb-4 leading-relaxed">
-                        Clases grupales, sesiones personales y entrenamientos. Controla aforo y capacidad fácilmente.
-                    </p>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3"><?php the_title(); ?></h3>
+                    <div class="text-slate-600 mb-4 leading-relaxed">
+                        <?php the_content(); ?>
+                    </div>
+                    <?php if ( ! empty( $caracteristicas ) ) : ?>
                     <ul class="space-y-2 text-sm text-slate-500">
+                        <?php foreach ( $caracteristicas as $caracteristica ) : ?>
                         <li class="flex items-center gap-2">
                             <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
-                            Clases grupales
+                            <?php echo esc_html( $caracteristica ); ?>
                         </li>
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                            Control de aforo
-                        </li>
+                        <?php endforeach; ?>
                     </ul>
+                    <?php endif; ?>
                 </div>
 
-                <!-- Card 4: Servicios Profesionales -->
-                <div class="group bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100 hover:shadow-2xl hover:shadow-violet-500/10 hover:-translate-y-2 transition-all duration-500">
-                    <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-amber-500/30 group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Servicios Profesionales</h3>
-                    <p class="text-slate-600 mb-4 leading-relaxed">
-                        Consultorías, asesorías legales, contables y más. Agenda reuniones virtuales o presenciales.
-                    </p>
-                    <ul class="space-y-2 text-sm text-slate-500">
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                            Integración Zoom/Meet
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                            Pagos anticipados
-                        </li>
-                    </ul>
+                <?php
+                    endwhile;
+                    wp_reset_postdata();
+                else :
+                ?>
+                <!-- Mensaje cuando no hay servicios -->
+                <div class="lg:col-span-4 text-center py-12">
+                    <p class="text-slate-500">No hay servicios configurados. Añade servicios desde el panel de administración.</p>
                 </div>
+                <?php endif; ?>
 
             </div>
         </div>
