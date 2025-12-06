@@ -361,14 +361,13 @@ function deoia_cargar_scripts() {
         true
     );
 
-    // Registrar adaptador premium después de que WPAgenda existe
-    wp_add_inline_script(
-        'deoia-calendar-adapter',
-        'document.addEventListener("DOMContentLoaded", function() {
-           if (window.WPAgenda && window.deoiaCalendarAdapter) {
-             WPAgenda.registerCalendarAdapter(window.deoiaCalendarAdapter.create());
-           }
-         });'
+    // Encolar archivo que registra adaptadores premium
+    wp_enqueue_script(
+        'deoia-register-adapters',
+        get_stylesheet_directory_uri() . '/assets/js/DeoiaRegisterAdapters.js',
+        ['deoia-calendar-adapter'], 
+        filemtime(get_stylesheet_directory() . '/assets/js/DeoiaRegisterAdapters.js'),
+        true
     );
 }
 add_action( 'wp_enqueue_scripts', 'deoia_cargar_scripts' );
