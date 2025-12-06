@@ -9,9 +9,18 @@
     const { ymd } = global.DateUtils || {};
 
     function isDateDisabled(date) {
-      if (config.minDate && date < config.minDate) return true;
-      if (config.maxDate && date > config.maxDate) return true;
-      if (typeof config.disableDateFn === "function") {
+      // Lógica equivalente al adaptador default
+      if (config.minDate) {
+        const minDateNorm = new Date(config.minDate);
+        minDateNorm.setHours(0, 0, 0, 0);
+        if (date < minDateNorm) return true;
+      }
+      if (config.maxDate) {
+        const maxDateNorm = new Date(config.maxDate);
+        maxDateNorm.setHours(23, 59, 59, 999);
+        if (date > maxDateNorm) return true;
+      }
+      if (config.disableDateFn && typeof config.disableDateFn === "function") {
         return config.disableDateFn(date);
       }
       return false;
@@ -25,13 +34,13 @@
         <div class="flex items-center justify-between mb-4">
           <span class="text-white font-medium capitalize">${month} ${year}</span>
           <div class="flex gap-1">
-            <button data-nav="prev" class="p-1 hover:bg-slate-700 rounded-lg">
+            <button type="button" data-nav="prev" class="p-1 hover:bg-slate-700 rounded-lg">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
               </svg>
             </button>
 
-            <button data-nav="next" class="p-1 hover:bg-slate-700 rounded-lg">
+            <button type="button" data-nav="next" class="p-1 hover:bg-slate-700 rounded-lg">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
               </svg>
@@ -68,29 +77,31 @@
         const dateStr = ymd ? ymd(date) : date.toISOString().slice(0, 10);
 
         const isToday = date.toDateString() === new Date().toDateString();
-
         const isSelected =
           selectedDate && date.toDateString() === selectedDate.toDateString();
+        const isDisabled = isDateDisabled(date);
 
-        const disabled = isDateDisabled(date);
+        // Clases base del botón
+        let classes = `w-8 h-8 rounded-xl text-xs flex items-center justify-center transition`;
 
-        let classes = `
-          w-8 h-8 rounded-xl text-xs flex items-center justify-center
-          transition cursor-pointer
-        `;
-
-        if (disabled) {
-          classes += ` opacity-40 cursor-not-allowed `;
+        if (isDisabled) {
+          // Estado deshabilitado: texto muy tenue, sin hover, cursor-not-allowed, menor opacidad
+          classes += ` text-slate-600 opacity-30 cursor-not-allowed pointer-events-none`;
         } else if (isSelected) {
-          classes += ` bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 text-white `;
+          // Estado seleccionado: gradiente violeta/indigo premium
+          classes += ` bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 text-white cursor-pointer shadow-lg shadow-violet-500/25`;
         } else if (isToday) {
-          classes += ` bg-slate-700 text-white `;
+          // Día actual (no seleccionado)
+          classes += ` bg-slate-700 text-white cursor-pointer hover:bg-slate-600`;
         } else {
-          classes += ` text-slate-400 hover:bg-slate-700/50 `;
+          // Día normal habilitado
+          classes += ` text-slate-400 cursor-pointer hover:bg-slate-700/50 hover:text-slate-300`;
         }
 
         html += `
-          <button class="${classes}" data-date="${dateStr}">
+          <button type="button" class="${classes}" data-date="${dateStr}" ${
+          isDisabled ? 'disabled aria-disabled="true"' : ""
+        }>
             ${day}
           </button>
         `;
@@ -104,8 +115,30 @@
       const btn = event.target.closest("button[data-date]");
       if (!btn) return;
 
-      const date = new Date(btn.dataset.date);
-      if (isDateDisabled(date)) return;
+      // Verificar si el botón está deshabilitado (por atributo o clase)
+      if (
+        btn.disabled ||
+        btn.hasAttribute("disabled") ||
+        btn.classList.contains("pointer-events-none")
+      ) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+      }
+
+      const dateStr = btn.dataset.date;
+      if (!dateStr) return;
+
+      // Parsear la fecha desde el string YYYY-MM-DD para evitar problemas de timezone
+      const [year, month, day] = dateStr.split("-").map(Number);
+      const date = new Date(year, month - 1, day);
+
+      // Doble verificación: no seleccionar si está deshabilitado
+      if (isDateDisabled(date)) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+      }
 
       selectedDate = date;
       renderCalendar();
