@@ -342,6 +342,22 @@ function deoia_sanitize_svg( $svg ) {
     return wp_kses( $svg, $allowed_html );
 }
 
+/**
+ * Desencolar CSS del plugin cuando el tema premium está activo
+ * Esto permite que los estilos Tailwind del tema tomen precedencia
+ */
+function deoia_dequeue_plugin_default_styles() {
+    // Desencolar el CSS default del plugin
+    wp_dequeue_style('wpaa-calendar-default');
+    wp_deregister_style('wpaa-calendar-default');
+    
+    // También desencolar flatpickr si no lo usamos
+    wp_dequeue_style('flatpickr-css');
+    wp_deregister_style('flatpickr-css');
+}
+// Prioridad alta (20) para que se ejecute DESPUÉS del enqueue del plugin
+add_action('wp_enqueue_scripts', 'deoia_dequeue_plugin_default_styles', 20);
+
 function deoia_cargar_scripts() {
     // 1. Carga la hoja de estilo base (style.css) para que WP no se queje
     wp_enqueue_style( 'deoia-style', get_stylesheet_uri() );
@@ -361,11 +377,20 @@ function deoia_cargar_scripts() {
         true
     );
 
+    // Encolar adaptador premium de slots
+    wp_enqueue_script(
+        'deoia-slots-adapter',
+        get_stylesheet_directory_uri() . '/assets/js/adapters/DeoiaSlotsAdapter.js',
+        ['aa-wpagenda-kernel'], // depende del plugin
+        filemtime(get_stylesheet_directory() . '/assets/js/adapters/DeoiaSlotsAdapter.js'),
+        true
+    );
+
     // Encolar archivo que registra adaptadores premium
     wp_enqueue_script(
         'deoia-register-adapters',
         get_stylesheet_directory_uri() . '/assets/js/DeoiaRegisterAdapters.js',
-        ['deoia-calendar-adapter'], 
+        ['deoia-calendar-adapter', 'deoia-slots-adapter'], 
         filemtime(get_stylesheet_directory() . '/assets/js/DeoiaRegisterAdapters.js'),
         true
     );
