@@ -1,8 +1,38 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "../../../../wpagenda/wp-content/plugins/wp-agenda-automatizada"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/.git": true
+    },
+
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/.git": true
+    },
+
+    "tailwindCSS.experimental.configFile": "wp-content/themes/deoia-theme/tailwind.config.js",
+
+    "tailwindCSS.includeLanguages": {
+      "html": "html",
+      "php": "html",
+      "javascript": "javascript"
+    },
+
+    "github.copilot.enable": {
+      "*": true,
+      "php": true,
+      "javascript": true,
+      "html": true
+    },
+
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

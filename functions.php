@@ -351,5 +351,24 @@ function deoia_cargar_scripts() {
     if ( file_exists( get_template_directory() . '/assets/css/main.css' ) ) {
         wp_enqueue_style( 'deoia-tailwind', get_template_directory_uri() . '/assets/css/main.css', array(), time() );
     }
+
+    // Encolar adaptador premium de calendario
+    wp_enqueue_script(
+        'deoia-calendar-adapter',
+        get_stylesheet_directory_uri() . '/assets/js/adapters/DeoiaCalendarAdapter.js',
+        ['aa-wpagenda-kernel'], // depende del plugin
+        filemtime(get_stylesheet_directory() . '/assets/js/adapters/DeoiaCalendarAdapter.js'),
+        true
+    );
+
+    // Registrar adaptador premium después de que WPAgenda existe
+    wp_add_inline_script(
+        'deoia-calendar-adapter',
+        'document.addEventListener("DOMContentLoaded", function() {
+           if (window.WPAgenda && window.deoiaCalendarAdapter) {
+             WPAgenda.registerCalendarAdapter(window.deoiaCalendarAdapter.create());
+           }
+         });'
+    );
 }
 add_action( 'wp_enqueue_scripts', 'deoia_cargar_scripts' );
