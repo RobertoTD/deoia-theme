@@ -370,6 +370,7 @@ add_action( 'customize_register', 'deoia_palette_customizer' );
 
 /**
  * Generar CSS dinámico con las variables de paleta
+ * Usa html:root para mayor especificidad que :root de Tailwind
  */
 function deoia_output_palette_css() {
     $presets = deoia_get_palette_presets();
@@ -386,7 +387,7 @@ function deoia_output_palette_css() {
 
     ?>
     <style id="deoia-palette-css">
-        :root {
+        html:root {
             --deoia-primary: <?php echo esc_attr( $primary ); ?>;
             --deoia-secondary: <?php echo esc_attr( $secondary ); ?>;
             --deoia-accent: <?php echo esc_attr( $accent ); ?>;
@@ -397,7 +398,7 @@ function deoia_output_palette_css() {
     </style>
     <?php
 }
-add_action( 'wp_head', 'deoia_output_palette_css', 5 );
+add_action( 'wp_footer', 'deoia_output_palette_css', 1 );
 
 /**
  * Script de Customizer para auto-rellenar colores al cambiar preset
