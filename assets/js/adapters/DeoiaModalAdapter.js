@@ -18,8 +18,10 @@
     let overlayEl = null;
     let modalEl = null;
     let submitBtn = null;
+    let responseEl = null;
     let onSubmitCallback = null;
     let isLoading = false;
+    let responseObserver = null;
 
     // =========================================================================
     // Generación del HTML del Modal Premium
@@ -154,6 +156,9 @@
                 </button>
               </form>
               
+              <!-- Response Container Premium -->
+              <div data-role="deoia-response" class="text-sm text-center mt-4 min-h-[24px] transition-all duration-300"></div>
+              
               <!-- Footer -->
               <p class="text-center text-slate-500 text-xs mt-4">
                 Potenciado por <span class="text-violet-400 font-medium">Deoia</span>
@@ -248,6 +253,18 @@
      * Remueve el modal del DOM.
      */
     function removeFromDOM() {
+      // Desconectar observer si existe
+      if (responseObserver) {
+        responseObserver.disconnect();
+        responseObserver = null;
+      }
+
+      // Restaurar visibilidad de #respuesta-agenda
+      const respuestaAgenda = document.getElementById("respuesta-agenda");
+      if (respuestaAgenda) {
+        respuestaAgenda.style.display = "";
+      }
+
       if (overlayEl && overlayEl.parentNode) {
         overlayEl.parentNode.removeChild(overlayEl);
       }
@@ -257,6 +274,7 @@
       overlayEl = null;
       modalEl = null;
       submitBtn = null;
+      responseEl = null;
       onSubmitCallback = null;
       isLoading = false;
 
@@ -307,6 +325,7 @@
         overlayEl = wrapper.querySelector(".deoia-modal-overlay");
         modalEl = wrapper.querySelector(".deoia-modal");
         submitBtn = modalEl.querySelector('[data-role="deoia-modal-submit"]');
+        responseEl = modalEl.querySelector('[data-role="deoia-response"]');
 
         // Insertar en el DOM
         document.body.appendChild(overlayEl);
@@ -314,6 +333,70 @@
 
         // Prevenir scroll del body
         document.body.style.overflow = "hidden";
+
+        // Ocultar #respuesta-agenda del plugin para evitar duplicados
+        const respuestaAgenda = document.getElementById("respuesta-agenda");
+        if (respuestaAgenda) {
+          respuestaAgenda.style.display = "none";
+        }
+
+        // Vaciar el contenedor de respuesta premium
+        if (responseEl) {
+          responseEl.textContent = "";
+          responseEl.className =
+            "text-sm text-center mt-4 min-h-[24px] transition-all duration-300";
+        }
+
+        // Configurar MutationObserver para capturar respuesta del plugin
+        if (respuestaAgenda) {
+          responseObserver = new MutationObserver((mutations) => {
+            for (const mutation of mutations) {
+              if (
+                mutation.type === "childList" ||
+                mutation.type === "characterData"
+              ) {
+                const texto =
+                  respuestaAgenda.textContent || respuestaAgenda.innerText;
+                if (texto && texto.trim() && responseEl) {
+                  // Detectar si es éxito o error
+                  const isSuccess =
+                    texto.includes("✅") ||
+                    texto.toLowerCase().includes("correctamente");
+                  const isError =
+                    texto.includes("❌") ||
+                    texto.toLowerCase().includes("error");
+
+                  // Aplicar estilos según el tipo de mensaje
+                  if (isSuccess) {
+                    responseEl.className =
+                      "text-sm text-center mt-4 min-h-[24px] transition-all duration-300 text-emerald-400";
+                  } else if (isError) {
+                    responseEl.className =
+                      "text-sm text-center mt-4 min-h-[24px] transition-all duration-300 text-red-400";
+                  } else {
+                    responseEl.className =
+                      "text-sm text-center mt-4 min-h-[24px] transition-all duration-300 text-slate-300";
+                  }
+
+                  responseEl.textContent = texto.trim();
+
+                  // Si es éxito, cerrar modal después de 2 segundos
+                  if (isSuccess) {
+                    setTimeout(() => {
+                      closeWithAnimation();
+                    }, 2000);
+                  }
+                }
+              }
+            }
+          });
+
+          responseObserver.observe(respuestaAgenda, {
+            childList: true,
+            characterData: true,
+            subtree: true,
+          });
+        }
 
         // Event listeners
         overlayEl.addEventListener("click", handleOverlayClick);
@@ -368,6 +451,13 @@
           if (btnText) btnText.textContent = "Procesando...";
           if (btnIcon) btnIcon.classList.add("hidden");
           if (btnSpinner) btnSpinner.classList.remove("hidden");
+
+          // Mostrar mensaje de procesamiento en el contenedor de respuesta
+          if (responseEl) {
+            responseEl.textContent = "Procesando la reserva…";
+            responseEl.className =
+              "text-sm text-center mt-4 min-h-[24px] transition-all duration-300 text-slate-400";
+          }
         } else {
           submitBtn.disabled = false;
           submitBtn.classList.remove("opacity-70", "cursor-not-allowed");

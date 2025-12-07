@@ -98,7 +98,7 @@
 
           <!-- Slots Wrapper -->
           <div data-role="deoia-slots-wrapper" class="mb-4">
-            <p class="text-slate-400 text-sm mb-3">Horarios disponibles</p>
+            <div data-role="deoia-slot-title-placeholder"></div>
             <div data-role="deoia-slots-placeholder"></div>
           </div>
 
@@ -169,10 +169,24 @@
         }
       }
 
-      // Ocultar el calendario original y el título de slots del plugin
+      // Ocultar el calendario original
       originalContainer.style.display = "none";
-      const slotTitle = form.querySelector("#aa-slot-title");
-      if (slotTitle) slotTitle.style.display = "none";
+
+      // Mover el título de slots del plugin al wrapper premium y aplicar estilos
+      const slotTitle = document.getElementById("aa-slot-title");
+      const slotTitlePlaceholder = wrapperEl.querySelector(
+        '[data-role="deoia-slot-title-placeholder"]'
+      );
+      if (slotTitle && slotTitlePlaceholder) {
+        // Aplicar estilos premium al título
+        slotTitle.className = "text-slate-400 text-sm mb-3";
+        slotTitle.style.display = ""; // Asegurar que no esté oculto
+        // Reemplazar el placeholder con el título real
+        slotTitlePlaceholder.parentNode.replaceChild(
+          slotTitle,
+          slotTitlePlaceholder
+        );
+      }
 
       // Ocultar campos del formulario original (se usarán desde el modal premium)
       const fieldsToHide = [
