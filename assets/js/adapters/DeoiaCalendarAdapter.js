@@ -64,20 +64,23 @@
       // Crear el wrapper premium
       wrapperEl = document.createElement("div");
       wrapperEl.className =
-        "deoia-premium-widget bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-6 lg:p-8 shadow-2xl shadow-slate-900/30 border border-slate-700/50 relative overflow-hidden";
+        "deoia-premium-widget rounded-3xl p-6 lg:p-8 shadow-2xl border border-slate-700/50 relative overflow-hidden";
+      wrapperEl.style.background =
+        "linear-gradient(to bottom right, var(--deoia-bg-card), color-mix(in srgb, var(--deoia-bg-card) 80%, black))";
+      wrapperEl.style.boxShadow = "0 25px 50px -12px rgba(0, 0, 0, 0.3)";
       wrapperEl.setAttribute("data-deoia-premium", "true");
 
       wrapperEl.innerHTML = `
         <!-- Decorative Glows -->
-        <div class="absolute -top-24 -right-24 w-48 h-48 bg-violet-500/20 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -top-24 -right-24 w-48 h-48 rounded-full blur-3xl pointer-events-none" style="background-color: var(--deoia-bg-glow-1); opacity: 0.2;"></div>
+        <div class="absolute -bottom-24 -left-24 w-48 h-48 rounded-full blur-3xl pointer-events-none" style="background-color: var(--deoia-bg-glow-2); opacity: 0.2;"></div>
         
         <!-- Widget Content -->
         <div class="relative z-10" data-role="deoia-widget-content">
           <!-- Widget Header -->
           <div class="flex items-center justify-between mb-6">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-gradient-to-br from-violet-500 to-indigo-500 rounded-xl flex items-center justify-center">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background-image: linear-gradient(to bottom right, var(--deoia-primary), var(--deoia-secondary));">
                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
@@ -103,7 +106,7 @@
           </div>
 
           <!-- Book Button Premium (siempre clickeable para mostrar validaciones) -->
-          <button type="button" data-role="deoia-book-btn" class="w-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold py-4 rounded-2xl shadow-xl shadow-violet-500/30 hover:shadow-violet-500/50 hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2" data-ready="false">
+          <button type="button" data-role="deoia-book-btn" class="w-full text-white font-semibold py-4 rounded-2xl shadow-xl hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 deoia-btn-primary" style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);" data-ready="false">
             Reservar
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
@@ -112,7 +115,7 @@
 
           <!-- Widget Badge -->
           <p class="text-center text-slate-500 text-xs mt-4">
-            Potenciado por <span class="text-violet-400 font-medium">Deoia</span>
+            Potenciado por <span class="font-medium" style="color: var(--deoia-accent);">Deoia</span>
           </p>
         </div>
       `;
@@ -134,9 +137,13 @@
         // Aplicar clases premium al select
         servicioSelect.className =
           "bg-slate-800/80 border border-slate-700/50 rounded-xl py-3 px-4 " +
-          "text-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50 " +
+          "text-slate-300 text-sm focus:outline-none focus:ring-2 " +
           "transition-all duration-200 w-full appearance-none cursor-pointer " +
-          "hover:border-slate-600 hover:bg-slate-800";
+          "hover:border-slate-600 hover:bg-slate-800 deoia-input-focus";
+        servicioSelect.style.setProperty(
+          "--tw-ring-color",
+          "color-mix(in srgb, var(--deoia-primary) 50%, transparent)"
+        );
 
         // Crear wrapper para el select con icono de dropdown
         const selectWrapper = document.createElement("div");
@@ -428,9 +435,9 @@
           // Deshabilitado: opacidad baja, sin hover, cursor not-allowed
           classes += " text-slate-600 opacity-30 cursor-not-allowed";
         } else if (isSelected) {
-          // Seleccionado: gradiente premium con sombra
+          // Seleccionado: gradiente premium con sombra (usando CSS variables)
           classes +=
-            " bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold shadow-lg cursor-pointer";
+            " text-white font-semibold shadow-lg cursor-pointer deoia-day-selected";
         } else if (isToday) {
           // Hoy (no seleccionado)
           classes +=
@@ -440,8 +447,13 @@
           classes += " text-slate-400 hover:bg-slate-700/50 cursor-pointer";
         }
 
+        // Build style for selected day
+        const dayStyle = isSelected
+          ? 'style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary));"'
+          : "";
+
         html += `
-          <button type="button" class="${classes}" data-date="${dateStr}" ${
+          <button type="button" class="${classes}" data-date="${dateStr}" ${dayStyle} ${
           isDisabled ? 'disabled aria-disabled="true"' : ""
         }>
             ${day}
@@ -608,14 +620,11 @@
         if (enabled) {
           btn.disabled = false;
           btn.classList.remove("opacity-50", "cursor-not-allowed");
-          btn.classList.add("hover:shadow-violet-500/50", "hover:scale-[1.02]");
+          btn.classList.add("hover:scale-[1.02]");
         } else {
           btn.disabled = true;
           btn.classList.add("opacity-50", "cursor-not-allowed");
-          btn.classList.remove(
-            "hover:shadow-violet-500/50",
-            "hover:scale-[1.02]"
-          );
+          btn.classList.remove("hover:scale-[1.02]");
         }
       },
 

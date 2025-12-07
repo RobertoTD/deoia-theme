@@ -161,6 +161,278 @@ function deoia_hero_customizer( $wp_customize ) {
 add_action( 'customize_register', 'deoia_hero_customizer' );
 
 /**
+ * ════════════════════════════════════════════════════════════════════════════
+ * DEOIA Premium Palette System - Customizer Controls
+ * ════════════════════════════════════════════════════════════════════════════
+ */
+
+/**
+ * Definición de presets de paletas por industria
+ */
+function deoia_get_palette_presets() {
+    return array(
+        'deoia-default' => array(
+            'name'      => 'DEOIA Default',
+            'primary'   => '#8B5CF6',   // violet-500
+            'secondary' => '#6366F1',   // indigo-500
+            'accent'    => '#F472B6',   // pink-400
+            'bg_card'   => '#0F172A',   // slate-900
+            'glow_1'    => '#8B5CF6',   // violet-500
+            'glow_2'    => '#6366F1',   // indigo-500
+        ),
+        'consultorios' => array(
+            'name'      => 'Consultorios Médicos',
+            'primary'   => '#0EA5E9',   // sky-500 - confianza médica
+            'secondary' => '#0284C7',   // sky-600
+            'accent'    => '#22D3EE',   // cyan-400
+            'bg_card'   => '#0C1425',   // slate oscuro azulado
+            'glow_1'    => '#0EA5E9',   // sky-500
+            'glow_2'    => '#0284C7',   // sky-600
+        ),
+        'psicologos' => array(
+            'name'      => 'Psicólogos / Terapeutas',
+            'primary'   => '#10B981',   // emerald-500 - calma y bienestar
+            'secondary' => '#059669',   // emerald-600
+            'accent'    => '#34D399',   // emerald-400
+            'bg_card'   => '#0A1612',   // slate oscuro verdoso
+            'glow_1'    => '#10B981',   // emerald-500
+            'glow_2'    => '#059669',   // emerald-600
+        ),
+        'despachos' => array(
+            'name'      => 'Despachos / Abogados',
+            'primary'   => '#64748B',   // slate-500 - profesionalismo
+            'secondary' => '#475569',   // slate-600
+            'accent'    => '#F59E0B',   // amber-500 - distinción
+            'bg_card'   => '#0F1419',   // slate muy oscuro
+            'glow_1'    => '#64748B',   // slate-500
+            'glow_2'    => '#475569',   // slate-600
+        ),
+        'estetica-mujeres' => array(
+            'name'      => 'Estética / Belleza',
+            'primary'   => '#EC4899',   // pink-500 - femenino elegante
+            'secondary' => '#DB2777',   // pink-600
+            'accent'    => '#F9A8D4',   // pink-300
+            'bg_card'   => '#1A0A12',   // slate oscuro rosado
+            'glow_1'    => '#EC4899',   // pink-500
+            'glow_2'    => '#DB2777',   // pink-600
+        ),
+        'barberias' => array(
+            'name'      => 'Barberías',
+            'primary'   => '#F97316',   // orange-500 - masculino vibrante
+            'secondary' => '#EA580C',   // orange-600
+            'accent'    => '#FBBF24',   // amber-400
+            'bg_card'   => '#1A1008',   // slate oscuro anaranjado
+            'glow_1'    => '#F97316',   // orange-500
+            'glow_2'    => '#EA580C',   // orange-600
+        ),
+    );
+}
+
+/**
+ * Registrar controles del Customizer para paletas DEOIA
+ */
+function deoia_palette_customizer( $wp_customize ) {
+    $presets = deoia_get_palette_presets();
+    $default_preset = $presets['deoia-default'];
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // PANEL: DEOIA Branding
+    // ═══════════════════════════════════════════════════════════════════════
+    $wp_customize->add_panel( 'deoia_branding', array(
+        'title'       => __( 'DEOIA Branding', 'deoia' ),
+        'priority'    => 25,
+        'description' => __( 'Personaliza la paleta de colores del sistema de reservas premium.', 'deoia' ),
+    ) );
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SECTION: Paleta de Colores
+    // ═══════════════════════════════════════════════════════════════════════
+    $wp_customize->add_section( 'deoia_palette', array(
+        'title'       => __( 'Paleta de Colores', 'deoia' ),
+        'panel'       => 'deoia_branding',
+        'priority'    => 10,
+        'description' => __( 'Selecciona un preset o personaliza los colores individualmente.', 'deoia' ),
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Preset Selector (Dropdown)
+    // ─────────────────────────────────────────────────────────────────────────
+    $preset_choices = array();
+    foreach ( $presets as $key => $preset ) {
+        $preset_choices[ $key ] = $preset['name'];
+    }
+
+    $wp_customize->add_setting( 'deoia_palette_preset', array(
+        'default'           => 'deoia-default',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_palette_preset', array(
+        'label'       => __( 'Preset de Industria', 'deoia' ),
+        'description' => __( 'Selecciona un preset predefinido. Al cambiar, los colores se actualizarán automáticamente.', 'deoia' ),
+        'section'     => 'deoia_palette',
+        'type'        => 'select',
+        'choices'     => $preset_choices,
+        'priority'    => 5,
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Color Primario
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_color_primary', array(
+        'default'           => $default_preset['primary'],
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'deoia_color_primary', array(
+        'label'       => __( 'Color Primario', 'deoia' ),
+        'description' => __( 'Color principal para botones, elementos activos y gradientes.', 'deoia' ),
+        'section'     => 'deoia_palette',
+        'priority'    => 10,
+    ) ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Color Secundario
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_color_secondary', array(
+        'default'           => $default_preset['secondary'],
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'deoia_color_secondary', array(
+        'label'       => __( 'Color Secundario', 'deoia' ),
+        'description' => __( 'Color secundario para gradientes y elementos complementarios.', 'deoia' ),
+        'section'     => 'deoia_palette',
+        'priority'    => 20,
+    ) ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Color de Acento
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_color_accent', array(
+        'default'           => $default_preset['accent'],
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'deoia_color_accent', array(
+        'label'       => __( 'Color de Acento', 'deoia' ),
+        'description' => __( 'Color para badges, íconos destacados y detalles.', 'deoia' ),
+        'section'     => 'deoia_palette',
+        'priority'    => 30,
+    ) ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Fondo de Tarjeta
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_color_bg_card', array(
+        'default'           => $default_preset['bg_card'],
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'deoia_color_bg_card', array(
+        'label'       => __( 'Fondo de Tarjeta Premium', 'deoia' ),
+        'description' => __( 'Color de fondo para el widget de reservas.', 'deoia' ),
+        'section'     => 'deoia_palette',
+        'priority'    => 40,
+    ) ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Glow 1
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_color_glow_1', array(
+        'default'           => $default_preset['glow_1'],
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'deoia_color_glow_1', array(
+        'label'       => __( 'Color Glow Superior', 'deoia' ),
+        'description' => __( 'Color del efecto de brillo decorativo superior.', 'deoia' ),
+        'section'     => 'deoia_palette',
+        'priority'    => 50,
+    ) ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Glow 2
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_color_glow_2', array(
+        'default'           => $default_preset['glow_2'],
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'deoia_color_glow_2', array(
+        'label'       => __( 'Color Glow Inferior', 'deoia' ),
+        'description' => __( 'Color del efecto de brillo decorativo inferior.', 'deoia' ),
+        'section'     => 'deoia_palette',
+        'priority'    => 60,
+    ) ) );
+}
+add_action( 'customize_register', 'deoia_palette_customizer' );
+
+/**
+ * Generar CSS dinámico con las variables de paleta
+ */
+function deoia_output_palette_css() {
+    $presets = deoia_get_palette_presets();
+    $selected_preset = get_theme_mod( 'deoia_palette_preset', 'deoia-default' );
+    $defaults = isset( $presets[ $selected_preset ] ) ? $presets[ $selected_preset ] : $presets['deoia-default'];
+
+    // Obtener valores del Customizer con fallback al preset
+    $primary   = get_theme_mod( 'deoia_color_primary', $defaults['primary'] );
+    $secondary = get_theme_mod( 'deoia_color_secondary', $defaults['secondary'] );
+    $accent    = get_theme_mod( 'deoia_color_accent', $defaults['accent'] );
+    $bg_card   = get_theme_mod( 'deoia_color_bg_card', $defaults['bg_card'] );
+    $glow_1    = get_theme_mod( 'deoia_color_glow_1', $defaults['glow_1'] );
+    $glow_2    = get_theme_mod( 'deoia_color_glow_2', $defaults['glow_2'] );
+
+    ?>
+    <style id="deoia-palette-css">
+        :root {
+            --deoia-primary: <?php echo esc_attr( $primary ); ?>;
+            --deoia-secondary: <?php echo esc_attr( $secondary ); ?>;
+            --deoia-accent: <?php echo esc_attr( $accent ); ?>;
+            --deoia-bg-card: <?php echo esc_attr( $bg_card ); ?>;
+            --deoia-bg-glow-1: <?php echo esc_attr( $glow_1 ); ?>;
+            --deoia-bg-glow-2: <?php echo esc_attr( $glow_2 ); ?>;
+        }
+    </style>
+    <?php
+}
+add_action( 'wp_head', 'deoia_output_palette_css', 5 );
+
+/**
+ * Script de Customizer para auto-rellenar colores al cambiar preset
+ */
+function deoia_customizer_preview_js() {
+    $presets = deoia_get_palette_presets();
+    ?>
+    <script>
+    (function($) {
+        // Presets data
+        var deoiaPresets = <?php echo json_encode( $presets ); ?>;
+        
+        // Al cambiar el selector de preset
+        wp.customize('deoia_palette_preset', function(value) {
+            value.bind(function(newPreset) {
+                if (deoiaPresets[newPreset]) {
+                    var preset = deoiaPresets[newPreset];
+                    
+                    // Actualizar controles de color
+                    wp.customize('deoia_color_primary').set(preset.primary);
+                    wp.customize('deoia_color_secondary').set(preset.secondary);
+                    wp.customize('deoia_color_accent').set(preset.accent);
+                    wp.customize('deoia_color_bg_card').set(preset.bg_card);
+                    wp.customize('deoia_color_glow_1').set(preset.glow_1);
+                    wp.customize('deoia_color_glow_2').set(preset.glow_2);
+                }
+            });
+        });
+    })(jQuery);
+    </script>
+    <?php
+}
+add_action( 'customize_controls_print_footer_scripts', 'deoia_customizer_preview_js' );
+
+/**
  * Custom Post Type: Servicios
  */
 function deoia_registrar_cpt_servicios() {

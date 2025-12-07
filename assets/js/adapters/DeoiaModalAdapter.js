@@ -41,11 +41,11 @@
         
         <!-- Modal Container - z-index aún más alto -->
         <div class="deoia-modal fixed inset-0 flex items-center justify-center p-4" style="z-index: 99999;">
-          <div class="deoia-modal-content bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-6 lg:p-8 shadow-2xl shadow-slate-900/40 border border-slate-700/50 relative overflow-hidden w-full max-w-md transform transition-all duration-300 scale-100">
+          <div class="deoia-modal-content rounded-3xl p-6 lg:p-8 shadow-2xl border border-slate-700/50 relative overflow-hidden w-full max-w-md transform transition-all duration-300 scale-100" style="background: linear-gradient(to bottom right, var(--deoia-bg-card), color-mix(in srgb, var(--deoia-bg-card) 80%, black)); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);">
             
             <!-- Decorative Glows -->
-            <div class="absolute -top-24 -right-24 w-48 h-48 bg-violet-500/20 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -top-24 -right-24 w-48 h-48 rounded-full blur-3xl pointer-events-none" style="background-color: var(--deoia-bg-glow-1); opacity: 0.2;"></div>
+            <div class="absolute -bottom-24 -left-24 w-48 h-48 rounded-full blur-3xl pointer-events-none" style="background-color: var(--deoia-bg-glow-2); opacity: 0.2;"></div>
             
             <!-- Modal Content -->
             <div class="relative z-10">
@@ -59,7 +59,7 @@
               
               <!-- Header -->
               <div class="flex items-center gap-3 mb-6">
-                <div class="w-12 h-12 bg-gradient-to-br from-violet-500 to-indigo-500 rounded-xl flex items-center justify-center">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background-image: linear-gradient(to bottom right, var(--deoia-primary), var(--deoia-secondary));">
                   <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
@@ -75,7 +75,7 @@
                 <p class="text-slate-400 text-xs uppercase tracking-wider mb-3">Resumen de tu cita</p>
                 <div class="space-y-2">
                   <div class="flex items-center gap-3">
-                    <svg class="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4" style="color: var(--deoia-accent);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                     </svg>
                     <span class="text-white text-sm font-medium">${
@@ -83,13 +83,13 @@
                     }</span>
                   </div>
                   <div class="flex items-center gap-3">
-                    <svg class="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4" style="color: var(--deoia-accent);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                     <span class="text-white text-sm">${fecha || ""}</span>
                   </div>
                   <div class="flex items-center gap-3">
-                    <svg class="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4" style="color: var(--deoia-accent);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                     <span class="text-white text-sm">${hora || ""}</span>
@@ -108,7 +108,8 @@
                     name="nombre"
                     required
                     placeholder="Tu nombre"
-                    class="w-full bg-slate-800/80 border border-slate-700/50 rounded-xl py-3 px-4 text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500/50 transition-all duration-200"
+                    class="w-full bg-slate-800/80 border border-slate-700/50 rounded-xl py-3 px-4 text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 transition-all duration-200 deoia-input"
+                    style="--tw-ring-color: color-mix(in srgb, var(--deoia-primary) 50%, transparent);"
                   >
                 </div>
                 
@@ -121,7 +122,8 @@
                     name="telefono"
                     required
                     placeholder="Tu número de teléfono"
-                    class="w-full bg-slate-800/80 border border-slate-700/50 rounded-xl py-3 px-4 text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500/50 transition-all duration-200"
+                    class="w-full bg-slate-800/80 border border-slate-700/50 rounded-xl py-3 px-4 text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 transition-all duration-200 deoia-input"
+                    style="--tw-ring-color: color-mix(in srgb, var(--deoia-primary) 50%, transparent);"
                   >
                 </div>
                 
@@ -134,7 +136,8 @@
                     name="correo"
                     required
                     placeholder="tu@correo.com"
-                    class="w-full bg-slate-800/80 border border-slate-700/50 rounded-xl py-3 px-4 text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500/50 transition-all duration-200"
+                    class="w-full bg-slate-800/80 border border-slate-700/50 rounded-xl py-3 px-4 text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 transition-all duration-200 deoia-input"
+                    style="--tw-ring-color: color-mix(in srgb, var(--deoia-primary) 50%, transparent);"
                   >
                 </div>
                 
@@ -142,7 +145,8 @@
                 <button 
                   type="submit" 
                   data-role="deoia-modal-submit"
-                  class="w-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold py-4 rounded-2xl shadow-xl shadow-violet-500/30 hover:shadow-violet-500/50 hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 mt-6"
+                  class="w-full text-white font-semibold py-4 rounded-2xl shadow-xl hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 mt-6 deoia-btn-primary"
+                  style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);"
                 >
                   <span data-role="btn-text">Reservar ahora</span>
                   <svg class="w-5 h-5" data-role="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -161,7 +165,7 @@
               
               <!-- Footer -->
               <p class="text-center text-slate-500 text-xs mt-4">
-                Potenciado por <span class="text-violet-400 font-medium">Deoia</span>
+                Potenciado por <span class="font-medium" style="color: var(--deoia-accent);">Deoia</span>
               </p>
             </div>
           </div>

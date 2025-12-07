@@ -109,10 +109,13 @@
 
         // Clases exactas del prototipo
         let classes;
+        let inlineStyle = "";
         if (isSelected) {
-          // Slot seleccionado - clases del prototipo
+          // Slot seleccionado - usando CSS variables
           classes =
-            "py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200 bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/30 cursor-pointer";
+            "py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200 text-white shadow-lg cursor-pointer deoia-slot-selected";
+          inlineStyle =
+            'style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);"';
         } else {
           // Slot normal - clases del prototipo
           classes =
@@ -121,7 +124,7 @@
 
         // IMPORTANTE: type="button" para evitar submit del formulario
         html += `
-          <button type="button" class="${classes}" data-slot-index="${index}">
+          <button type="button" class="${classes}" ${inlineStyle} data-slot-index="${index}">
             ${formatTime(slot)}
           </button>
         `;

@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ==========================================================================
+   DEOIA Premium Palette System - CSS Variables Fallback
+   Los valores reales vienen del Customizer de WordPress
+   ========================================================================== */
+
+@layer base {
+  :root {
+    /* Colores primarios y secundarios */
+    --deoia-primary: #8b5cf6; /* violet-500 - Color principal */
+    --deoia-secondary: #6366f1; /* indigo-500 - Color secundario */
+    --deoia-accent: #f472b6; /* pink-400 - Color de acento */
+
+    /* Fondos */
+    --deoia-bg-card: #0f172a; /* slate-900 - Fondo de tarjetas premium */
+
+    /* Glows decorativos */
+    --deoia-bg-glow-1: #8b5cf6; /* violet-500 - Glow principal */
+    --deoia-bg-glow-2: #6366f1; /* indigo-500 - Glow secundario */
+  }
+}
