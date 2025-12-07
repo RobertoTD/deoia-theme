@@ -16,9 +16,131 @@
 
     /* Fondos */
     --deoia-bg-card: #0f172a; /* slate-900 - Fondo de tarjetas premium */
+    --deoia-bg-card-alt: #1e293b; /* slate-800 - Fondo alternativo */
 
     /* Glows decorativos */
     --deoia-bg-glow-1: #8b5cf6; /* violet-500 - Glow principal */
     --deoia-bg-glow-2: #6366f1; /* indigo-500 - Glow secundario */
+
+    /* Textos */
+    --deoia-text: #ffffff; /* Texto principal (blanco) */
+    --deoia-text-secondary: #e2e8f0; /* Texto secundario (slate-200) */
+    --deoia-muted: #94a3b8; /* Texto muted (slate-400) */
+    --deoia-muted-dark: #64748b; /* Texto muy muted (slate-500) */
+    --deoia-disabled: #475569; /* Texto disabled (slate-600) */
+
+    /* Bordes */
+    --deoia-border: #334155; /* Borde principal (slate-700) */
+    --deoia-border-light: #475569; /* Borde más claro (slate-600) */
+
+    /* Estados hover */
+    --deoia-hover: #334155; /* Hover background (slate-700) */
+    --deoia-hover-light: #475569; /* Hover más claro (slate-600) */
+
+    /* Status colors */
+    --deoia-success: #10b981; /* emerald-500 */
+    --deoia-success-bg: rgba(16, 185, 129, 0.2);
+    --deoia-warning: #f59e0b; /* amber-500 */
+    --deoia-warning-bg: rgba(245, 158, 11, 0.2);
+    --deoia-error: #ef4444; /* red-500 */
+    --deoia-error-bg: rgba(239, 68, 68, 0.2);
+  }
+}
+
+/* ==========================================================================
+   DEOIA Component Styles - Hover/Focus states using CSS Variables
+   ========================================================================== */
+
+@layer components {
+  /* Navigation buttons (calendar arrows) */
+  .deoia-nav-btn {
+    background-color: transparent;
+  }
+  .deoia-nav-btn:hover {
+    background-color: var(--deoia-hover);
+  }
+  .deoia-nav-btn:focus {
+    outline: 2px solid var(--deoia-primary);
+    outline-offset: 2px;
+  }
+
+  /* Calendar day cells */
+  .deoia-day-normal:hover {
+    background-color: color-mix(in srgb, var(--deoia-hover) 50%, transparent);
+  }
+  .deoia-day-today:hover {
+    background-color: var(--deoia-hover-light);
+  }
+
+  /* Slot buttons */
+  .deoia-slot-unselected:hover {
+    background-color: var(--deoia-hover);
+    border-color: var(--deoia-border-light);
+  }
+
+  /* Modal close button */
+  .deoia-close-btn:hover {
+    color: var(--deoia-text);
+    background-color: color-mix(in srgb, var(--deoia-hover) 50%, transparent);
+  }
+
+  /* CTA buttons gradient hover */
+  .deoia-cta-primary {
+    background-image: linear-gradient(
+      to right,
+      var(--deoia-primary),
+      var(--deoia-secondary)
+    );
+    transition: all 0.3s ease;
+  }
+  .deoia-cta-primary:hover {
+    filter: brightness(1.1);
+    transform: scale(1.02);
+  }
+
+  /* Text gradient utility */
+  .deoia-text-gradient {
+    background-image: linear-gradient(
+      to right,
+      var(--deoia-primary),
+      var(--deoia-secondary),
+      var(--deoia-accent)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Glow shadows using primary/accent colors */
+  .deoia-shadow-glow {
+    box-shadow: 0 0 60px
+        color-mix(in srgb, var(--deoia-primary) 30%, transparent),
+      0 0 100px color-mix(in srgb, var(--deoia-accent) 20%, transparent);
+  }
+
+  /* Card hover effect */
+  .deoia-card-hover {
+    transition: all 0.3s ease;
+  }
+  .deoia-card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px
+      color-mix(in srgb, var(--deoia-primary) 15%, transparent);
+  }
+
+  /* Form inputs */
+  .deoia-input {
+    background-color: var(--deoia-bg-card);
+    border: 1px solid var(--deoia-border);
+    color: var(--deoia-text);
+  }
+  .deoia-input:focus {
+    border-color: var(--deoia-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--deoia-primary) 25%, transparent);
+  }
+  .deoia-input::placeholder {
+    color: var(--deoia-muted);
   }
 }

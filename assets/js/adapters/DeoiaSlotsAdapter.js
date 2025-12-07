@@ -93,7 +93,7 @@
 
       if (!slots || slots.length === 0) {
         container.innerHTML = `
-          <p class="text-slate-400 text-sm text-center py-4">
+          <p class="text-sm text-center py-4" style="color: var(--deoia-muted);">
             No hay horarios disponibles
           </p>
         `;
@@ -117,9 +117,11 @@
           inlineStyle =
             'style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);"';
         } else {
-          // Slot normal - clases del prototipo
+          // Slot normal - usando CSS variables
           classes =
-            "py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200 bg-slate-800/80 text-slate-300 hover:bg-slate-700 border border-slate-700/50 cursor-pointer";
+            "py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer deoia-slot-unselected";
+          inlineStyle =
+            'style="background-color: color-mix(in srgb, var(--deoia-bg-card-alt) 80%, transparent); color: var(--deoia-text-secondary); border: 1px solid color-mix(in srgb, var(--deoia-border) 50%, transparent);"';
         }
 
         // IMPORTANTE: type="button" para evitar submit del formulario

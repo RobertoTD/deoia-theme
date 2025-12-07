@@ -6,13 +6,13 @@
             
             <!-- Section Header -->
             <div class="text-center mb-16">
-                <span class="inline-block bg-violet-100 text-violet-700 font-medium text-sm px-4 py-2 rounded-full mb-4">
+                <span class="inline-block font-medium text-sm px-4 py-2 rounded-full mb-4" style="background-color: color-mix(in srgb, var(--deoia-primary) 15%, transparent); color: var(--deoia-primary);">
                     Soluciones por Industria
                 </span>
-                <h2 class="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+                <h2 class="text-3xl lg:text-4xl font-bold mb-4" style="color: var(--deoia-bg-card);">
                     Perfecto para tu tipo de negocio
                 </h2>
-                <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                <p class="text-lg max-w-2xl mx-auto" style="color: var(--deoia-muted-dark);">
                     Deoia se adapta a las necesidades específicas de cada industria de servicios
                 </p>
             </div>
@@ -49,8 +49,8 @@
                         $shadow_color = isset( $matches[1] ) ? $matches[1] : 'violet-500';
                 ?>
                 
-                <div class="group bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100 hover:shadow-2xl hover:shadow-violet-500/10 hover:-translate-y-2 transition-all duration-500">
-                    <div class="w-14 h-14 bg-gradient-to-br <?php echo esc_attr( $icono_clases ); ?> rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-<?php echo esc_attr( $shadow_color ); ?>/30 group-hover:scale-110 transition-transform duration-300">
+                <div class="group bg-white rounded-3xl p-8 shadow-xl border hover:-translate-y-2 transition-all duration-500" style="border-color: color-mix(in srgb, var(--deoia-border) 20%, transparent); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300" style="background-image: linear-gradient(to bottom right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
                         <?php if ( ! empty( $icono_svg ) ) : ?>
                         <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <?php echo $icono_svg; ?>
@@ -61,15 +61,15 @@
                         </svg>
                         <?php endif; ?>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3"><?php the_title(); ?></h3>
-                    <div class="text-slate-600 mb-4 leading-relaxed">
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--deoia-bg-card);"><?php the_title(); ?></h3>
+                    <div class="mb-4 leading-relaxed" style="color: var(--deoia-muted-dark);">
                         <?php the_content(); ?>
                     </div>
                     <?php if ( ! empty( $caracteristicas ) ) : ?>
-                    <ul class="space-y-2 text-sm text-slate-500">
+                    <ul class="space-y-2 text-sm" style="color: var(--deoia-muted);">
                         <?php foreach ( $caracteristicas as $caracteristica ) : ?>
                         <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-4 h-4" style="color: var(--deoia-success);" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
                             <?php echo esc_html( $caracteristica ); ?>
@@ -86,7 +86,7 @@
                 ?>
                 <!-- Mensaje cuando no hay servicios -->
                 <div class="lg:col-span-4 text-center py-12">
-                    <p class="text-slate-500">No hay servicios configurados. Añade servicios desde el panel de administración.</p>
+                    <p style="color: var(--deoia-muted);">No hay servicios configurados. Añade servicios desde el panel de administración.</p>
                 </div>
                 <?php endif; ?>
 

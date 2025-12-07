@@ -10,15 +10,15 @@
                 <div class="lg:col-span-3 bg-white rounded-3xl p-8 lg:p-12 shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col justify-center">
                     
                     <!-- Badge -->
-                    <div class="inline-flex items-center gap-2 bg-violet-100 text-violet-700 font-medium text-sm px-4 py-2 rounded-full w-fit mb-6">
-                        <span class="w-2 h-2 bg-violet-500 rounded-full animate-pulse"></span>
+                    <div class="inline-flex items-center gap-2 font-medium text-sm px-4 py-2 rounded-full w-fit mb-6" style="background-color: color-mix(in srgb, var(--deoia-primary) 15%, transparent); color: var(--deoia-primary);">
+                        <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--deoia-primary);"></span>
                         <?php echo esc_html( get_theme_mod( 'hero_badge_text', 'Sistema de Reservas #1' ) ); ?>
                     </div>
 
                     <!-- Headline -->
-                    <h1 class="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-slate-900 leading-tight mb-6">
+                    <h1 class="text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight mb-6" style="color: var(--deoia-bg-card);">
                         <?php echo esc_html( get_theme_mod( 'hero_headline_main', 'Automatiza tu agenda y' ) ); ?> 
-                        <span class="bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent"><?php echo esc_html( get_theme_mod( 'hero_headline_accent', 'multiplica tus ingresos' ) ); ?></span>
+                        <span class="bg-clip-text text-transparent" style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary));"><?php echo esc_html( get_theme_mod( 'hero_headline_accent', 'multiplica tus ingresos' ) ); ?></span>
                     </h1>
 
                     <!-- Subheadline -->
@@ -28,14 +28,14 @@
 
                     <!-- CTAs -->
                     <div class="flex flex-wrap gap-4">
-                        <a href="#demo" class="inline-flex items-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold px-8 py-4 rounded-2xl shadow-xl shadow-violet-500/30 hover:shadow-violet-500/50 hover:scale-105 transition-all duration-300">
+                        <a href="#demo" class="inline-flex items-center gap-2 text-white font-semibold px-8 py-4 rounded-2xl shadow-xl hover:scale-105 transition-all duration-300" style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
                             <?php echo esc_html( get_theme_mod( 'hero_cta_text_1', 'Comenzar Gratis' ) ); ?>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                             </svg>
                         </a>
-                        <a href="#video" class="inline-flex items-center gap-2 bg-slate-100 text-slate-700 font-semibold px-8 py-4 rounded-2xl hover:bg-slate-200 hover:scale-105 transition-all duration-300">
-                            <svg class="w-5 h-5 text-violet-600" fill="currentColor" viewBox="0 0 24 24">
+                        <a href="#video" class="inline-flex items-center gap-2 font-semibold px-8 py-4 rounded-2xl hover:scale-105 transition-all duration-300" style="background-color: color-mix(in srgb, var(--deoia-bg-card) 10%, white); color: var(--deoia-bg-card);">
+                            <svg class="w-5 h-5" style="color: var(--deoia-primary);" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
                             Ver Demo

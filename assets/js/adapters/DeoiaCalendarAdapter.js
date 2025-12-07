@@ -64,10 +64,14 @@
       // Crear el wrapper premium
       wrapperEl = document.createElement("div");
       wrapperEl.className =
-        "deoia-premium-widget rounded-3xl p-6 lg:p-8 shadow-2xl border border-slate-700/50 relative overflow-hidden";
+        "deoia-premium-widget rounded-3xl p-6 lg:p-8 shadow-2xl relative overflow-hidden";
       wrapperEl.style.background =
         "linear-gradient(to bottom right, var(--deoia-bg-card), color-mix(in srgb, var(--deoia-bg-card) 80%, black))";
       wrapperEl.style.boxShadow = "0 25px 50px -12px rgba(0, 0, 0, 0.3)";
+      wrapperEl.style.borderWidth = "1px";
+      wrapperEl.style.borderStyle = "solid";
+      wrapperEl.style.borderColor =
+        "color-mix(in srgb, var(--deoia-border) 50%, transparent)";
       wrapperEl.setAttribute("data-deoia-premium", "true");
 
       wrapperEl.innerHTML = `
@@ -86,11 +90,11 @@
                 </svg>
               </div>
               <div>
-                <h3 class="text-white font-semibold">Reservar Cita</h3>
-                <p class="text-slate-400 text-sm">Selecciona motivo, fecha y hora</p>
+                <h3 class="font-semibold" style="color: var(--deoia-text);">Reservar Cita</h3>
+                <p class="text-sm" style="color: var(--deoia-muted);">Selecciona motivo, fecha y hora</p>
               </div>
             </div>
-            <span class="text-xs bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full font-medium">En línea</span>
+            <span class="text-xs px-3 py-1 rounded-full font-medium" style="background-color: var(--deoia-success-bg); color: var(--deoia-success);">En línea</span>
           </div>
 
           <!-- Service Select Placeholder (se moverá el select original aquí) -->
@@ -114,7 +118,7 @@
           </button>
 
           <!-- Widget Badge -->
-          <p class="text-center text-slate-500 text-xs mt-4">
+          <p class="text-center text-xs mt-4" style="color: var(--deoia-muted);">
             Potenciado por <span class="font-medium" style="color: var(--deoia-accent);">Deoia</span>
           </p>
         </div>
@@ -136,10 +140,16 @@
       if (servicioSelect && servicePlaceholder) {
         // Aplicar clases premium al select
         servicioSelect.className =
-          "bg-slate-800/80 border border-slate-700/50 rounded-xl py-3 px-4 " +
-          "text-slate-300 text-sm focus:outline-none focus:ring-2 " +
-          "transition-all duration-200 w-full appearance-none cursor-pointer " +
-          "hover:border-slate-600 hover:bg-slate-800 deoia-input-focus";
+          "rounded-xl py-3 px-4 " +
+          "text-sm focus:outline-none focus:ring-2 " +
+          "transition-all duration-200 w-full appearance-none cursor-pointer deoia-input-focus";
+        servicioSelect.style.backgroundColor =
+          "color-mix(in srgb, var(--deoia-bg-card-alt) 80%, transparent)";
+        servicioSelect.style.borderWidth = "1px";
+        servicioSelect.style.borderStyle = "solid";
+        servicioSelect.style.borderColor =
+          "color-mix(in srgb, var(--deoia-border) 50%, transparent)";
+        servicioSelect.style.color = "var(--deoia-text-secondary)";
         servicioSelect.style.setProperty(
           "--tw-ring-color",
           "color-mix(in srgb, var(--deoia-primary) 50%, transparent)"
@@ -150,7 +160,7 @@
         selectWrapper.className = "relative";
         selectWrapper.innerHTML = `
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3">
-            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4" style="color: var(--deoia-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
           </div>
@@ -186,7 +196,8 @@
       );
       if (slotTitle && slotTitlePlaceholder) {
         // Aplicar estilos premium al título
-        slotTitle.className = "text-slate-400 text-sm mb-3";
+        slotTitle.className = "text-sm mb-3";
+        slotTitle.style.color = "var(--deoia-muted)";
         slotTitle.style.display = ""; // Asegurar que no esté oculto
         // Reemplazar el placeholder con el título real
         slotTitlePlaceholder.parentNode.replaceChild(
@@ -232,7 +243,13 @@
         warningEl = document.createElement("div");
         warningEl.setAttribute("data-role", "deoia-warning");
         warningEl.className =
-          "bg-amber-500/20 border border-amber-500/50 text-amber-400 text-sm px-4 py-3 rounded-xl mb-4 flex items-center gap-2 transition-all duration-300";
+          "text-sm px-4 py-3 rounded-xl mb-4 flex items-center gap-2 transition-all duration-300";
+        warningEl.style.backgroundColor = "var(--deoia-warning-bg)";
+        warningEl.style.borderWidth = "1px";
+        warningEl.style.borderStyle = "solid";
+        warningEl.style.borderColor =
+          "color-mix(in srgb, var(--deoia-warning) 50%, transparent)";
+        warningEl.style.color = "var(--deoia-warning)";
 
         // Insertar antes del botón de confirmación
         const bookBtn = wrapperEl.querySelector('[data-role="deoia-book-btn"]');
@@ -243,7 +260,7 @@
 
       // Mostrar el mensaje con icono de advertencia
       warningEl.innerHTML = `
-        <svg class="w-5 h-5 flex-shrink-0 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-5 h-5 flex-shrink-0" style="color: var(--deoia-warning);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
         </svg>
         <span>${message}</span>
@@ -267,16 +284,14 @@
     function highlightElement(element) {
       if (!element) return;
 
-      // Añadir clases de error (usando clases del safelist)
-      element.classList.add("ring-2", "ring-amber-400", "border-amber-400");
+      // Añadir estilos de error inline
+      element.style.outline = "2px solid var(--deoia-warning)";
+      element.style.outlineOffset = "2px";
 
       // Remover después de 2.5 segundos
       setTimeout(() => {
-        element.classList.remove(
-          "ring-2",
-          "ring-amber-400",
-          "border-amber-400"
-        );
+        element.style.outline = "";
+        element.style.outlineOffset = "";
       }, 2500);
     }
 
@@ -376,15 +391,15 @@
 
       return `
         <div class="flex items-center justify-between mb-4">
-          <span class="text-white font-medium capitalize">${month} ${year}</span>
+          <span class="font-medium capitalize" style="color: var(--deoia-text);">${month} ${year}</span>
           <div class="flex gap-1">
-            <button type="button" data-nav="prev" class="p-1 hover:bg-slate-700 rounded-lg transition-colors">
-              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button type="button" data-nav="prev" class="p-1 rounded-lg transition-colors deoia-nav-btn">
+              <svg class="w-4 h-4" style="color: var(--deoia-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
               </svg>
             </button>
-            <button type="button" data-nav="next" class="p-1 hover:bg-slate-700 rounded-lg transition-colors">
-              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button type="button" data-nav="next" class="p-1 rounded-lg transition-colors deoia-nav-btn">
+              <svg class="w-4 h-4" style="color: var(--deoia-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
               </svg>
             </button>
@@ -398,7 +413,10 @@
       return `
         <div class="grid grid-cols-7 gap-1 text-center text-xs mb-2">
           ${days
-            .map((d) => `<span class="text-slate-500 py-1">${d}</span>`)
+            .map(
+              (d) =>
+                `<span class="py-1" style="color: var(--deoia-muted);">${d}</span>`
+            )
             .join("")}
         </div>
       `;
@@ -430,30 +448,31 @@
 
         // Clases según el prototipo exacto
         let classes = "py-2 rounded-lg text-sm transition-all duration-200";
+        let dayInlineStyle = "";
 
         if (isDisabled) {
           // Deshabilitado: opacidad baja, sin hover, cursor not-allowed
-          classes += " text-slate-600 opacity-30 cursor-not-allowed";
+          classes += " opacity-30 cursor-not-allowed";
+          dayInlineStyle = 'style="color: var(--deoia-disabled);"';
         } else if (isSelected) {
           // Seleccionado: gradiente premium con sombra (usando CSS variables)
           classes +=
             " text-white font-semibold shadow-lg cursor-pointer deoia-day-selected";
+          dayInlineStyle =
+            'style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); color: white;"';
         } else if (isToday) {
           // Hoy (no seleccionado)
-          classes +=
-            " bg-slate-700 text-white cursor-pointer hover:bg-slate-600";
+          classes += " cursor-pointer deoia-day-today";
+          dayInlineStyle =
+            'style="background-color: var(--deoia-hover); color: var(--deoia-text);"';
         } else {
           // Normal habilitado
-          classes += " text-slate-400 hover:bg-slate-700/50 cursor-pointer";
+          classes += " cursor-pointer deoia-day-normal";
+          dayInlineStyle = 'style="color: var(--deoia-muted);"';
         }
 
-        // Build style for selected day
-        const dayStyle = isSelected
-          ? 'style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary));"'
-          : "";
-
         html += `
-          <button type="button" class="${classes}" data-date="${dateStr}" ${dayStyle} ${
+          <button type="button" class="${classes}" data-date="${dateStr}" ${dayInlineStyle} ${
           isDisabled ? 'disabled aria-disabled="true"' : ""
         }>
             ${day}
@@ -536,7 +555,7 @@
       if (!targetEl) return;
 
       targetEl.innerHTML = `
-        <div class="bg-slate-800/50 rounded-2xl p-4 mb-4 backdrop-blur-sm border border-slate-700/50">
+        <div class="rounded-2xl p-4 mb-4 backdrop-blur-sm" style="background-color: color-mix(in srgb, var(--deoia-bg-card-alt) 50%, transparent); border: 1px solid color-mix(in srgb, var(--deoia-border) 50%, transparent);">
           ${renderHeader()}
           ${renderWeekdays()}
           ${renderDaysGrid()}

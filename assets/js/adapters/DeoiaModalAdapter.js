@@ -41,7 +41,7 @@
         
         <!-- Modal Container - z-index aún más alto -->
         <div class="deoia-modal fixed inset-0 flex items-center justify-center p-4" style="z-index: 99999;">
-          <div class="deoia-modal-content rounded-3xl p-6 lg:p-8 shadow-2xl border border-slate-700/50 relative overflow-hidden w-full max-w-md transform transition-all duration-300 scale-100" style="background: linear-gradient(to bottom right, var(--deoia-bg-card), color-mix(in srgb, var(--deoia-bg-card) 80%, black)); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);">
+          <div class="deoia-modal-content rounded-3xl p-6 lg:p-8 shadow-2xl relative overflow-hidden w-full max-w-md transform transition-all duration-300 scale-100" style="background: linear-gradient(to bottom right, var(--deoia-bg-card), color-mix(in srgb, var(--deoia-bg-card) 80%, black)); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4); border: 1px solid color-mix(in srgb, var(--deoia-border) 50%, transparent);">
             
             <!-- Decorative Glows -->
             <div class="absolute -top-24 -right-24 w-48 h-48 rounded-full blur-3xl pointer-events-none" style="background-color: var(--deoia-bg-glow-1); opacity: 0.2;"></div>
@@ -51,7 +51,7 @@
             <div class="relative z-10">
               
               <!-- Close Button -->
-              <button type="button" data-role="deoia-modal-close" class="absolute top-0 right-0 p-2 text-slate-400 hover:text-white hover:bg-slate-700/50 rounded-xl transition-all duration-200">
+              <button type="button" data-role="deoia-modal-close" class="absolute top-0 right-0 p-2 rounded-xl transition-all duration-200 deoia-close-btn" style="color: var(--deoia-muted);">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
@@ -66,13 +66,13 @@
                 </div>
                 <div>
                   <h3 class="text-xl text-white font-semibold">Confirmar Reserva</h3>
-                  <p class="text-slate-400 text-sm">Completa tus datos</p>
+                  <p class="text-sm" style="color: var(--deoia-muted);">Completa tus datos</p>
                 </div>
               </div>
               
               <!-- Reservation Summary -->
-              <div class="bg-slate-800/50 rounded-2xl p-4 mb-6 border border-slate-700/50">
-                <p class="text-slate-400 text-xs uppercase tracking-wider mb-3">Resumen de tu cita</p>
+              <div class="rounded-2xl p-4 mb-6" style="background-color: color-mix(in srgb, var(--deoia-bg-card-alt) 50%, transparent); border: 1px solid color-mix(in srgb, var(--deoia-border) 50%, transparent);">
+                <p class="text-xs uppercase tracking-wider mb-3" style="color: var(--deoia-muted);">Resumen de tu cita</p>
                 <div class="space-y-2">
                   <div class="flex items-center gap-3">
                     <svg class="w-4 h-4" style="color: var(--deoia-accent);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,43 +101,43 @@
               <form data-role="deoia-modal-form" class="space-y-4">
                 <!-- Nombre -->
                 <div>
-                  <label for="deoia-nombre" class="block text-slate-400 text-sm mb-2">Nombre completo</label>
+                  <label for="deoia-nombre" class="block text-sm mb-2" style="color: var(--deoia-muted);">Nombre completo</label>
                   <input 
                     type="text" 
                     id="deoia-nombre" 
                     name="nombre"
                     required
                     placeholder="Tu nombre"
-                    class="w-full bg-slate-800/80 border border-slate-700/50 rounded-xl py-3 px-4 text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 transition-all duration-200 deoia-input"
-                    style="--tw-ring-color: color-mix(in srgb, var(--deoia-primary) 50%, transparent);"
+                    class="w-full rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-2 transition-all duration-200"
+                    style="background-color: color-mix(in srgb, var(--deoia-bg-card-alt) 80%, transparent); border: 1px solid color-mix(in srgb, var(--deoia-border) 50%, transparent); color: var(--deoia-text); --tw-ring-color: color-mix(in srgb, var(--deoia-primary) 50%, transparent);"
                   >
                 </div>
                 
                 <!-- Teléfono -->
                 <div>
-                  <label for="deoia-telefono" class="block text-slate-400 text-sm mb-2">Teléfono</label>
+                  <label for="deoia-telefono" class="block text-sm mb-2" style="color: var(--deoia-muted);">Teléfono</label>
                   <input 
                     type="tel" 
                     id="deoia-telefono" 
                     name="telefono"
                     required
                     placeholder="Tu número de teléfono"
-                    class="w-full bg-slate-800/80 border border-slate-700/50 rounded-xl py-3 px-4 text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 transition-all duration-200 deoia-input"
-                    style="--tw-ring-color: color-mix(in srgb, var(--deoia-primary) 50%, transparent);"
+                    class="w-full rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-2 transition-all duration-200"
+                    style="background-color: color-mix(in srgb, var(--deoia-bg-card-alt) 80%, transparent); border: 1px solid color-mix(in srgb, var(--deoia-border) 50%, transparent); color: var(--deoia-text); --tw-ring-color: color-mix(in srgb, var(--deoia-primary) 50%, transparent);"
                   >
                 </div>
                 
                 <!-- Correo -->
                 <div>
-                  <label for="deoia-correo" class="block text-slate-400 text-sm mb-2">Correo electrónico</label>
+                  <label for="deoia-correo" class="block text-sm mb-2" style="color: var(--deoia-muted);">Correo electrónico</label>
                   <input 
                     type="email" 
                     id="deoia-correo" 
                     name="correo"
                     required
                     placeholder="tu@correo.com"
-                    class="w-full bg-slate-800/80 border border-slate-700/50 rounded-xl py-3 px-4 text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 transition-all duration-200 deoia-input"
-                    style="--tw-ring-color: color-mix(in srgb, var(--deoia-primary) 50%, transparent);"
+                    class="w-full rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-2 transition-all duration-200"
+                    style="background-color: color-mix(in srgb, var(--deoia-bg-card-alt) 80%, transparent); border: 1px solid color-mix(in srgb, var(--deoia-border) 50%, transparent); color: var(--deoia-text); --tw-ring-color: color-mix(in srgb, var(--deoia-primary) 50%, transparent);"
                   >
                 </div>
                 
@@ -164,7 +164,7 @@
               <div data-role="deoia-response" class="text-sm text-center mt-4 min-h-[24px] transition-all duration-300"></div>
               
               <!-- Footer -->
-              <p class="text-center text-slate-500 text-xs mt-4">
+              <p class="text-center text-xs mt-4" style="color: var(--deoia-muted-dark);">
                 Potenciado por <span class="font-medium" style="color: var(--deoia-accent);">Deoia</span>
               </p>
             </div>
@@ -373,13 +373,16 @@
                   // Aplicar estilos según el tipo de mensaje
                   if (isSuccess) {
                     responseEl.className =
-                      "text-sm text-center mt-4 min-h-[24px] transition-all duration-300 text-emerald-400";
+                      "text-sm text-center mt-4 min-h-[24px] transition-all duration-300 deoia-response-success";
+                    responseEl.style.color = "var(--deoia-success)";
                   } else if (isError) {
                     responseEl.className =
-                      "text-sm text-center mt-4 min-h-[24px] transition-all duration-300 text-red-400";
+                      "text-sm text-center mt-4 min-h-[24px] transition-all duration-300";
+                    responseEl.style.color = "var(--deoia-error)";
                   } else {
                     responseEl.className =
-                      "text-sm text-center mt-4 min-h-[24px] transition-all duration-300 text-slate-300";
+                      "text-sm text-center mt-4 min-h-[24px] transition-all duration-300";
+                    responseEl.style.color = "var(--deoia-text-secondary)";
                   }
 
                   responseEl.textContent = texto.trim();
@@ -460,7 +463,8 @@
           if (responseEl) {
             responseEl.textContent = "Procesando la reserva…";
             responseEl.className =
-              "text-sm text-center mt-4 min-h-[24px] transition-all duration-300 text-slate-400";
+              "text-sm text-center mt-4 min-h-[24px] transition-all duration-300";
+            responseEl.style.color = "var(--deoia-muted)";
           }
         } else {
           submitBtn.disabled = false;
