@@ -84,7 +84,7 @@
               </div>
               <div>
                 <h3 class="text-white font-semibold">Reservar Cita</h3>
-                <p class="text-slate-400 text-sm">Selecciona fecha y hora</p>
+                <p class="text-slate-400 text-sm">Selecciona motivo, fecha y hora</p>
               </div>
             </div>
             <span class="text-xs bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full font-medium">En línea</span>

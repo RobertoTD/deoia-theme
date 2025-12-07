@@ -37,7 +37,7 @@
 
       return `
         <!-- Overlay - z-index muy alto para cubrir todo incluyendo header sticky/fixed -->
-        <div class="deoia-modal-overlay fixed inset-0 bg-slate-900/60 backdrop-blur-sm" style="z-index: 99998;"></div>
+        <div class="deoia-modal-overlay fixed inset-0 bg-white/20 backdrop-blur-sm" style="z-index: 99998;"></div>
         
         <!-- Modal Container - z-index aún más alto -->
         <div class="deoia-modal fixed inset-0 flex items-center justify-center p-4" style="z-index: 99999;">

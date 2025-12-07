@@ -1,6 +1,5 @@
-    <!-- ═══════════════════════════════════════════════════════════════════════
-         HERO SECTION - BENTO GRID MAIN
-    ════════════════════════════════════════════════════════════════════════ -->
+
+
     <section class="min-h-screen pt-28 pb-16 px-6">
         <div class="max-w-7xl mx-auto">
             
@@ -67,102 +66,12 @@
                 </div>
 
                 <!-- ══ CELDA B: Widget de Reservas (Ocupa 2 columnas) ══ -->
-                <div class="lg:col-span-2 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-6 lg:p-8 shadow-2xl shadow-slate-900/30 border border-slate-700/50 relative overflow-hidden">
-                    
-                    <!-- Decorative Glow -->
-                    <div class="absolute -top-24 -right-24 w-48 h-48 bg-violet-500/20 rounded-full blur-3xl"></div>
-                    <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-indigo-500/20 rounded-full blur-3xl"></div>
-                    
-                    <!-- Widget Content -->
-                    <div class="relative z-10">
-                        <!-- Widget Header -->
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-gradient-to-br from-violet-500 to-indigo-500 rounded-xl flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 class="text-white font-semibold">Reservar Cita</h3>
-                                    <p class="text-slate-400 text-sm">Selecciona fecha y hora</p>
-                                </div>
-                            </div>
-                            <span class="text-xs bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full font-medium">En línea</span>
-                        </div>
-
-                        <!-- Calendar Preview -->
-                        <div class="bg-slate-800/50 rounded-2xl p-4 mb-4 backdrop-blur-sm border border-slate-700/50">
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="text-white font-medium">Diciembre 2025</span>
-                                <div class="flex gap-1">
-                                    <button class="p-1 hover:bg-slate-700 rounded-lg transition-colors">
-                                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                                        </svg>
-                                    </button>
-                                    <button class="p-1 hover:bg-slate-700 rounded-lg transition-colors">
-                                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-7 gap-1 text-center text-xs">
-                                <?php 
-                                $days = ['Lu','Ma','Mi','Ju','Vi','Sa','Do'];
-                                foreach($days as $d): ?>
-                                <span class="text-slate-500 py-1"><?php echo $d; ?></span>
-                                <?php endforeach; ?>
-                                
-                                <?php for($i = 1; $i <= 31; $i++): 
-                                    $isSelected = $i === 15;
-                                    $isToday = $i === 1;
-                                ?>
-                                <button class="py-2 rounded-lg text-sm transition-all duration-200 <?php 
-                                    echo $isSelected 
-                                        ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold shadow-lg' 
-                                        : ($isToday ? 'bg-slate-700 text-white' : 'text-slate-400 hover:bg-slate-700/50'); 
-                                ?>">
-                                    <?php echo $i; ?>
-                                </button>
-                                <?php endfor; ?>
-                            </div>
-                        </div>
-
-                        <!-- Time Slots -->
-                        <div class="mb-4">
-                            <p class="text-slate-400 text-sm mb-3">Horarios disponibles</p>
-                            <div class="grid grid-cols-3 gap-2">
-                                <?php 
-                                $times = ['09:00', '10:30', '12:00', '14:00', '16:30', '18:00'];
-                                foreach($times as $idx => $time): 
-                                    $selected = $idx === 3;
-                                ?>
-                                <button class="py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200 <?php 
-                                    echo $selected 
-                                        ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/30' 
-                                        : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700 border border-slate-700/50'; 
-                                ?>">
-                                    <?php echo $time; ?>
-                                </button>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-
-                        <!-- Book Button -->
-                        <button class="w-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold py-4 rounded-2xl shadow-xl shadow-violet-500/30 hover:shadow-violet-500/50 hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2">
-                            Confirmar Reserva
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                        </button>
-
-                        <!-- Widget Badge -->
-                        <p class="text-center text-slate-500 text-xs mt-4">
-                            Potenciado por <span class="text-violet-400 font-medium">Deoia</span>
-                        </p>
-                    </div>
+                <div class="lg:col-span-2">
+                    <?php 
+                    // Ejecutar el shortcode del plugin de agenda
+                    // El adaptador premium (DeoiaCalendarAdapter.js) se encargará de aplicar los estilos
+                    echo do_shortcode('[agenda_automatizada]'); 
+                    ?>
                 </div>
             </div>
         </div>
