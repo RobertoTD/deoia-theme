@@ -174,7 +174,112 @@
       const slotTitle = form.querySelector("#aa-slot-title");
       if (slotTitle) slotTitle.style.display = "none";
 
+      // Ocultar campos del formulario original (se usarán desde el modal premium)
+      const fieldsToHide = [
+        form.querySelector("#nombre"),
+        form.querySelector("#telefono"),
+        form.querySelector("#correo"),
+        form.querySelector('button[type="submit"]'),
+      ];
+      fieldsToHide.forEach((field) => {
+        if (field) field.style.display = "none";
+      });
+
+      // Conectar el botón premium al modal
+      const bookBtn = wrapperEl.querySelector('[data-role="deoia-book-btn"]');
+      if (bookBtn) {
+        bookBtn.addEventListener("click", handleBookButtonClick);
+      }
+
       isWrapped = true;
+    }
+
+    // =========================================================================
+    // Manejo del Botón "Confirmar Reserva" -> Abre Modal Premium
+    // =========================================================================
+
+    function handleBookButtonClick(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Verificar que exista el modal adapter
+      if (
+        !global.WPAgenda ||
+        !global.WPAgenda.ui ||
+        !global.WPAgenda.ui.modal
+      ) {
+        console.error("[DeoiaCalendarAdapter] Modal adapter no disponible");
+        return;
+      }
+
+      // Obtener servicio seleccionado
+      const servicioSelect = document.querySelector("#servicio");
+      const servicio = servicioSelect ? servicioSelect.value : "";
+
+      if (!servicio) {
+        console.warn(
+          "[DeoiaCalendarAdapter] No se ha seleccionado un servicio"
+        );
+        return;
+      }
+
+      // Verificar fecha seleccionada
+      if (!selectedDate) {
+        console.warn("[DeoiaCalendarAdapter] No se ha seleccionado una fecha");
+        return;
+      }
+
+      // Obtener slot seleccionado desde el adaptador de slots
+      let horaSlot = null;
+      if (
+        global.WPAgenda.ui.slots &&
+        typeof global.WPAgenda.ui.slots.getSelectedSlot === "function"
+      ) {
+        const slot = global.WPAgenda.ui.slots.getSelectedSlot();
+        if (slot instanceof Date) {
+          const h = String(slot.getHours()).padStart(2, "0");
+          const m = String(slot.getMinutes()).padStart(2, "0");
+          horaSlot = `${h}:${m}`;
+        }
+      }
+
+      if (!horaSlot) {
+        console.warn("[DeoiaCalendarAdapter] No se ha seleccionado un horario");
+        return;
+      }
+
+      // Formatear fecha para mostrar en el modal
+      const fechaFormateada = selectedDate.toLocaleDateString("es-MX", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+
+      // Abrir el modal premium
+      global.WPAgenda.ui.modal.open({
+        servicio: servicio,
+        fecha: fechaFormateada,
+        hora: horaSlot,
+        onSubmit: (dataCliente) => {
+          // Copiar datos al formulario original
+          const originalForm = document.querySelector("#agenda-form");
+          if (originalForm) {
+            const nombreField = originalForm.querySelector("#nombre");
+            const telefonoField = originalForm.querySelector("#telefono");
+            const correoField = originalForm.querySelector("#correo");
+
+            if (nombreField) nombreField.value = dataCliente.nombre;
+            if (telefonoField) telefonoField.value = dataCliente.telefono;
+            if (correoField) correoField.value = dataCliente.correo;
+
+            // Disparar submit del formulario original
+            originalForm.dispatchEvent(
+              new Event("submit", { bubbles: true, cancelable: true })
+            );
+          }
+        },
+      });
     }
 
     // =========================================================================

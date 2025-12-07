@@ -24,4 +24,12 @@
   } else {
     console.warn("⚠ deoiaSlotsAdapter no está disponible");
   }
+
+  // Registrar adaptador premium de modal
+  if (window.deoiaModalAdapter) {
+    WPAgenda.registerModalAdapter(window.deoiaModalAdapter.create());
+    console.log("✔ Adaptador premium de modal registrado");
+  } else {
+    console.warn("⚠ deoiaModalAdapter no está disponible");
+  }
 })();
