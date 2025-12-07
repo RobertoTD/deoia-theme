@@ -1,15 +1,32 @@
+/**
+ * DeoiaCalendarAdapter - Adaptador premium de calendario para WPAgenda
+ *
+ * Genera un widget de calendario con estilos premium Tailwind,
+ * incluyendo wrapper con glows decorativos, header del widget,
+ * y estructura visual idéntica al prototipo del hero.
+ *
+ * Compatible con WPAgenda.registerCalendarAdapter().
+ */
+
 (function (global) {
   "use strict";
 
   function create() {
     let container = null;
+    let originalContainer = null; // Referencia al contenedor original del plugin
+    let wrapperEl = null; // Wrapper premium que envuelve todo
+    let calendarInnerEl = null; // Contenedor interno del calendario
     let selectedDate = null;
     let viewDate = new Date();
     let config = {};
+    let isWrapped = false;
     const { ymd } = global.DateUtils || {};
 
+    // =========================================================================
+    // Lógica de fechas deshabilitadas (equivalente al adaptador default)
+    // =========================================================================
+
     function isDateDisabled(date) {
-      // Lógica equivalente al adaptador default
       if (config.minDate) {
         const minDateNorm = new Date(config.minDate);
         minDateNorm.setHours(0, 0, 0, 0);
@@ -26,6 +43,144 @@
       return false;
     }
 
+    // =========================================================================
+    // Generación del Wrapper Premium (tarjeta con glows)
+    // =========================================================================
+
+    function createPremiumWrapper() {
+      // Si ya existe el wrapper, no crear otro
+      if (wrapperEl) return;
+
+      // Buscar el formulario padre del calendario (estructura del shortcode)
+      const form = originalContainer.closest("form");
+      if (!form) {
+        console.warn("[DeoiaCalendarAdapter] No se encontró formulario padre");
+        return;
+      }
+
+      // Buscar el slot container del plugin
+      const pluginSlotContainer = form.querySelector("#slot-container");
+
+      // Crear el wrapper premium
+      wrapperEl = document.createElement("div");
+      wrapperEl.className =
+        "deoia-premium-widget bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-6 lg:p-8 shadow-2xl shadow-slate-900/30 border border-slate-700/50 relative overflow-hidden";
+      wrapperEl.setAttribute("data-deoia-premium", "true");
+
+      wrapperEl.innerHTML = `
+        <!-- Decorative Glows -->
+        <div class="absolute -top-24 -right-24 w-48 h-48 bg-violet-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <!-- Widget Content -->
+        <div class="relative z-10" data-role="deoia-widget-content">
+          <!-- Widget Header -->
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-gradient-to-br from-violet-500 to-indigo-500 rounded-xl flex items-center justify-center">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-white font-semibold">Reservar Cita</h3>
+                <p class="text-slate-400 text-sm">Selecciona fecha y hora</p>
+              </div>
+            </div>
+            <span class="text-xs bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full font-medium">En línea</span>
+          </div>
+
+          <!-- Service Select Placeholder (se moverá el select original aquí) -->
+          <div data-role="deoia-service-placeholder" class="mb-4"></div>
+
+          <!-- Calendar Container (se llenará dinámicamente) -->
+          <div data-role="deoia-calendar-container"></div>
+
+          <!-- Slots Wrapper -->
+          <div data-role="deoia-slots-wrapper" class="mb-4">
+            <p class="text-slate-400 text-sm mb-3">Horarios disponibles</p>
+            <div data-role="deoia-slots-placeholder"></div>
+          </div>
+
+          <!-- Book Button Premium -->
+          <button type="button" data-role="deoia-book-btn" class="w-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold py-4 rounded-2xl shadow-xl shadow-violet-500/30 hover:shadow-violet-500/50 hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed" disabled>
+            Confirmar Reserva
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </button>
+
+          <!-- Widget Badge -->
+          <p class="text-center text-slate-500 text-xs mt-4">
+            Potenciado por <span class="text-violet-400 font-medium">Deoia</span>
+          </p>
+        </div>
+      `;
+
+      // Insertar el wrapper antes del calendario original
+      originalContainer.parentNode.insertBefore(wrapperEl, originalContainer);
+
+      // Obtener referencia al contenedor interno del calendario
+      calendarInnerEl = wrapperEl.querySelector(
+        '[data-role="deoia-calendar-container"]'
+      );
+
+      // Mover el select de servicio al wrapper premium y aplicar estilos
+      const servicioSelect = form.querySelector("#servicio");
+      const servicePlaceholder = wrapperEl.querySelector(
+        '[data-role="deoia-service-placeholder"]'
+      );
+      if (servicioSelect && servicePlaceholder) {
+        // Aplicar clases premium al select
+        servicioSelect.className =
+          "bg-slate-800/80 border border-slate-700/50 rounded-xl py-3 px-4 " +
+          "text-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50 " +
+          "transition-all duration-200 w-full appearance-none cursor-pointer " +
+          "hover:border-slate-600 hover:bg-slate-800";
+
+        // Crear wrapper para el select con icono de dropdown
+        const selectWrapper = document.createElement("div");
+        selectWrapper.className = "relative";
+        selectWrapper.innerHTML = `
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        `;
+
+        // Mover el select al wrapper con icono
+        selectWrapper.insertBefore(servicioSelect, selectWrapper.firstChild);
+
+        // Insertar en el placeholder
+        servicePlaceholder.appendChild(selectWrapper);
+      }
+
+      // Mover el slot container del plugin al wrapper premium
+      if (pluginSlotContainer) {
+        const slotsPlaceholder = wrapperEl.querySelector(
+          '[data-role="deoia-slots-placeholder"]'
+        );
+        if (slotsPlaceholder) {
+          slotsPlaceholder.parentNode.replaceChild(
+            pluginSlotContainer,
+            slotsPlaceholder
+          );
+        }
+      }
+
+      // Ocultar el calendario original y el título de slots del plugin
+      originalContainer.style.display = "none";
+      const slotTitle = form.querySelector("#aa-slot-title");
+      if (slotTitle) slotTitle.style.display = "none";
+
+      isWrapped = true;
+    }
+
+    // =========================================================================
+    // Generación del HTML del Calendario
+    // =========================================================================
+
     function renderHeader() {
       const month = viewDate.toLocaleString("es-MX", { month: "long" });
       const year = viewDate.getFullYear();
@@ -34,14 +189,13 @@
         <div class="flex items-center justify-between mb-4">
           <span class="text-white font-medium capitalize">${month} ${year}</span>
           <div class="flex gap-1">
-            <button type="button" data-nav="prev" class="p-1 hover:bg-slate-700 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <button type="button" data-nav="prev" class="p-1 hover:bg-slate-700 rounded-lg transition-colors">
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
               </svg>
             </button>
-
-            <button type="button" data-nav="next" class="p-1 hover:bg-slate-700 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <button type="button" data-nav="next" class="p-1 hover:bg-slate-700 rounded-lg transition-colors">
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
               </svg>
             </button>
@@ -51,10 +205,12 @@
     }
 
     function renderWeekdays() {
-      const days = ["L", "M", "X", "J", "V", "S", "D"];
+      const days = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"];
       return `
-        <div class="grid grid-cols-7 text-center text-xs text-slate-400 mb-2">
-          ${days.map((d) => `<div>${d}</div>`).join("")}
+        <div class="grid grid-cols-7 gap-1 text-center text-xs mb-2">
+          ${days
+            .map((d) => `<span class="text-slate-500 py-1">${d}</span>`)
+            .join("")}
         </div>
       `;
     }
@@ -66,12 +222,14 @@
       const startDay = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
       const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-      let html = `<div class="grid grid-cols-7 gap-1" data-role="deoia-calendar-grid">`;
+      let html = `<div class="grid grid-cols-7 gap-1 text-center text-xs" data-role="deoia-calendar-grid">`;
 
+      // Espacios vacíos antes del primer día
       for (let i = 0; i < startDay; i++) {
-        html += `<div></div>`;
+        html += `<span class="py-2"></span>`;
       }
 
+      // Días del mes
       for (let day = 1; day <= daysInMonth; day++) {
         const date = new Date(year, month, day);
         const dateStr = ymd ? ymd(date) : date.toISOString().slice(0, 10);
@@ -81,21 +239,23 @@
           selectedDate && date.toDateString() === selectedDate.toDateString();
         const isDisabled = isDateDisabled(date);
 
-        // Clases base del botón
-        let classes = `w-8 h-8 rounded-xl text-xs flex items-center justify-center transition`;
+        // Clases según el prototipo exacto
+        let classes = "py-2 rounded-lg text-sm transition-all duration-200";
 
         if (isDisabled) {
-          // Estado deshabilitado: texto muy tenue, sin hover, cursor-not-allowed, menor opacidad
-          classes += ` text-slate-600 opacity-30 cursor-not-allowed pointer-events-none`;
+          // Deshabilitado: opacidad baja, sin hover, cursor not-allowed
+          classes += " text-slate-600 opacity-30 cursor-not-allowed";
         } else if (isSelected) {
-          // Estado seleccionado: gradiente violeta/indigo premium
-          classes += ` bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 text-white cursor-pointer shadow-lg shadow-violet-500/25`;
+          // Seleccionado: gradiente premium con sombra
+          classes +=
+            " bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold shadow-lg cursor-pointer";
         } else if (isToday) {
-          // Día actual (no seleccionado)
-          classes += ` bg-slate-700 text-white cursor-pointer hover:bg-slate-600`;
+          // Hoy (no seleccionado)
+          classes +=
+            " bg-slate-700 text-white cursor-pointer hover:bg-slate-600";
         } else {
-          // Día normal habilitado
-          classes += ` text-slate-400 cursor-pointer hover:bg-slate-700/50 hover:text-slate-300`;
+          // Normal habilitado
+          classes += " text-slate-400 hover:bg-slate-700/50 cursor-pointer";
         }
 
         html += `
@@ -111,15 +271,19 @@
       return html;
     }
 
+    // =========================================================================
+    // Manejo de Eventos
+    // =========================================================================
+
     function handleDayClick(event) {
       const btn = event.target.closest("button[data-date]");
       if (!btn) return;
 
-      // Verificar si el botón está deshabilitado (por atributo o clase)
+      // Verificar si está deshabilitado
       if (
         btn.disabled ||
         btn.hasAttribute("disabled") ||
-        btn.classList.contains("pointer-events-none")
+        btn.classList.contains("opacity-30")
       ) {
         event.preventDefault();
         event.stopPropagation();
@@ -129,11 +293,11 @@
       const dateStr = btn.dataset.date;
       if (!dateStr) return;
 
-      // Parsear la fecha desde el string YYYY-MM-DD para evitar problemas de timezone
+      // Parsear fecha desde YYYY-MM-DD
       const [year, month, day] = dateStr.split("-").map(Number);
       const date = new Date(year, month - 1, day);
 
-      // Doble verificación: no seleccionar si está deshabilitado
+      // Doble verificación
       if (isDateDisabled(date)) {
         event.preventDefault();
         event.stopPropagation();
@@ -159,19 +323,25 @@
     }
 
     function attachEvents() {
-      const prevBtn = container.querySelector('[data-nav="prev"]');
-      const nextBtn = container.querySelector('[data-nav="next"]');
-      const grid = container.querySelector('[data-role="deoia-calendar-grid"]');
+      const targetEl = calendarInnerEl || container;
+      const prevBtn = targetEl.querySelector('[data-nav="prev"]');
+      const nextBtn = targetEl.querySelector('[data-nav="next"]');
+      const grid = targetEl.querySelector('[data-role="deoia-calendar-grid"]');
 
       prevBtn?.addEventListener("click", prevMonth);
       nextBtn?.addEventListener("click", nextMonth);
       grid?.addEventListener("click", handleDayClick);
     }
 
-    function renderCalendar() {
-      if (!container) return;
+    // =========================================================================
+    // Renderizado Principal
+    // =========================================================================
 
-      container.innerHTML = `
+    function renderCalendar() {
+      const targetEl = calendarInnerEl || container;
+      if (!targetEl) return;
+
+      targetEl.innerHTML = `
         <div class="bg-slate-800/50 rounded-2xl p-4 mb-4 backdrop-blur-sm border border-slate-700/50">
           ${renderHeader()}
           ${renderWeekdays()}
@@ -182,18 +352,30 @@
       attachEvents();
     }
 
+    // =========================================================================
+    // API Pública del Adaptador
+    // =========================================================================
+
     return {
       render(cfg) {
         config = cfg || {};
-        container =
+        originalContainer =
           cfg.container instanceof HTMLElement
             ? cfg.container
             : document.querySelector(cfg.container);
 
-        if (!container) {
+        if (!originalContainer) {
           console.error("[DeoiaCalendarAdapter] Contenedor no encontrado");
           return;
         }
+
+        // Crear el wrapper premium si no existe
+        if (!isWrapped) {
+          createPremiumWrapper();
+        }
+
+        // Usar el contenedor interno del calendario
+        container = calendarInnerEl || originalContainer;
 
         viewDate = config.minDate ? new Date(config.minDate) : new Date();
         renderCalendar();
@@ -215,13 +397,75 @@
       },
 
       destroy() {
-        if (container) container.innerHTML = "";
+        // Limpiar el wrapper premium si existe
+        if (wrapperEl && wrapperEl.parentNode) {
+          wrapperEl.parentNode.removeChild(wrapperEl);
+        }
+        // Restaurar visibilidad del contenedor original
+        if (originalContainer) {
+          originalContainer.style.display = "";
+        }
+        wrapperEl = null;
+        calendarInnerEl = null;
         container = null;
+        originalContainer = null;
         selectedDate = null;
         config = {};
+        isWrapped = false;
+      },
+
+      /**
+       * Habilita o deshabilita el botón de confirmación premium.
+       * @param {boolean} enabled - true para habilitar, false para deshabilitar
+       */
+      setBookButtonEnabled(enabled) {
+        if (!wrapperEl) return;
+        const btn = wrapperEl.querySelector('[data-role="deoia-book-btn"]');
+        if (!btn) return;
+
+        if (enabled) {
+          btn.disabled = false;
+          btn.classList.remove("opacity-50", "cursor-not-allowed");
+          btn.classList.add("hover:shadow-violet-500/50", "hover:scale-[1.02]");
+        } else {
+          btn.disabled = true;
+          btn.classList.add("opacity-50", "cursor-not-allowed");
+          btn.classList.remove(
+            "hover:shadow-violet-500/50",
+            "hover:scale-[1.02]"
+          );
+        }
+      },
+
+      /**
+       * Registra un callback para el botón de confirmación.
+       * @param {Function} callback - Función a ejecutar al hacer click
+       */
+      onBookClick(callback) {
+        if (!wrapperEl) return;
+        const btn = wrapperEl.querySelector('[data-role="deoia-book-btn"]');
+        if (!btn) return;
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          if (!btn.disabled && typeof callback === "function") {
+            callback();
+          }
+        });
+      },
+
+      /**
+       * Obtiene el wrapper premium para permitir acceso a elementos internos.
+       * @returns {HTMLElement|null}
+       */
+      getWrapper() {
+        return wrapperEl;
       },
     };
   }
 
   global.deoiaCalendarAdapter = { create };
+
+  console.log(
+    "✅ DeoiaCalendarAdapter.js cargado (versión premium con wrapper)"
+  );
 })(window);

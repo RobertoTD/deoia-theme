@@ -1,7 +1,9 @@
 /**
  * DeoiaSlotsAdapter - Adaptador premium de slots para WPAgenda
  *
- * Renderiza lista de horarios disponibles con estilos Tailwind premium.
+ * Renderiza lista de horarios disponibles con estilos Tailwind premium,
+ * idénticos al prototipo del hero.
+ *
  * Compatible con WPAgenda.registerSlotsAdapter().
  */
 
@@ -16,6 +18,7 @@
     let container = null;
     let selectedSlot = null;
     let onSelectCallback = null;
+    let currentSlots = [];
 
     /**
      * Formatea un Date a string HH:MM.
@@ -42,19 +45,35 @@
     /**
      * Maneja el click en un slot.
      * @param {Event} e
-     * @param {Date[]} slots
      */
-    function handleSlotClick(e, slots) {
+    function handleSlotClick(e) {
       const btn = e.target.closest("button[data-slot-index]");
       if (!btn) return;
 
-      const index = parseInt(btn.dataset.slotIndex, 10);
-      if (isNaN(index) || !slots[index]) return;
+      // Evitar propagación que pueda disparar submit
+      e.preventDefault();
+      e.stopPropagation();
 
-      selectedSlot = slots[index];
+      const index = parseInt(btn.dataset.slotIndex, 10);
+      if (isNaN(index) || !currentSlots[index]) return;
+
+      selectedSlot = currentSlots[index];
 
       // Re-renderizar para actualizar estilos
-      renderSlots(slots);
+      renderSlots(currentSlots);
+
+      // Habilitar botón de confirmación si está disponible el adaptador de calendario
+      if (global.deoiaCalendarAdapter) {
+        // Buscar instancia del calendario para habilitar el botón
+        const wrapper = document.querySelector('[data-deoia-premium="true"]');
+        if (wrapper) {
+          const bookBtn = wrapper.querySelector('[data-role="deoia-book-btn"]');
+          if (bookBtn) {
+            bookBtn.disabled = false;
+            bookBtn.classList.remove("opacity-50", "cursor-not-allowed");
+          }
+        }
+      }
 
       if (onSelectCallback && typeof onSelectCallback === "function") {
         onSelectCallback(selectedSlot);
@@ -63,52 +82,48 @@
 
     /**
      * Renderiza el HTML de los slots con estilos premium Tailwind.
+     * Usa clases idénticas al prototipo del hero.
      * @param {Date[]} slots
      */
     function renderSlots(slots) {
       if (!container) return;
 
+      currentSlots = slots || [];
+
       if (!slots || slots.length === 0) {
         container.innerHTML = `
-                    <p class="text-slate-400 text-sm text-center py-4">
-                        No hay horarios disponibles
-                    </p>
-                `;
+          <p class="text-slate-400 text-sm text-center py-4">
+            No hay horarios disponibles
+          </p>
+        `;
         return;
       }
 
+      // Grid idéntico al prototipo: grid grid-cols-3 gap-2
       let html =
         '<div class="grid grid-cols-3 gap-2" data-role="deoia-slots-grid">';
 
       slots.forEach((slot, index) => {
         const isSelected = isSameSlot(slot, selectedSlot);
 
-        const baseClasses = `
-                    py-2 px-3 rounded-xl text-sm font-medium 
-                    transition-all duration-200 cursor-pointer
-                `;
+        // Clases exactas del prototipo
+        let classes;
+        if (isSelected) {
+          // Slot seleccionado - clases del prototipo
+          classes =
+            "py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200 bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/30 cursor-pointer";
+        } else {
+          // Slot normal - clases del prototipo
+          classes =
+            "py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200 bg-slate-800/80 text-slate-300 hover:bg-slate-700 border border-slate-700/50 cursor-pointer";
+        }
 
-        const selectedClasses = `
-                    bg-gradient-to-r from-violet-600 to-indigo-600 
-                    text-white shadow-lg shadow-violet-500/30
-                `;
-
-        const normalClasses = `
-                    bg-slate-800/80 text-slate-300 
-                    hover:bg-slate-700 border border-slate-700/50
-                `;
-
-        const classes = isSelected
-          ? `${baseClasses} ${selectedClasses}`
-          : `${baseClasses} ${normalClasses}`;
-
+        // IMPORTANTE: type="button" para evitar submit del formulario
         html += `
-                    <button class="${classes
-                      .replace(/\s+/g, " ")
-                      .trim()}" data-slot-index="${index}">
-                        ${formatTime(slot)}
-                    </button>
-                `;
+          <button type="button" class="${classes}" data-slot-index="${index}">
+            ${formatTime(slot)}
+          </button>
+        `;
       });
 
       html += "</div>";
@@ -116,7 +131,7 @@
 
       // Agregar event listener al grid
       const grid = container.querySelector('[data-role="deoia-slots-grid"]');
-      grid?.addEventListener("click", (e) => handleSlotClick(e, slots));
+      grid?.addEventListener("click", handleSlotClick);
     }
 
     // =====================================================================
@@ -163,6 +178,17 @@
         }
         selectedSlot = null;
         onSelectCallback = null;
+        currentSlots = [];
+
+        // Deshabilitar botón de confirmación si existe
+        const wrapper = document.querySelector('[data-deoia-premium="true"]');
+        if (wrapper) {
+          const bookBtn = wrapper.querySelector('[data-role="deoia-book-btn"]');
+          if (bookBtn) {
+            bookBtn.disabled = true;
+            bookBtn.classList.add("opacity-50", "cursor-not-allowed");
+          }
+        }
       },
     };
   }
@@ -173,5 +199,5 @@
 
   global.deoiaSlotsAdapter = { create };
 
-  console.log("✅ DeoiaSlotsAdapter.js cargado");
+  console.log("✅ DeoiaSlotsAdapter.js cargado (versión premium)");
 })(window);
