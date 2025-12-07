@@ -102,9 +102,9 @@
             <div data-role="deoia-slots-placeholder"></div>
           </div>
 
-          <!-- Book Button Premium -->
-          <button type="button" data-role="deoia-book-btn" class="w-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold py-4 rounded-2xl shadow-xl shadow-violet-500/30 hover:shadow-violet-500/50 hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed" disabled>
-            Confirmar Reserva
+          <!-- Book Button Premium (siempre clickeable para mostrar validaciones) -->
+          <button type="button" data-role="deoia-book-btn" class="w-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold py-4 rounded-2xl shadow-xl shadow-violet-500/30 hover:shadow-violet-500/50 hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2" data-ready="false">
+            Reservar
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
             </svg>
@@ -212,6 +212,67 @@
     // Manejo del Botón "Confirmar Reserva" -> Abre Modal Premium
     // =========================================================================
 
+    /**
+     * Muestra una advertencia temporal en el widget premium.
+     * @param {string} message - Mensaje a mostrar
+     */
+    function showValidationWarning(message) {
+      if (!wrapperEl) return;
+
+      // Buscar o crear el contenedor de advertencias
+      let warningEl = wrapperEl.querySelector('[data-role="deoia-warning"]');
+      if (!warningEl) {
+        warningEl = document.createElement("div");
+        warningEl.setAttribute("data-role", "deoia-warning");
+        warningEl.className =
+          "bg-amber-500/20 border border-amber-500/50 text-amber-400 text-sm px-4 py-3 rounded-xl mb-4 flex items-center gap-2 transition-all duration-300";
+
+        // Insertar antes del botón de confirmación
+        const bookBtn = wrapperEl.querySelector('[data-role="deoia-book-btn"]');
+        if (bookBtn && bookBtn.parentNode) {
+          bookBtn.parentNode.insertBefore(warningEl, bookBtn);
+        }
+      }
+
+      // Mostrar el mensaje con icono de advertencia
+      warningEl.innerHTML = `
+        <svg class="w-5 h-5 flex-shrink-0 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        <span>${message}</span>
+      `;
+      warningEl.classList.remove("hidden");
+      warningEl.classList.add("flex");
+
+      // Ocultar después de 3 segundos
+      setTimeout(() => {
+        if (warningEl) {
+          warningEl.classList.add("hidden");
+          warningEl.classList.remove("flex");
+        }
+      }, 3000);
+    }
+
+    /**
+     * Resalta visualmente un elemento con error.
+     * @param {HTMLElement} element - Elemento a resaltar
+     */
+    function highlightElement(element) {
+      if (!element) return;
+
+      // Añadir clases de error (usando clases del safelist)
+      element.classList.add("ring-2", "ring-amber-400", "border-amber-400");
+
+      // Remover después de 2.5 segundos
+      setTimeout(() => {
+        element.classList.remove(
+          "ring-2",
+          "ring-amber-400",
+          "border-amber-400"
+        );
+      }, 2500);
+    }
+
     function handleBookButtonClick(e) {
       e.preventDefault();
       e.stopPropagation();
@@ -223,6 +284,9 @@
         !global.WPAgenda.ui.modal
       ) {
         console.error("[DeoiaCalendarAdapter] Modal adapter no disponible");
+        showValidationWarning(
+          "Error interno. Recarga la página e intenta de nuevo."
+        );
         return;
       }
 
@@ -231,15 +295,14 @@
       const servicio = servicioSelect ? servicioSelect.value : "";
 
       if (!servicio) {
-        console.warn(
-          "[DeoiaCalendarAdapter] No se ha seleccionado un servicio"
-        );
+        showValidationWarning("Selecciona el motivo de la cita.");
+        highlightElement(servicioSelect);
         return;
       }
 
       // Verificar fecha seleccionada
       if (!selectedDate) {
-        console.warn("[DeoiaCalendarAdapter] No se ha seleccionado una fecha");
+        showValidationWarning("Selecciona una fecha en el calendario.");
         return;
       }
 
@@ -258,7 +321,7 @@
       }
 
       if (!horaSlot) {
-        console.warn("[DeoiaCalendarAdapter] No se ha seleccionado un horario");
+        showValidationWarning("Selecciona un horario disponible.");
         return;
       }
 

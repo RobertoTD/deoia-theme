@@ -62,15 +62,16 @@
       // Re-renderizar para actualizar estilos
       renderSlots(currentSlots);
 
-      // Habilitar botón de confirmación si está disponible el adaptador de calendario
+      // Habilitar botón de confirmación visualmente si está disponible el adaptador de calendario
       if (global.deoiaCalendarAdapter) {
-        // Buscar instancia del calendario para habilitar el botón
+        // Buscar instancia del calendario para habilitar el botón visualmente
         const wrapper = document.querySelector('[data-deoia-premium="true"]');
         if (wrapper) {
           const bookBtn = wrapper.querySelector('[data-role="deoia-book-btn"]');
           if (bookBtn) {
-            bookBtn.disabled = false;
-            bookBtn.classList.remove("opacity-50", "cursor-not-allowed");
+            // Solo cambiar estilos visuales, no disabled (para permitir validaciones)
+            bookBtn.classList.remove("opacity-50");
+            bookBtn.setAttribute("data-ready", "true");
           }
         }
       }
@@ -180,13 +181,13 @@
         onSelectCallback = null;
         currentSlots = [];
 
-        // Deshabilitar botón de confirmación si existe
+        // Resetear estilos visuales del botón de confirmación (sin usar disabled)
         const wrapper = document.querySelector('[data-deoia-premium="true"]');
         if (wrapper) {
           const bookBtn = wrapper.querySelector('[data-role="deoia-book-btn"]');
           if (bookBtn) {
-            bookBtn.disabled = true;
-            bookBtn.classList.add("opacity-50", "cursor-not-allowed");
+            bookBtn.classList.add("opacity-50");
+            bookBtn.setAttribute("data-ready", "false");
           }
         }
       },
