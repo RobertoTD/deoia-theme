@@ -147,15 +147,25 @@
     return {
       /**
        * Renderiza los slots en el contenedor especificado.
+       * IMPORTANTE: Siempre usar el #slot-container original del plugin.
        * @param {string|HTMLElement} containerId - Selector o elemento contenedor.
        * @param {Date[]} validSlots - Array de fechas con horarios válidos.
        * @param {Function} onSelectSlot - Callback al seleccionar un slot.
        */
       render(containerId, validSlots, onSelectSlot) {
-        container =
-          containerId instanceof HTMLElement
-            ? containerId
-            : document.querySelector(containerId);
+        // IMPORTANTE: Siempre buscar el contenedor original del plugin
+        // para garantizar que availabilityController lo encuentre.
+        const originalSlotContainer = document.querySelector("#slot-container");
+
+        if (originalSlotContainer) {
+          container = originalSlotContainer;
+        } else {
+          // Fallback al containerId proporcionado
+          container =
+            containerId instanceof HTMLElement
+              ? containerId
+              : document.querySelector(containerId);
+        }
 
         if (!container) {
           console.error("[DeoiaSlotsAdapter] Contenedor no encontrado");
@@ -177,24 +187,30 @@
 
       /**
        * Limpia el contenedor y reinicia el estado.
+       * IMPORTANTE: No eliminar onSelectCallback ni manipular el wrapper premium.
+       * Solo limpiar el contenido renderizado (botones de slots).
        */
       clear() {
         if (container) {
-          container.innerHTML = "";
-        }
-        selectedSlot = null;
-        onSelectCallback = null;
-        currentSlots = [];
-
-        // Resetear estilos visuales del botón de confirmación (sin usar disabled)
-        const wrapper = document.querySelector('[data-deoia-premium="true"]');
-        if (wrapper) {
-          const bookBtn = wrapper.querySelector('[data-role="deoia-book-btn"]');
-          if (bookBtn) {
-            bookBtn.classList.add("opacity-50");
-            bookBtn.setAttribute("data-ready", "false");
+          // Solo limpiar el grid de slots, no todo el contenedor
+          const grid = container.querySelector(
+            '[data-role="deoia-slots-grid"]'
+          );
+          if (grid) {
+            grid.remove();
+          } else {
+            // Fallback: limpiar mensaje de "no hay horarios"
+            const emptyMsg = container.querySelector("p");
+            if (emptyMsg) {
+              emptyMsg.remove();
+            }
           }
         }
+        // Limpiar selección pero MANTENER callback y container
+        selectedSlot = null;
+        currentSlots = [];
+        // NO hacer: onSelectCallback = null;
+        // NO hacer: container = null;
       },
     };
   }

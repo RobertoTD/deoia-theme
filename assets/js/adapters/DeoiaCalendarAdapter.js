@@ -9,7 +9,7 @@
  */
 
 (function (global) {
-  "use strict";
+  'use strict';
 
   function create() {
     let container = null;
@@ -37,7 +37,7 @@
         maxDateNorm.setHours(23, 59, 59, 999);
         if (date > maxDateNorm) return true;
       }
-      if (config.disableDateFn && typeof config.disableDateFn === "function") {
+      if (config.disableDateFn && typeof config.disableDateFn === 'function') {
         return config.disableDateFn(date);
       }
       return false;
@@ -52,27 +52,26 @@
       if (wrapperEl) return;
 
       // Buscar el formulario padre del calendario (estructura del shortcode)
-      const form = originalContainer.closest("form");
+      const form = originalContainer.closest('form');
       if (!form) {
-        console.warn("[DeoiaCalendarAdapter] No se encontró formulario padre");
+        console.warn('[DeoiaCalendarAdapter] No se encontró formulario padre');
         return;
       }
 
       // Buscar el slot container del plugin
-      const pluginSlotContainer = form.querySelector("#slot-container");
+      const pluginSlotContainer = form.querySelector('#slot-container');
 
       // Crear el wrapper premium
-      wrapperEl = document.createElement("div");
+      wrapperEl = document.createElement('div');
       wrapperEl.className =
-        "deoia-premium-widget rounded-3xl p-6 lg:p-8 shadow-2xl relative overflow-hidden";
+        'deoia-premium-widget rounded-3xl p-6 lg:p-8 shadow-2xl relative overflow-hidden';
       wrapperEl.style.background =
-        "linear-gradient(to bottom right, var(--deoia-bg-card), color-mix(in srgb, var(--deoia-bg-card) 80%, black))";
-      wrapperEl.style.boxShadow = "0 25px 50px -12px rgba(0, 0, 0, 0.3)";
-      wrapperEl.style.borderWidth = "1px";
-      wrapperEl.style.borderStyle = "solid";
-      wrapperEl.style.borderColor =
-        "color-mix(in srgb, var(--deoia-border) 50%, transparent)";
-      wrapperEl.setAttribute("data-deoia-premium", "true");
+        'linear-gradient(to bottom right, var(--deoia-bg-card), color-mix(in srgb, var(--deoia-bg-card) 80%, black))';
+      wrapperEl.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.3)';
+      wrapperEl.style.borderWidth = '1px';
+      wrapperEl.style.borderStyle = 'solid';
+      wrapperEl.style.borderColor = 'color-mix(in srgb, var(--deoia-border) 50%, transparent)';
+      wrapperEl.setAttribute('data-deoia-premium', 'true');
 
       wrapperEl.innerHTML = `
         <!-- Decorative Glows -->
@@ -128,36 +127,32 @@
       originalContainer.parentNode.insertBefore(wrapperEl, originalContainer);
 
       // Obtener referencia al contenedor interno del calendario
-      calendarInnerEl = wrapperEl.querySelector(
-        '[data-role="deoia-calendar-container"]'
-      );
+      calendarInnerEl = wrapperEl.querySelector('[data-role="deoia-calendar-container"]');
 
       // Mover el select de servicio al wrapper premium y aplicar estilos
-      const servicioSelect = form.querySelector("#servicio");
-      const servicePlaceholder = wrapperEl.querySelector(
-        '[data-role="deoia-service-placeholder"]'
-      );
+      const servicioSelect = form.querySelector('#servicio');
+      const servicePlaceholder = wrapperEl.querySelector('[data-role="deoia-service-placeholder"]');
       if (servicioSelect && servicePlaceholder) {
         // Aplicar clases premium al select
         servicioSelect.className =
-          "rounded-xl py-3 px-4 " +
-          "text-sm focus:outline-none focus:ring-2 " +
-          "transition-all duration-200 w-full appearance-none cursor-pointer deoia-input-focus";
+          'rounded-xl py-3 px-4 ' +
+          'text-sm focus:outline-none focus:ring-2 ' +
+          'transition-all duration-200 w-full appearance-none cursor-pointer deoia-input-focus';
         servicioSelect.style.backgroundColor =
-          "color-mix(in srgb, var(--deoia-bg-card-alt) 80%, transparent)";
-        servicioSelect.style.borderWidth = "1px";
-        servicioSelect.style.borderStyle = "solid";
+          'color-mix(in srgb, var(--deoia-bg-card-alt) 80%, transparent)';
+        servicioSelect.style.borderWidth = '1px';
+        servicioSelect.style.borderStyle = 'solid';
         servicioSelect.style.borderColor =
-          "color-mix(in srgb, var(--deoia-border) 50%, transparent)";
-        servicioSelect.style.color = "var(--deoia-text-secondary)";
+          'color-mix(in srgb, var(--deoia-border) 50%, transparent)';
+        servicioSelect.style.color = 'var(--deoia-text-secondary)';
         servicioSelect.style.setProperty(
-          "--tw-ring-color",
-          "color-mix(in srgb, var(--deoia-primary) 50%, transparent)"
+          '--tw-ring-color',
+          'color-mix(in srgb, var(--deoia-primary) 50%, transparent)'
         );
 
         // Crear wrapper para el select con icono de dropdown
-        const selectWrapper = document.createElement("div");
-        selectWrapper.className = "relative";
+        const selectWrapper = document.createElement('div');
+        selectWrapper.className = 'relative';
         selectWrapper.innerHTML = `
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3">
             <svg class="w-4 h-4" style="color: var(--deoia-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -175,52 +170,44 @@
 
       // Mover el slot container del plugin al wrapper premium
       if (pluginSlotContainer) {
-        const slotsPlaceholder = wrapperEl.querySelector(
-          '[data-role="deoia-slots-placeholder"]'
-        );
+        const slotsPlaceholder = wrapperEl.querySelector('[data-role="deoia-slots-placeholder"]');
         if (slotsPlaceholder) {
-          slotsPlaceholder.parentNode.replaceChild(
-            pluginSlotContainer,
-            slotsPlaceholder
-          );
+          slotsPlaceholder.parentNode.replaceChild(pluginSlotContainer, slotsPlaceholder);
         }
       }
 
       // Ocultar el calendario original
-      originalContainer.style.display = "none";
+      originalContainer.style.display = 'none';
 
       // Mover el título de slots del plugin al wrapper premium y aplicar estilos
-      const slotTitle = document.getElementById("aa-slot-title");
+      const slotTitle = document.getElementById('aa-slot-title');
       const slotTitlePlaceholder = wrapperEl.querySelector(
         '[data-role="deoia-slot-title-placeholder"]'
       );
       if (slotTitle && slotTitlePlaceholder) {
         // Aplicar estilos premium al título
-        slotTitle.className = "text-sm mb-3";
-        slotTitle.style.color = "var(--deoia-muted)";
-        slotTitle.style.display = ""; // Asegurar que no esté oculto
+        slotTitle.className = 'text-sm mb-3';
+        slotTitle.style.color = 'var(--deoia-muted)';
+        slotTitle.style.display = ''; // Asegurar que no esté oculto
         // Reemplazar el placeholder con el título real
-        slotTitlePlaceholder.parentNode.replaceChild(
-          slotTitle,
-          slotTitlePlaceholder
-        );
+        slotTitlePlaceholder.parentNode.replaceChild(slotTitle, slotTitlePlaceholder);
       }
 
       // Ocultar campos del formulario original (se usarán desde el modal premium)
       const fieldsToHide = [
-        form.querySelector("#nombre"),
-        form.querySelector("#telefono"),
-        form.querySelector("#correo"),
-        form.querySelector('button[type="submit"]'),
+        form.querySelector('#nombre'),
+        form.querySelector('#telefono'),
+        form.querySelector('#correo'),
+        form.querySelector('button[type="submit"]')
       ];
       fieldsToHide.forEach((field) => {
-        if (field) field.style.display = "none";
+        if (field) field.style.display = 'none';
       });
 
       // Conectar el botón premium al modal
       const bookBtn = wrapperEl.querySelector('[data-role="deoia-book-btn"]');
       if (bookBtn) {
-        bookBtn.addEventListener("click", handleBookButtonClick);
+        bookBtn.addEventListener('click', handleBookButtonClick);
       }
 
       isWrapped = true;
@@ -240,16 +227,15 @@
       // Buscar o crear el contenedor de advertencias
       let warningEl = wrapperEl.querySelector('[data-role="deoia-warning"]');
       if (!warningEl) {
-        warningEl = document.createElement("div");
-        warningEl.setAttribute("data-role", "deoia-warning");
+        warningEl = document.createElement('div');
+        warningEl.setAttribute('data-role', 'deoia-warning');
         warningEl.className =
-          "text-sm px-4 py-3 rounded-xl mb-4 flex items-center gap-2 transition-all duration-300";
-        warningEl.style.backgroundColor = "var(--deoia-warning-bg)";
-        warningEl.style.borderWidth = "1px";
-        warningEl.style.borderStyle = "solid";
-        warningEl.style.borderColor =
-          "color-mix(in srgb, var(--deoia-warning) 50%, transparent)";
-        warningEl.style.color = "var(--deoia-warning)";
+          'text-sm px-4 py-3 rounded-xl mb-4 flex items-center gap-2 transition-all duration-300';
+        warningEl.style.backgroundColor = 'var(--deoia-warning-bg)';
+        warningEl.style.borderWidth = '1px';
+        warningEl.style.borderStyle = 'solid';
+        warningEl.style.borderColor = 'color-mix(in srgb, var(--deoia-warning) 50%, transparent)';
+        warningEl.style.color = 'var(--deoia-warning)';
 
         // Insertar antes del botón de confirmación
         const bookBtn = wrapperEl.querySelector('[data-role="deoia-book-btn"]');
@@ -265,14 +251,14 @@
         </svg>
         <span>${message}</span>
       `;
-      warningEl.classList.remove("hidden");
-      warningEl.classList.add("flex");
+      warningEl.classList.remove('hidden');
+      warningEl.classList.add('flex');
 
       // Ocultar después de 3 segundos
       setTimeout(() => {
         if (warningEl) {
-          warningEl.classList.add("hidden");
-          warningEl.classList.remove("flex");
+          warningEl.classList.add('hidden');
+          warningEl.classList.remove('flex');
         }
       }, 3000);
     }
@@ -285,13 +271,13 @@
       if (!element) return;
 
       // Añadir estilos de error inline
-      element.style.outline = "2px solid var(--deoia-warning)";
-      element.style.outlineOffset = "2px";
+      element.style.outline = '2px solid var(--deoia-warning)';
+      element.style.outlineOffset = '2px';
 
       // Remover después de 2.5 segundos
       setTimeout(() => {
-        element.style.outline = "";
-        element.style.outlineOffset = "";
+        element.style.outline = '';
+        element.style.outlineOffset = '';
       }, 2500);
     }
 
@@ -300,31 +286,25 @@
       e.stopPropagation();
 
       // Verificar que exista el modal adapter
-      if (
-        !global.WPAgenda ||
-        !global.WPAgenda.ui ||
-        !global.WPAgenda.ui.modal
-      ) {
-        console.error("[DeoiaCalendarAdapter] Modal adapter no disponible");
-        showValidationWarning(
-          "Error interno. Recarga la página e intenta de nuevo."
-        );
+      if (!global.WPAgenda || !global.WPAgenda.ui || !global.WPAgenda.ui.modal) {
+        console.error('[DeoiaCalendarAdapter] Modal adapter no disponible');
+        showValidationWarning('Error interno. Recarga la página e intenta de nuevo.');
         return;
       }
 
       // Obtener servicio seleccionado
-      const servicioSelect = document.querySelector("#servicio");
-      const servicio = servicioSelect ? servicioSelect.value : "";
+      const servicioSelect = document.querySelector('#servicio');
+      const servicio = servicioSelect ? servicioSelect.value : '';
 
       if (!servicio) {
-        showValidationWarning("Selecciona el motivo de la cita.");
+        showValidationWarning('Selecciona el motivo de la cita.');
         highlightElement(servicioSelect);
         return;
       }
 
       // Verificar fecha seleccionada
       if (!selectedDate) {
-        showValidationWarning("Selecciona una fecha en el calendario.");
+        showValidationWarning('Selecciona una fecha en el calendario.');
         return;
       }
 
@@ -332,27 +312,27 @@
       let horaSlot = null;
       if (
         global.WPAgenda.ui.slots &&
-        typeof global.WPAgenda.ui.slots.getSelectedSlot === "function"
+        typeof global.WPAgenda.ui.slots.getSelectedSlot === 'function'
       ) {
         const slot = global.WPAgenda.ui.slots.getSelectedSlot();
         if (slot instanceof Date) {
-          const h = String(slot.getHours()).padStart(2, "0");
-          const m = String(slot.getMinutes()).padStart(2, "0");
+          const h = String(slot.getHours()).padStart(2, '0');
+          const m = String(slot.getMinutes()).padStart(2, '0');
           horaSlot = `${h}:${m}`;
         }
       }
 
       if (!horaSlot) {
-        showValidationWarning("Selecciona un horario disponible.");
+        showValidationWarning('Selecciona un horario disponible.');
         return;
       }
 
       // Formatear fecha para mostrar en el modal
-      const fechaFormateada = selectedDate.toLocaleDateString("es-MX", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric",
+      const fechaFormateada = selectedDate.toLocaleDateString('es-MX', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
       });
 
       // Abrir el modal premium
@@ -362,22 +342,20 @@
         hora: horaSlot,
         onSubmit: (dataCliente) => {
           // Copiar datos al formulario original
-          const originalForm = document.querySelector("#agenda-form");
+          const originalForm = document.querySelector('#agenda-form');
           if (originalForm) {
-            const nombreField = originalForm.querySelector("#nombre");
-            const telefonoField = originalForm.querySelector("#telefono");
-            const correoField = originalForm.querySelector("#correo");
+            const nombreField = originalForm.querySelector('#nombre');
+            const telefonoField = originalForm.querySelector('#telefono');
+            const correoField = originalForm.querySelector('#correo');
 
             if (nombreField) nombreField.value = dataCliente.nombre;
             if (telefonoField) telefonoField.value = dataCliente.telefono;
             if (correoField) correoField.value = dataCliente.correo;
 
             // Disparar submit del formulario original
-            originalForm.dispatchEvent(
-              new Event("submit", { bubbles: true, cancelable: true })
-            );
+            originalForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
           }
-        },
+        }
       });
     }
 
@@ -386,7 +364,7 @@
     // =========================================================================
 
     function renderHeader() {
-      const month = viewDate.toLocaleString("es-MX", { month: "long" });
+      const month = viewDate.toLocaleString('es-MX', { month: 'long' });
       const year = viewDate.getFullYear();
 
       return `
@@ -409,15 +387,12 @@
     }
 
     function renderWeekdays() {
-      const days = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"];
+      const days = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa', 'Do'];
       return `
         <div class="grid grid-cols-7 gap-1 text-center text-xs mb-2">
           ${days
-            .map(
-              (d) =>
-                `<span class="py-1" style="color: var(--deoia-muted);">${d}</span>`
-            )
-            .join("")}
+            .map((d) => `<span class="py-1" style="color: var(--deoia-muted);">${d}</span>`)
+            .join('')}
         </div>
       `;
     }
@@ -442,38 +417,36 @@
         const dateStr = ymd ? ymd(date) : date.toISOString().slice(0, 10);
 
         const isToday = date.toDateString() === new Date().toDateString();
-        const isSelected =
-          selectedDate && date.toDateString() === selectedDate.toDateString();
+        const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
         const isDisabled = isDateDisabled(date);
 
         // Clases según el prototipo exacto
-        let classes = "py-2 rounded-lg text-sm transition-all duration-200";
-        let dayInlineStyle = "";
+        let classes = 'py-2 rounded-lg text-sm transition-all duration-200';
+        let dayInlineStyle = '';
 
         if (isDisabled) {
           // Deshabilitado: opacidad baja, sin hover, cursor not-allowed
-          classes += " opacity-30 cursor-not-allowed";
+          classes += ' opacity-30 cursor-not-allowed';
           dayInlineStyle = 'style="color: var(--deoia-disabled);"';
         } else if (isSelected) {
           // Seleccionado: gradiente premium con sombra (usando CSS variables)
-          classes +=
-            " text-white font-semibold shadow-lg cursor-pointer deoia-day-selected";
+          classes += ' text-white font-semibold shadow-lg cursor-pointer deoia-day-selected';
           dayInlineStyle =
             'style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); color: white;"';
         } else if (isToday) {
           // Hoy (no seleccionado)
-          classes += " cursor-pointer deoia-day-today";
+          classes += ' cursor-pointer deoia-day-today';
           dayInlineStyle =
             'style="background-color: var(--deoia-hover); color: var(--deoia-text);"';
         } else {
           // Normal habilitado
-          classes += " cursor-pointer deoia-day-normal";
+          classes += ' cursor-pointer deoia-day-normal';
           dayInlineStyle = 'style="color: var(--deoia-muted);"';
         }
 
         html += `
           <button type="button" class="${classes}" data-date="${dateStr}" ${dayInlineStyle} ${
-          isDisabled ? 'disabled aria-disabled="true"' : ""
+          isDisabled ? 'disabled aria-disabled="true"' : ''
         }>
             ${day}
           </button>
@@ -489,15 +462,11 @@
     // =========================================================================
 
     function handleDayClick(event) {
-      const btn = event.target.closest("button[data-date]");
+      const btn = event.target.closest('button[data-date]');
       if (!btn) return;
 
       // Verificar si está deshabilitado
-      if (
-        btn.disabled ||
-        btn.hasAttribute("disabled") ||
-        btn.classList.contains("opacity-30")
-      ) {
+      if (btn.disabled || btn.hasAttribute('disabled') || btn.classList.contains('opacity-30')) {
         event.preventDefault();
         event.stopPropagation();
         return;
@@ -507,7 +476,7 @@
       if (!dateStr) return;
 
       // Parsear fecha desde YYYY-MM-DD
-      const [year, month, day] = dateStr.split("-").map(Number);
+      const [year, month, day] = dateStr.split('-').map(Number);
       const date = new Date(year, month - 1, day);
 
       // Doble verificación
@@ -518,9 +487,19 @@
       }
 
       selectedDate = date;
+
+      // Exponer fecha seleccionada en formato YYYY-MM-DD
+      window.aa_selected_date = dateStr;
+      console.log('📅 [DeoiaCalendarAdapter] Fecha seleccionada:', dateStr);
+
+      // Emitir evento si WPAgenda.emit existe
+      if (global.WPAgenda && typeof global.WPAgenda.emit === 'function') {
+        global.WPAgenda.emit('dateSelected', { ymd: dateStr, raw: selectedDate });
+      }
+
       renderCalendar();
 
-      if (typeof config.onDateSelected === "function") {
+      if (typeof config.onDateSelected === 'function') {
         config.onDateSelected(selectedDate);
       }
     }
@@ -541,9 +520,9 @@
       const nextBtn = targetEl.querySelector('[data-nav="next"]');
       const grid = targetEl.querySelector('[data-role="deoia-calendar-grid"]');
 
-      prevBtn?.addEventListener("click", prevMonth);
-      nextBtn?.addEventListener("click", nextMonth);
-      grid?.addEventListener("click", handleDayClick);
+      prevBtn?.addEventListener('click', prevMonth);
+      nextBtn?.addEventListener('click', nextMonth);
+      grid?.addEventListener('click', handleDayClick);
     }
 
     // =========================================================================
@@ -572,13 +551,28 @@
     return {
       render(cfg) {
         config = cfg || {};
+
+        // =====================================================================
+        // OPCIÓN C: Si ya existe el wrapper, solo re-renderizar el calendario
+        // No destruir ni recrear el wrapper para preservar elementos movidos
+        // =====================================================================
+        if (isWrapped && calendarInnerEl) {
+          // Ya existe el wrapper premium, solo actualizar el calendario
+          container = calendarInnerEl;
+          viewDate = config.minDate ? new Date(config.minDate) : new Date();
+          renderCalendar();
+          console.log('[DeoiaCalendarAdapter] Re-renderizado sobre wrapper existente');
+          return;
+        }
+
+        // Primera vez: crear wrapper completo
         originalContainer =
           cfg.container instanceof HTMLElement
             ? cfg.container
             : document.querySelector(cfg.container);
 
         if (!originalContainer) {
-          console.error("[DeoiaCalendarAdapter] Contenedor no encontrado");
+          console.error('[DeoiaCalendarAdapter] Contenedor no encontrado');
           return;
         }
 
@@ -600,7 +594,7 @@
         viewDate = new Date(date);
         renderCalendar();
 
-        if (triggerChange && typeof config.onDateSelected === "function") {
+        if (triggerChange && typeof config.onDateSelected === 'function') {
           config.onDateSelected(selectedDate);
         }
       },
@@ -610,21 +604,23 @@
       },
 
       destroy() {
-        // Limpiar el wrapper premium si existe
-        if (wrapperEl && wrapperEl.parentNode) {
-          wrapperEl.parentNode.removeChild(wrapperEl);
+        // =====================================================================
+        // OPCIÓN C: Solo limpiar contenido del calendario, NO el wrapper completo
+        // Esto preserva #servicio, #slot-container y #aa-slot-title en su lugar
+        // =====================================================================
+        if (calendarInnerEl) {
+          calendarInnerEl.innerHTML = '';
         }
-        // Restaurar visibilidad del contenedor original
-        if (originalContainer) {
-          originalContainer.style.display = "";
-        }
-        wrapperEl = null;
-        calendarInnerEl = null;
-        container = null;
-        originalContainer = null;
+
+        // Reset estado interno pero MANTENER wrapper y elementos movidos
         selectedDate = null;
         config = {};
-        isWrapped = false;
+
+        // NO resetear: wrapperEl, calendarInnerEl, originalContainer, isWrapped
+        // Esto permite que el próximo render() detecte el wrapper existente
+        console.log(
+          '[DeoiaCalendarAdapter] destroy() - Solo contenido del calendario limpiado, wrapper preservado'
+        );
       },
 
       /**
@@ -638,12 +634,12 @@
 
         if (enabled) {
           btn.disabled = false;
-          btn.classList.remove("opacity-50", "cursor-not-allowed");
-          btn.classList.add("hover:scale-[1.02]");
+          btn.classList.remove('opacity-50', 'cursor-not-allowed');
+          btn.classList.add('hover:scale-[1.02]');
         } else {
           btn.disabled = true;
-          btn.classList.add("opacity-50", "cursor-not-allowed");
-          btn.classList.remove("hover:scale-[1.02]");
+          btn.classList.add('opacity-50', 'cursor-not-allowed');
+          btn.classList.remove('hover:scale-[1.02]');
         }
       },
 
@@ -655,9 +651,9 @@
         if (!wrapperEl) return;
         const btn = wrapperEl.querySelector('[data-role="deoia-book-btn"]');
         if (!btn) return;
-        btn.addEventListener("click", (e) => {
+        btn.addEventListener('click', (e) => {
           e.preventDefault();
-          if (!btn.disabled && typeof callback === "function") {
+          if (!btn.disabled && typeof callback === 'function') {
             callback();
           }
         });
@@ -669,13 +665,11 @@
        */
       getWrapper() {
         return wrapperEl;
-      },
+      }
     };
   }
 
   global.deoiaCalendarAdapter = { create };
 
-  console.log(
-    "✅ DeoiaCalendarAdapter.js cargado (versión premium con wrapper)"
-  );
+  console.log('✅ DeoiaCalendarAdapter.js cargado (versión premium con wrapper)');
 })(window);
