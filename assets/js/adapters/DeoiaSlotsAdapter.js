@@ -8,7 +8,7 @@
  */
 
 (function (global) {
-  "use strict";
+  'use strict';
 
   /**
    * Crea una instancia del adaptador de slots premium.
@@ -26,8 +26,8 @@
      * @returns {string}
      */
     function formatTime(date) {
-      const h = String(date.getHours()).padStart(2, "0");
-      const m = String(date.getMinutes()).padStart(2, "0");
+      const h = String(date.getHours()).padStart(2, '0');
+      const m = String(date.getMinutes()).padStart(2, '0');
       return `${h}:${m}`;
     }
 
@@ -47,7 +47,7 @@
      * @param {Event} e
      */
     function handleSlotClick(e) {
-      const btn = e.target.closest("button[data-slot-index]");
+      const btn = e.target.closest('button[data-slot-index]');
       if (!btn) return;
 
       // Evitar propagación que pueda disparar submit
@@ -70,13 +70,13 @@
           const bookBtn = wrapper.querySelector('[data-role="deoia-book-btn"]');
           if (bookBtn) {
             // Solo cambiar estilos visuales, no disabled (para permitir validaciones)
-            bookBtn.classList.remove("opacity-50");
-            bookBtn.setAttribute("data-ready", "true");
+            bookBtn.classList.remove('opacity-50');
+            bookBtn.setAttribute('data-ready', 'true');
           }
         }
       }
 
-      if (onSelectCallback && typeof onSelectCallback === "function") {
+      if (onSelectCallback && typeof onSelectCallback === 'function') {
         onSelectCallback(selectedSlot);
       }
     }
@@ -92,34 +92,29 @@
       currentSlots = slots || [];
 
       if (!slots || slots.length === 0) {
-        container.innerHTML = `
-          <p class="text-sm text-center py-4" style="color: var(--deoia-muted);">
-            No hay horarios disponibles
-          </p>
-        `;
+        container.innerHTML = '';
         return;
       }
 
       // Grid idéntico al prototipo: grid grid-cols-3 gap-2
-      let html =
-        '<div class="grid grid-cols-3 gap-2" data-role="deoia-slots-grid">';
+      let html = '<div class="grid grid-cols-3 gap-2" data-role="deoia-slots-grid">';
 
       slots.forEach((slot, index) => {
         const isSelected = isSameSlot(slot, selectedSlot);
 
         // Clases exactas del prototipo
         let classes;
-        let inlineStyle = "";
+        let inlineStyle = '';
         if (isSelected) {
           // Slot seleccionado - usando CSS variables
           classes =
-            "py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200 text-white shadow-lg cursor-pointer deoia-slot-selected";
+            'py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200 text-white shadow-lg cursor-pointer deoia-slot-selected';
           inlineStyle =
             'style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);"';
         } else {
           // Slot normal - usando CSS variables
           classes =
-            "py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer deoia-slot-unselected";
+            'py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer deoia-slot-unselected';
           inlineStyle =
             'style="background-color: color-mix(in srgb, var(--deoia-bg-card-alt) 80%, transparent); color: var(--deoia-text-secondary); border: 1px solid color-mix(in srgb, var(--deoia-border) 50%, transparent);"';
         }
@@ -132,12 +127,12 @@
         `;
       });
 
-      html += "</div>";
+      html += '</div>';
       container.innerHTML = html;
 
       // Agregar event listener al grid
       const grid = container.querySelector('[data-role="deoia-slots-grid"]');
-      grid?.addEventListener("click", handleSlotClick);
+      grid?.addEventListener('click', handleSlotClick);
     }
 
     // =====================================================================
@@ -155,20 +150,18 @@
       render(containerId, validSlots, onSelectSlot) {
         // IMPORTANTE: Siempre buscar el contenedor original del plugin
         // para garantizar que availabilityController lo encuentre.
-        const originalSlotContainer = document.querySelector("#slot-container");
+        const originalSlotContainer = document.querySelector('#slot-container');
 
         if (originalSlotContainer) {
           container = originalSlotContainer;
         } else {
           // Fallback al containerId proporcionado
           container =
-            containerId instanceof HTMLElement
-              ? containerId
-              : document.querySelector(containerId);
+            containerId instanceof HTMLElement ? containerId : document.querySelector(containerId);
         }
 
         if (!container) {
-          console.error("[DeoiaSlotsAdapter] Contenedor no encontrado");
+          console.error('[DeoiaSlotsAdapter] Contenedor no encontrado');
           return;
         }
 
@@ -193,14 +186,12 @@
       clear() {
         if (container) {
           // Solo limpiar el grid de slots, no todo el contenedor
-          const grid = container.querySelector(
-            '[data-role="deoia-slots-grid"]'
-          );
+          const grid = container.querySelector('[data-role="deoia-slots-grid"]');
           if (grid) {
             grid.remove();
           } else {
             // Fallback: limpiar mensaje de "no hay horarios"
-            const emptyMsg = container.querySelector("p");
+            const emptyMsg = container.querySelector('p');
             if (emptyMsg) {
               emptyMsg.remove();
             }
@@ -211,7 +202,7 @@
         currentSlots = [];
         // NO hacer: onSelectCallback = null;
         // NO hacer: container = null;
-      },
+      }
     };
   }
 
@@ -221,5 +212,5 @@
 
   global.deoiaSlotsAdapter = { create };
 
-  console.log("✅ DeoiaSlotsAdapter.js cargado (versión premium)");
+  console.log('✅ DeoiaSlotsAdapter.js cargado (versión premium)');
 })(window);

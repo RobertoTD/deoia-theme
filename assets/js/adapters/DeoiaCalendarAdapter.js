@@ -168,6 +168,58 @@
         servicePlaceholder.appendChild(selectWrapper);
       }
 
+      // Mover el selector de staff al wrapper premium (debajo del servicio)
+      const staffWrapper = form.querySelector('#staff-selector-wrapper');
+      if (staffWrapper && servicePlaceholder) {
+        // Mantener estado inicial oculto (ya viene con display:none del PHP)
+        staffWrapper.style.display = 'none';
+
+        // Aplicar clases Tailwind al wrapper
+        staffWrapper.classList.add('mt-3', 'relative');
+
+        // Aplicar estilos al label
+        const label = staffWrapper.querySelector('label');
+        if (label) {
+          label.classList.add('block', 'text-sm', 'font-medium', 'mb-1');
+          label.style.color = 'var(--deoia-text-secondary)';
+        }
+
+        // Aplicar estilos al select
+        const staffSelect = staffWrapper.querySelector('#staff-selector');
+        if (staffSelect) {
+          staffSelect.classList.add(
+            'rounded-xl',
+            'py-3',
+            'px-4',
+            'text-sm',
+            'focus:outline-none',
+            'focus:ring-2',
+            'transition-all',
+            'duration-200',
+            'w-full',
+            'appearance-none',
+            'cursor-pointer',
+            'deoia-input-focus'
+          );
+
+          // Aplicar inline styles equivalentes al servicio
+          staffSelect.style.backgroundColor =
+            'color-mix(in srgb, var(--deoia-bg-card-alt) 80%, transparent)';
+          staffSelect.style.borderWidth = '1px';
+          staffSelect.style.borderStyle = 'solid';
+          staffSelect.style.borderColor =
+            'color-mix(in srgb, var(--deoia-border) 50%, transparent)';
+          staffSelect.style.color = 'var(--deoia-text-secondary)';
+          staffSelect.style.setProperty(
+            '--tw-ring-color',
+            'color-mix(in srgb, var(--deoia-primary) 50%, transparent)'
+          );
+        }
+
+        // Mover el wrapper al placeholder del servicio
+        servicePlaceholder.appendChild(staffWrapper);
+      }
+
       // Mover el slot container del plugin al wrapper premium
       if (pluginSlotContainer) {
         const slotsPlaceholder = wrapperEl.querySelector('[data-role="deoia-slots-placeholder"]');
@@ -469,6 +521,20 @@
       if (btn.disabled || btn.hasAttribute('disabled') || btn.classList.contains('opacity-30')) {
         event.preventDefault();
         event.stopPropagation();
+        return;
+      }
+
+      // Validar que haya servicio seleccionado
+      const servicioSelect = document.querySelector('#servicio');
+      const servicio = servicioSelect ? servicioSelect.value : '';
+
+      if (!servicio) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        showValidationWarning('Selecciona el motivo de la cita.');
+        highlightElement(servicioSelect);
+
         return;
       }
 
