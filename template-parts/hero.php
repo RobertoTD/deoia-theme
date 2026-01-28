@@ -6,7 +6,16 @@
             <!-- Bento Grid Principal -->
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 
-                <!-- ══ CELDA A: Mensaje Principal (Ocupa 3 columnas) ══ -->
+                <!-- ══ CELDA A: Widget de Reservas (primera posición / izquierda en desktop) ══ -->
+                <div class="lg:col-span-2">
+                    <?php 
+                    // Ejecutar el shortcode del plugin de agenda
+                    // El adaptador premium (DeoiaCalendarAdapter.js) se encargará de aplicar los estilos
+                    echo do_shortcode('[agenda_automatizada]'); 
+                    ?>
+                </div>
+
+                <!-- ══ CELDA B: Mensaje Principal (segunda posición / derecha en desktop) ══ -->
                 <div class="lg:col-span-3 bg-white rounded-3xl p-8 lg:p-12 shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col justify-center">
                     
                     <!-- Badge -->
@@ -63,15 +72,6 @@
                             <span class="text-sm text-slate-600 ml-1"><strong class="text-slate-800">4.9</strong> (<?php echo esc_html( get_theme_mod( 'hero_review_count', '850' ) ); ?>+ reseñas)</span>
                         </div>
                     </div>
-                </div>
-
-                <!-- ══ CELDA B: Widget de Reservas (Ocupa 2 columnas) ══ -->
-                <div class="lg:col-span-2">
-                    <?php 
-                    // Ejecutar el shortcode del plugin de agenda
-                    // El adaptador premium (DeoiaCalendarAdapter.js) se encargará de aplicar los estilos
-                    echo do_shortcode('[agenda_automatizada]'); 
-                    ?>
                 </div>
             </div>
         </div>
