@@ -10,9 +10,9 @@
 <body <?php body_class( 'bg-slate-50 antialiased' ); ?>>
 
     <!-- ═══════════════════════════════════════════════════════════════════════
-         NAVBAR FLOTANTE
+         NAVBAR FLOTANTE (oculto por defecto, aparece al hacer scroll)
     ════════════════════════════════════════════════════════════════════════ -->
-    <nav class="fixed top-0 left-0 right-0 z-50 py-4">
+    <nav id="deoia-navbar" class="fixed top-0 left-0 right-0 z-50 py-4 -translate-y-full opacity-0 transition-all duration-300 pointer-events-none">
         <div class="w-full flex items-center justify-between bg-white/70 backdrop-blur-xl px-[15px] py-3 shadow-lg shadow-slate-200/50 border-b border-white/50">
             <!-- Logo -->
             <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="flex items-center gap-2 group">
@@ -37,7 +37,7 @@
             </a>
 
             <!-- CTA Button -->
-            <a href="#reservar" class="inline-flex items-center gap-1 text-white font-semibold px-4 py-2.5 rounded-xl shadow-lg hover:scale-105 transition-all duration-300" style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
+            <a href="#reservar" id="deoia-navbar-cta" class="inline-flex items-center gap-1 text-white font-semibold px-4 py-2.5 rounded-xl shadow-lg hover:scale-105 transition-all duration-300" style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                 </svg>

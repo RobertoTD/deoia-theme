@@ -7,7 +7,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 
                 <!-- ══ CELDA A: Widget de Reservas (primera posición / izquierda en desktop) ══ -->
-                <div class="lg:col-span-2">
+                <div id="reservar" class="lg:col-span-2">
                     <?php 
                     // Ejecutar el shortcode del plugin de agenda
                     // El adaptador premium (DeoiaCalendarAdapter.js) se encargará de aplicar los estilos
