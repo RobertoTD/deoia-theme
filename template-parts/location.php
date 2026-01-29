@@ -34,7 +34,7 @@ $maps_url           = 'https://maps.google.com/?q=19.4326,-99.1332'; // Coordena
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-0">
                 
                 <!-- Columna izquierda: Mapa placeholder visual -->
-                <div class="lg:col-span-2 relative min-h-[200px] lg:min-h-full" style="background-color: var(--deoia-bg-card-alt);">
+                <div class="lg:col-span-2 relative min-h-[160px] lg:min-h-full" style="background-color: var(--deoia-bg-card-alt);">
                     
                     <!-- Patrón decorativo de fondo -->
                     <div class="absolute inset-0 opacity-10">
@@ -52,12 +52,12 @@ $maps_url           = 'https://maps.google.com/?q=19.4326,-99.1332'; // Coordena
                     <div class="absolute inset-0 flex items-center justify-center">
                         <div class="relative">
                             <!-- Círculo pulsante -->
-                            <div class="absolute inset-0 w-24 h-24 rounded-full animate-ping opacity-20" style="background-color: var(--deoia-primary);"></div>
-                            <div class="absolute inset-0 w-24 h-24 rounded-full opacity-30" style="background-color: var(--deoia-primary);"></div>
+                            <div class="absolute inset-0 w-20 h-20 rounded-full animate-ping opacity-20" style="background-color: var(--deoia-primary);"></div>
+                            <div class="absolute inset-0 w-20 h-20 rounded-full opacity-30" style="background-color: var(--deoia-primary);"></div>
                             
                             <!-- Contenedor del pin -->
-                            <div class="relative w-24 h-24 rounded-full flex items-center justify-center" style="background-image: linear-gradient(to bottom right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 30px -5px color-mix(in srgb, var(--deoia-primary) 50%, transparent);">
-                                <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="relative w-20 h-20 rounded-full flex items-center justify-center" style="background-image: linear-gradient(to bottom right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 30px -5px color-mix(in srgb, var(--deoia-primary) 50%, transparent);">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 </svg>
