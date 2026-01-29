@@ -93,8 +93,8 @@
                 <p class="text-sm" style="color: var(--deoia-muted);">Selecciona Servicio, fecha y hora</p>
               </div>
             </div>
-            <span class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full" style="background-color: color-mix(in srgb, var(--deoia-success) 20%, transparent); color: var(--deoia-success);">
-              <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: var(--deoia-success);"></span>
+            <span class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full flex-shrink-0 whitespace-nowrap" style="background-color: color-mix(in srgb, var(--deoia-success) 20%, transparent); color: var(--deoia-success);">
+              <span class="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style="background-color: var(--deoia-success);"></span>
               En línea
             </span>
           </div>

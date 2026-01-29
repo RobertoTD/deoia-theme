@@ -7,14 +7,11 @@
             <!-- Section Header -->
             <div class="text-center mb-16">
                 <span class="inline-block font-medium text-sm px-4 py-2 rounded-full mb-4" style="background-color: color-mix(in srgb, var(--deoia-primary) 15%, transparent); color: var(--deoia-primary);">
-                    Soluciones por Industria
+                    Tus Servicios
                 </span>
                 <h2 class="text-3xl lg:text-4xl font-bold mb-4" style="color: var(--deoia-bg-card);">
                     Perfecto para tu tipo de negocio
                 </h2>
-                <p class="text-lg max-w-2xl mx-auto" style="color: var(--deoia-muted-dark);">
-                    Deoia se adapta a las necesidades específicas de cada industria de servicios
-                </p>
             </div>
 
             <!-- Bento Grid Secundario -->

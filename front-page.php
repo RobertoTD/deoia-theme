@@ -28,4 +28,6 @@ if (!empty($content) && strpos($content, '[agenda_automatizada]') === false) :
 
 <?php get_template_part('template-parts/after-content'); ?>
 
+<?php get_template_part('template-parts/location'); ?>
+
 <?php get_footer(); ?>
