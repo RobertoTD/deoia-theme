@@ -82,18 +82,21 @@
         <div class="relative z-10" data-role="deoia-widget-content">
           <!-- Widget Header -->
           <div class="flex items-center justify-between mb-6">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background-image: linear-gradient(to bottom right, var(--deoia-primary), var(--deoia-secondary));">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background-image: linear-gradient(to bottom right, var(--deoia-primary), var(--deoia-secondary));">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
               </div>
               <div>
-                <h3 class="font-semibold" style="color: var(--deoia-text);">Reservar Cita</h3>
-                <p class="text-sm" style="color: var(--deoia-muted);">Selecciona motivo, fecha y hora</p>
+                <h3 class="font-semibold" style="color: var(--deoia-text);">Reserva tu cita</h3>
+                <p class="text-sm" style="color: var(--deoia-muted);">Selecciona Servicio, fecha y hora</p>
               </div>
             </div>
-            <span class="text-xs px-3 py-1 rounded-full font-medium" style="background-color: var(--deoia-success-bg); color: var(--deoia-success);">En línea</span>
+            <span class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full" style="background-color: color-mix(in srgb, var(--deoia-success) 20%, transparent); color: var(--deoia-success);">
+              <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background-color: var(--deoia-success);"></span>
+              En línea
+            </span>
           </div>
 
           <!-- Service Select Placeholder (se moverá el select original aquí) -->
@@ -498,8 +501,8 @@
 
         html += `
           <button type="button" class="${classes}" data-date="${dateStr}" ${dayInlineStyle} ${
-          isDisabled ? 'disabled aria-disabled="true"' : ''
-        }>
+            isDisabled ? 'disabled aria-disabled="true"' : ''
+          }>
             ${day}
           </button>
         `;

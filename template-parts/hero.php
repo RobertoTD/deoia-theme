@@ -1,13 +1,14 @@
 
 
     <section class="min-h-screen pt-28 pb-16 px-6">
-        <div class="max-w-7xl mx-auto">
-            
             <!-- Bento Grid Principal -->
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 
                 <!-- ══ CELDA A: Widget de Reservas (primera posición / izquierda en desktop) ══ -->
                 <div id="reservar" class="lg:col-span-2">
+                    
+                         
+
                     <?php 
                     // Ejecutar el shortcode del plugin de agenda
                     // El adaptador premium (DeoiaCalendarAdapter.js) se encargará de aplicar los estilos
@@ -74,5 +75,4 @@
                     </div>
                 </div>
             </div>
-        </div>
     </section>

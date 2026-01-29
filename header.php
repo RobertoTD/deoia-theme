@@ -17,7 +17,7 @@
             <!-- Logo -->
             <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="flex items-center gap-2 group">
                 <?php if ( has_custom_logo() ) : ?>
-                    <div class="w-9 h-9 rounded-xl overflow-hidden shadow-lg transition-all duration-300" style="box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
+                    <div class="w-8 h-8 rounded-xl overflow-hidden shadow-lg transition-all duration-300" style="box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
                         <?php 
                         $custom_logo_id = get_theme_mod( 'custom_logo' );
                         $logo_image = wp_get_attachment_image( $custom_logo_id, 'full', false, array(
@@ -27,13 +27,13 @@
                         ?>
                     </div>
                 <?php else : ?>
-                    <div class="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300" style="background-image: linear-gradient(to bottom right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-8 h-8 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300" style="background-image: linear-gradient(to bottom right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
                     </div>
                 <?php endif; ?>
-                <span class="text-xl font-bold" style="color: var(--deoia-bg-card);"><?php bloginfo( 'name' ); ?></span>
+                <span class="text-lg font-bold" style="color: var(--deoia-bg-card);"><?php bloginfo( 'name' ); ?></span>
             </a>
 
             <!-- CTA Button -->
