@@ -1,7 +1,7 @@
     <!-- ═══════════════════════════════════════════════════════════════════════
          SECCIÓN "PARA QUIÉN ES" - BENTO GRID SECUNDARIO
     ════════════════════════════════════════════════════════════════════════ -->
-    <section class="py-20 px-6" id="para-quien">
+    <section class="py-0 px-6" id="para-quien" style="padding-top: 0rem; padding-bottom: 0rem;">
         <div class="max-w-7xl mx-auto">
             
             <!-- Section Header -->

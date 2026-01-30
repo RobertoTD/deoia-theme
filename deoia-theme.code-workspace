@@ -5,6 +5,9 @@
     },
     {
       "path": "../../../../wpagenda/wp-content/plugins/wp-agenda-automatizada"
+    },
+    {
+      "path": "../../../../wpagenda/wp-content/plugins/Deoia-Demo-Mode"
     }
   ],
   "settings": {
