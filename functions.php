@@ -157,6 +157,19 @@ function deoia_hero_customizer( $wp_customize ) {
         'type'        => 'text',
         'priority'    => 70,
     ) );
+
+    // Mostrar calendario en Hero
+    $wp_customize->add_setting( 'deoia_show_calendar_in_hero', array(
+        'default'           => true,
+        'sanitize_callback' => 'rest_sanitize_boolean',
+    ) );
+    $wp_customize->add_control( 'deoia_show_calendar_in_hero', array(
+        'label'       => __( 'Mostrar calendario en Hero', 'deoia' ),
+        'description' => __( 'Activa para mostrar el widget de reservas en la sección hero de la página principal.', 'deoia' ),
+        'section'     => 'hero_settings',
+        'type'        => 'checkbox',
+        'priority'    => 80,
+    ) );
 }
 add_action( 'customize_register', 'deoia_hero_customizer' );
 
@@ -678,3 +691,21 @@ function deoia_cargar_scripts() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'deoia_cargar_scripts' );
+
+/**
+ * Forzar enqueue de assets del plugin cuando el calendario se muestra en el hero
+ * Necesario porque el shortcode se renderiza fuera de the_content
+ */
+add_filter( 'wpaa_should_enqueue_frontend_assets', function( $should ) {
+    // Si ya es true, mantenerlo
+    if ( $should ) {
+        return true;
+    }
+    
+    // Forzar enqueue en front page si el toggle del calendario en hero está activo
+    if ( is_front_page() && get_theme_mod( 'deoia_show_calendar_in_hero', true ) ) {
+        return true;
+    }
+    
+    return $should;
+} );

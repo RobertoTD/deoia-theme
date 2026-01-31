@@ -6,13 +6,13 @@
                 
                 <!-- ══ CELDA A: Widget de Reservas (primera posición / izquierda en desktop) ══ -->
                 <div id="reservar" class="lg:col-span-2">
-                    
-                         
-
                     <?php 
-                    // Ejecutar el shortcode del plugin de agenda
-                    // El adaptador premium (DeoiaCalendarAdapter.js) se encargará de aplicar los estilos
-                    echo do_shortcode('[agenda_automatizada]'); 
+                    // Mostrar calendario solo si el toggle está activo en Customizer
+                    if ( get_theme_mod( 'deoia_show_calendar_in_hero', true ) ) :
+                        // Ejecutar el shortcode del plugin de agenda
+                        // El adaptador premium (DeoiaCalendarAdapter.js) se encargará de aplicar los estilos
+                        echo do_shortcode('[agenda_automatizada]'); 
+                    endif;
                     ?>
                 </div>
 

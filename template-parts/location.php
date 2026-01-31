@@ -16,7 +16,7 @@
 // ══════════════════════════════════════════════════════════════════════
 // VALORES DEMO - REEMPLAZAR CON DATOS REALES
 // ══════════════════════════════════════════════════════════════════════
-$location_name      = 'Deoia Citas';
+
 $location_address   = 'Av. Principal 1234, Col. Centro';
 $location_city      = 'Ciudad de México, CDMX';
 $location_postal    = 'CP 06000';
@@ -78,7 +78,7 @@ $maps_url           = 'https://maps.google.com/?q=19.4326,-99.1332'; // Coordena
                 <div class="lg:col-span-3 p-8 lg:p-12">
                     
                     <!-- Header -->
-                    <div class="mb-8">
+                    <div class="mb-4">
                         <span class="inline-flex items-center gap-2 font-medium text-sm px-4 py-2 rounded-full mb-4" style="background-color: color-mix(in srgb, var(--deoia-primary) 15%, transparent); color: var(--deoia-primary);">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
@@ -86,9 +86,7 @@ $maps_url           = 'https://maps.google.com/?q=19.4326,-99.1332'; // Coordena
                             </svg>
                             Nuestra Ubicación
                         </span>
-                        <h2 class="text-2xl lg:text-3xl font-bold" style="color: var(--deoia-bg-card);">
-                            <?php echo esc_html( $location_name ); ?>
-                        </h2>
+                        
                     </div>
                     
                     <!-- Información de ubicación -->
@@ -113,8 +111,8 @@ $maps_url           = 'https://maps.google.com/?q=19.4326,-99.1332'; // Coordena
                         
                         <!-- Referencia -->
                         <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background-color: color-mix(in srgb, var(--deoia-success) 15%, transparent);">
-                                <svg class="w-5 h-5" style="color: var(--deoia-success);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background-color: color-mix(in srgb, var(--deoia-primary) 15%, transparent);">
+                                <svg class="w-5 h-5" style="color: var(--deoia-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
                             </div>

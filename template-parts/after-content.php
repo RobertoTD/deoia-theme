@@ -15,7 +15,7 @@
             </div>
 
             <!-- Bento Grid Secundario -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="flex flex-wrap justify-center gap-6">
                 
                 <?php
                 $servicios_query = new WP_Query( array(
@@ -46,15 +46,15 @@
                         $shadow_color = isset( $matches[1] ) ? $matches[1] : 'violet-500';
                 ?>
                 
-                <div class="group bg-white rounded-3xl p-8 shadow-xl border hover:-translate-y-2 transition-all duration-500" style="border-color: color-mix(in srgb, var(--deoia-border) 20%, transparent); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);">
+                <div class="group bg-white rounded-3xl p-8 shadow-xl border hover:-translate-y-2 transition-all duration-500 w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)]" style="border-color: color-mix(in srgb, var(--deoia-border) 20%, transparent); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);">
                     <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300" style="background-image: linear-gradient(to bottom right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
                         <?php if ( ! empty( $icono_svg ) ) : ?>
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-7 h-7" fill="white" stroke="white" stroke-width="1.5" viewBox="0 0 24 24">
                             <?php echo $icono_svg; ?>
                         </svg>
                         <?php else : ?>
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        <svg class="w-7 h-7" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                         </svg>
                         <?php endif; ?>
                     </div>
@@ -82,7 +82,7 @@
                 else :
                 ?>
                 <!-- Mensaje cuando no hay servicios -->
-                <div class="lg:col-span-4 text-center py-12">
+                <div class="w-full text-center py-12">
                     <p style="color: var(--deoia-muted);">No hay servicios configurados. Añade servicios desde el panel de administración.</p>
                 </div>
                 <?php endif; ?>
