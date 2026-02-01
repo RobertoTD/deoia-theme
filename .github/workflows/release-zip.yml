@@ -1,0 +1,49 @@
+name: Build theme zip and attach to GitHub Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build clean theme zip (single root folder)
+        run: |
+          set -euo pipefail
+
+          THEME_SLUG="deoia-theme"
+          ZIP_NAME="${THEME_SLUG}.zip"
+
+          rm -rf dist
+          rm -f "${ZIP_NAME}"
+          mkdir -p "dist/${THEME_SLUG}"
+
+          rsync -av \
+            --exclude ".git" \
+            --exclude ".github" \
+            --exclude "node_modules" \
+            --exclude ".vscode" \
+            --exclude "*.zip" \
+            --exclude "dist" \
+            ./ "dist/${THEME_SLUG}/"
+
+          # Verifica que exista style.css (obligatorio en temas)
+          if [ ! -f "dist/${THEME_SLUG}/style.css" ]; then
+            echo "ERROR: Missing dist/${THEME_SLUG}/style.css"
+            exit 1
+          fi
+
+          (cd dist && zip -r "../${ZIP_NAME}" "${THEME_SLUG}")
+
+      - name: Upload zip to the GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: deoia-theme.zip
