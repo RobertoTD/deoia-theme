@@ -725,3 +725,10 @@ $themeUpdateChecker = PucFactory::buildUpdateChecker(
 
 // Usa Releases (assets ZIP) si los vas a adjuntar al Release:
 $themeUpdateChecker->getVcsApi()->enableReleaseAssets();
+
+
+// Forzar auto-actualización del tema
+add_filter('auto_update_theme', function($update, $item) {
+    if (!empty($item->theme) && $item->theme === 'deoia-theme') return true;
+    return $update;
+  }, 10, 2);
