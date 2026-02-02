@@ -10,7 +10,7 @@
                     Tus Servicios
                 </span>
                 <h2 class="text-3xl lg:text-4xl font-bold mb-4" style="color: var(--deoia-bg-card);">
-                    Perfecto para tu tipo de negocio
+                    Control y eficiencia para tu negocio
                 </h2>
             </div>
 

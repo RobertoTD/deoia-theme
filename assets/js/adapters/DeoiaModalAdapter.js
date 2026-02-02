@@ -8,7 +8,7 @@
  */
 
 (function (global) {
-  "use strict";
+  'use strict';
 
   /**
    * Crea una instancia del adaptador de modal premium.
@@ -79,20 +79,24 @@
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                     </svg>
                     <span class="text-white text-sm font-medium">${
-                      servicio || "Servicio no especificado"
+                      servicio
+                        ? String(servicio)
+                            .replace(/^fixed::/, '')
+                            .trim() || 'Servicio no especificado'
+                        : 'Servicio no especificado'
                     }</span>
                   </div>
                   <div class="flex items-center gap-3">
                     <svg class="w-4 h-4" style="color: var(--deoia-accent);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
-                    <span class="text-white text-sm">${fecha || ""}</span>
+                    <span class="text-white text-sm">${fecha || ''}</span>
                   </div>
                   <div class="flex items-center gap-3">
                     <svg class="w-4 h-4" style="color: var(--deoia-accent);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
-                    <span class="text-white text-sm">${hora || ""}</span>
+                    <span class="text-white text-sm">${hora || ''}</span>
                   </div>
                 </div>
               </div>
@@ -189,26 +193,26 @@
 
       if (isLoading) return;
 
-      const nombre = modalEl.querySelector("#deoia-nombre").value.trim();
-      const telefono = modalEl.querySelector("#deoia-telefono").value.trim();
-      const correo = modalEl.querySelector("#deoia-correo").value.trim();
+      const nombre = modalEl.querySelector('#deoia-nombre').value.trim();
+      const telefono = modalEl.querySelector('#deoia-telefono').value.trim();
+      const correo = modalEl.querySelector('#deoia-correo').value.trim();
 
       // Validación
       if (!nombre || !telefono || !correo) {
         // Mostrar error visual en campos vacíos
-        if (!nombre) highlightField("#deoia-nombre");
-        if (!telefono) highlightField("#deoia-telefono");
-        if (!correo) highlightField("#deoia-correo");
+        if (!nombre) highlightField('#deoia-nombre');
+        if (!telefono) highlightField('#deoia-telefono');
+        if (!correo) highlightField('#deoia-correo');
         return;
       }
 
       // Ejecutar callback - el callback es responsable de:
       // 1. Copiar datos al formulario original
       // 2. Disparar el submit del formulario original
-      if (onSubmitCallback && typeof onSubmitCallback === "function") {
+      if (onSubmitCallback && typeof onSubmitCallback === 'function') {
         onSubmitCallback({ nombre, telefono, correo });
       } else {
-        console.warn("[DeoiaModalAdapter] No se proporcionó callback onSubmit");
+        console.warn('[DeoiaModalAdapter] No se proporcionó callback onSubmit');
       }
     }
 
@@ -220,15 +224,11 @@
       const field = modalEl.querySelector(selector);
       if (!field) return;
 
-      field.classList.add("ring-2", "ring-red-500/50", "border-red-500/50");
+      field.classList.add('ring-2', 'ring-red-500/50', 'border-red-500/50');
 
       // Remover después de 2 segundos
       setTimeout(() => {
-        field.classList.remove(
-          "ring-2",
-          "ring-red-500/50",
-          "border-red-500/50"
-        );
+        field.classList.remove('ring-2', 'ring-red-500/50', 'border-red-500/50');
       }, 2000);
     }
 
@@ -238,13 +238,13 @@
     function closeWithAnimation() {
       if (!modalEl) return;
 
-      const content = modalEl.querySelector(".deoia-modal-content");
+      const content = modalEl.querySelector('.deoia-modal-content');
       if (content) {
-        content.classList.add("scale-95", "opacity-0");
+        content.classList.add('scale-95', 'opacity-0');
       }
 
       if (overlayEl) {
-        overlayEl.classList.add("opacity-0");
+        overlayEl.classList.add('opacity-0');
       }
 
       // Esperar animación antes de remover del DOM
@@ -264,9 +264,9 @@
       }
 
       // Restaurar visibilidad de #respuesta-agenda
-      const respuestaAgenda = document.getElementById("respuesta-agenda");
+      const respuestaAgenda = document.getElementById('respuesta-agenda');
       if (respuestaAgenda) {
-        respuestaAgenda.style.display = "";
+        respuestaAgenda.style.display = '';
       }
 
       if (overlayEl && overlayEl.parentNode) {
@@ -283,7 +283,7 @@
       isLoading = false;
 
       // Restaurar scroll del body
-      document.body.style.overflow = "";
+      document.body.style.overflow = '';
     }
 
     /**
@@ -301,7 +301,7 @@
      * @param {Event} e
      */
     function handleEscapeKey(e) {
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         closeWithAnimation();
       }
     }
@@ -323,11 +323,11 @@
         onSubmitCallback = onSubmit;
 
         // Crear contenedor temporal para parsear HTML
-        const wrapper = document.createElement("div");
+        const wrapper = document.createElement('div');
         wrapper.innerHTML = buildModalHTML(options);
 
-        overlayEl = wrapper.querySelector(".deoia-modal-overlay");
-        modalEl = wrapper.querySelector(".deoia-modal");
+        overlayEl = wrapper.querySelector('.deoia-modal-overlay');
+        modalEl = wrapper.querySelector('.deoia-modal');
         submitBtn = modalEl.querySelector('[data-role="deoia-modal-submit"]');
         responseEl = modalEl.querySelector('[data-role="deoia-response"]');
 
@@ -336,53 +336,46 @@
         document.body.appendChild(modalEl);
 
         // Prevenir scroll del body
-        document.body.style.overflow = "hidden";
+        document.body.style.overflow = 'hidden';
 
         // Ocultar #respuesta-agenda del plugin para evitar duplicados
-        const respuestaAgenda = document.getElementById("respuesta-agenda");
+        const respuestaAgenda = document.getElementById('respuesta-agenda');
         if (respuestaAgenda) {
-          respuestaAgenda.style.display = "none";
+          respuestaAgenda.style.display = 'none';
         }
 
         // Vaciar el contenedor de respuesta premium
         if (responseEl) {
-          responseEl.textContent = "";
+          responseEl.textContent = '';
           responseEl.className =
-            "text-sm text-center mt-4 min-h-[24px] transition-all duration-300";
+            'text-sm text-center mt-4 min-h-[24px] transition-all duration-300';
         }
 
         // Configurar MutationObserver para capturar respuesta del plugin
         if (respuestaAgenda) {
           responseObserver = new MutationObserver((mutations) => {
             for (const mutation of mutations) {
-              if (
-                mutation.type === "childList" ||
-                mutation.type === "characterData"
-              ) {
-                const texto =
-                  respuestaAgenda.textContent || respuestaAgenda.innerText;
+              if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                const texto = respuestaAgenda.textContent || respuestaAgenda.innerText;
                 if (texto && texto.trim() && responseEl) {
                   // Detectar si es éxito o error
                   const isSuccess =
-                    texto.includes("✅") ||
-                    texto.toLowerCase().includes("correctamente");
-                  const isError =
-                    texto.includes("❌") ||
-                    texto.toLowerCase().includes("error");
+                    texto.includes('✅') || texto.toLowerCase().includes('correctamente');
+                  const isError = texto.includes('❌') || texto.toLowerCase().includes('error');
 
                   // Aplicar estilos según el tipo de mensaje
                   if (isSuccess) {
                     responseEl.className =
-                      "text-sm text-center mt-4 min-h-[24px] transition-all duration-300 deoia-response-success";
-                    responseEl.style.color = "var(--deoia-success)";
+                      'text-sm text-center mt-4 min-h-[24px] transition-all duration-300 deoia-response-success';
+                    responseEl.style.color = 'var(--deoia-success)';
                   } else if (isError) {
                     responseEl.className =
-                      "text-sm text-center mt-4 min-h-[24px] transition-all duration-300";
-                    responseEl.style.color = "var(--deoia-error)";
+                      'text-sm text-center mt-4 min-h-[24px] transition-all duration-300';
+                    responseEl.style.color = 'var(--deoia-error)';
                   } else {
                     responseEl.className =
-                      "text-sm text-center mt-4 min-h-[24px] transition-all duration-300";
-                    responseEl.style.color = "var(--deoia-text-secondary)";
+                      'text-sm text-center mt-4 min-h-[24px] transition-all duration-300';
+                    responseEl.style.color = 'var(--deoia-text-secondary)';
                   }
 
                   responseEl.textContent = texto.trim();
@@ -401,31 +394,31 @@
           responseObserver.observe(respuestaAgenda, {
             childList: true,
             characterData: true,
-            subtree: true,
+            subtree: true
           });
         }
 
         // Event listeners
-        overlayEl.addEventListener("click", handleOverlayClick);
+        overlayEl.addEventListener('click', handleOverlayClick);
         modalEl
           .querySelector('[data-role="deoia-modal-close"]')
-          ?.addEventListener("click", closeWithAnimation);
+          ?.addEventListener('click', closeWithAnimation);
         modalEl
           .querySelector('[data-role="deoia-modal-form"]')
-          ?.addEventListener("submit", handleSubmit);
-        document.addEventListener("keydown", handleEscapeKey);
+          ?.addEventListener('submit', handleSubmit);
+        document.addEventListener('keydown', handleEscapeKey);
 
         // Animación de entrada
         requestAnimationFrame(() => {
-          const content = modalEl.querySelector(".deoia-modal-content");
+          const content = modalEl.querySelector('.deoia-modal-content');
           if (content) {
-            content.classList.remove("scale-95", "opacity-0");
+            content.classList.remove('scale-95', 'opacity-0');
           }
         });
 
         // Focus en el primer campo
         setTimeout(() => {
-          modalEl.querySelector("#deoia-nombre")?.focus();
+          modalEl.querySelector('#deoia-nombre')?.focus();
         }, 100);
       },
 
@@ -433,7 +426,7 @@
        * Cierra el modal y limpia el DOM.
        */
       close() {
-        document.removeEventListener("keydown", handleEscapeKey);
+        document.removeEventListener('keydown', handleEscapeKey);
         closeWithAnimation();
       },
 
@@ -452,30 +445,30 @@
 
         if (loading) {
           submitBtn.disabled = true;
-          submitBtn.classList.add("opacity-70", "cursor-not-allowed");
-          submitBtn.classList.remove("hover:scale-[1.02]");
+          submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+          submitBtn.classList.remove('hover:scale-[1.02]');
 
-          if (btnText) btnText.textContent = "Procesando...";
-          if (btnIcon) btnIcon.classList.add("hidden");
-          if (btnSpinner) btnSpinner.classList.remove("hidden");
+          if (btnText) btnText.textContent = 'Procesando...';
+          if (btnIcon) btnIcon.classList.add('hidden');
+          if (btnSpinner) btnSpinner.classList.remove('hidden');
 
           // Mostrar mensaje de procesamiento en el contenedor de respuesta
           if (responseEl) {
-            responseEl.textContent = "Procesando la reserva…";
+            responseEl.textContent = 'Procesando la reserva…';
             responseEl.className =
-              "text-sm text-center mt-4 min-h-[24px] transition-all duration-300";
-            responseEl.style.color = "var(--deoia-muted)";
+              'text-sm text-center mt-4 min-h-[24px] transition-all duration-300';
+            responseEl.style.color = 'var(--deoia-muted)';
           }
         } else {
           submitBtn.disabled = false;
-          submitBtn.classList.remove("opacity-70", "cursor-not-allowed");
-          submitBtn.classList.add("hover:scale-[1.02]");
+          submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+          submitBtn.classList.add('hover:scale-[1.02]');
 
-          if (btnText) btnText.textContent = "Reservar ahora";
-          if (btnIcon) btnIcon.classList.remove("hidden");
-          if (btnSpinner) btnSpinner.classList.add("hidden");
+          if (btnText) btnText.textContent = 'Reservar ahora';
+          if (btnIcon) btnIcon.classList.remove('hidden');
+          if (btnSpinner) btnSpinner.classList.add('hidden');
         }
-      },
+      }
     };
   }
 
@@ -485,5 +478,5 @@
 
   global.deoiaModalAdapter = { create };
 
-  console.log("✅ DeoiaModalAdapter.js cargado (versión premium)");
+  console.log('✅ DeoiaModalAdapter.js cargado (versión premium)');
 })(window);
