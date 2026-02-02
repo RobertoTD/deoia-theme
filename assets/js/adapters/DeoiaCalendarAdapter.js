@@ -349,9 +349,14 @@
 
       // Obtener servicio seleccionado
       const servicioSelect = document.querySelector('#servicio');
-      const servicio = servicioSelect ? servicioSelect.value : '';
+      const servicioValue = servicioSelect ? servicioSelect.value : '';
+      // Obtener el nombre del servicio (texto visible) en lugar del ID
+      const servicioNombre =
+        servicioSelect && servicioSelect.selectedIndex >= 0
+          ? servicioSelect.options[servicioSelect.selectedIndex].text
+          : '';
 
-      if (!servicio) {
+      if (!servicioValue) {
         showValidationWarning('Selecciona el motivo de la cita.');
         highlightElement(servicioSelect);
         return;
@@ -392,7 +397,7 @@
 
       // Abrir el modal premium
       global.WPAgenda.ui.modal.open({
-        servicio: servicio,
+        servicio: servicioNombre,
         fecha: fechaFormateada,
         hora: horaSlot,
         onSubmit: (dataCliente) => {
@@ -501,8 +506,8 @@
 
         html += `
           <button type="button" class="${classes}" data-date="${dateStr}" ${dayInlineStyle} ${
-            isDisabled ? 'disabled aria-disabled="true"' : ''
-          }>
+          isDisabled ? 'disabled aria-disabled="true"' : ''
+        }>
             ${day}
           </button>
         `;
