@@ -710,6 +710,64 @@ add_filter( 'wpaa_should_enqueue_frontend_assets', function( $should ) {
     return $should;
 } );
 
+/**
+ * ════════════════════════════════════════════════════════════════════════════
+ * Google Analytics 4 - Customizer & Frontend Integration
+ * ════════════════════════════════════════════════════════════════════════════
+ */
+
+/**
+ * Registrar sección Analytics en el Customizer
+ */
+function deoia_analytics_customizer( $wp_customize ) {
+    // Sección: Analytics
+    $wp_customize->add_section( 'deoia_analytics', array(
+        'title'       => __( 'Analytics', 'deoia' ),
+        'priority'    => 160,
+        'description' => __( 'Configuración de Google Analytics 4 para el seguimiento del sitio.', 'deoia' ),
+    ) );
+
+    // Campo: GA4 Measurement ID
+    $wp_customize->add_setting( 'deoia_ga4_measurement_id', array(
+        'default'           => '',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'deoia_ga4_measurement_id', array(
+        'label'       => __( 'GA4 Measurement ID', 'deoia' ),
+        'description' => __( 'Ingresa tu ID de medición de Google Analytics 4 (ej: G-XXXXXXXXXX). Déjalo vacío para desactivar el seguimiento.', 'deoia' ),
+        'section'     => 'deoia_analytics',
+        'type'        => 'text',
+        'priority'    => 10,
+    ) );
+}
+add_action( 'customize_register', 'deoia_analytics_customizer' );
+
+/**
+ * Imprimir snippet de Google Analytics 4 en el head
+ */
+function deoia_output_ga4_script() {
+    $ga4_id = get_theme_mod( 'deoia_ga4_measurement_id', '' );
+
+    // No imprimir nada si el campo está vacío
+    if ( empty( $ga4_id ) ) {
+        return;
+    }
+
+    // Escapar el ID para seguridad
+    $ga4_id = esc_attr( $ga4_id );
+    ?>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo $ga4_id; ?>"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '<?php echo $ga4_id; ?>');
+</script>
+    <?php
+}
+add_action( 'wp_head', 'deoia_output_ga4_script', 1 );
+
 // ===============================
 // 🔹 THEME AUTO-UPDATES DESDE GITHUB
 // ===============================
