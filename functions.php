@@ -20,9 +20,48 @@ function deoia_theme_setup() {
 add_action( 'after_setup_theme', 'deoia_theme_setup' );
 
 /**
- * Personalizador: Redes Sociales
+ * Permitir subida de archivos SVG solo para administradores
+ */
+add_filter( 'upload_mimes', function( $mimes ) {
+    if ( current_user_can( 'manage_options' ) ) {
+        $mimes['svg'] = 'image/svg+xml';
+    }
+    return $mimes;
+} );
+
+/**
+ * Sanitización para el control Logo SVG (attachment ID).
+ * Solo acepta attachments cuyo mime sea image/svg+xml.
+ */
+function deoia_sanitize_svg_attachment( $attachment_id ) {
+    $attachment_id = absint( $attachment_id );
+    if ( ! $attachment_id ) {
+        return '';
+    }
+    $mime = get_post_mime_type( $attachment_id );
+    if ( 'image/svg+xml' !== $mime ) {
+        return '';
+    }
+    return $attachment_id;
+}
+
+/**
+ * Personalizador: Logo SVG + Redes Sociales
  */
 function deoia_customize_register( $wp_customize ) {
+    // ── Logo SVG (dentro del marco del navbar) ──────────────────────────────
+    $wp_customize->add_setting( 'deoia_svg_logo', array(
+        'default'           => '',
+        'sanitize_callback' => 'deoia_sanitize_svg_attachment',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'deoia_svg_logo', array(
+        'label'       => __( 'Logo SVG', 'deoia' ),
+        'description' => __( 'Sube un archivo SVG. Se muestra dentro del marco del navbar cuando no hay Custom Logo.', 'deoia' ),
+        'section'     => 'title_tagline',
+        'mime_type'   => 'image/svg+xml',
+        'priority'    => 9,
+    ) ) );
+
     // Twitter URL
     $wp_customize->add_setting( 'twitter_url', array(
         'default'           => '',
