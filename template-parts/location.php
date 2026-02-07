@@ -3,26 +3,27 @@
 ════════════════════════════════════════════════════════════════════════ -->
 <?php
 /**
- * Sección de Ubicación - Deoia Citas Demo
+ * Sección de Ubicación - Deoia Citas
  * 
- * Valores de demo fáciles de reemplazar:
- * - $location_name: Nombre del local
+ * Valores editables desde Apariencia > Personalizar > DEOIA Branding > Ubicación
  * - $location_address: Dirección completa
+ * - $location_city: Ciudad y estado
+ * - $location_postal: Código postal
  * - $location_reference: Referencia o punto cercano
  * - $location_hours: Horario de atención
  * - $maps_url: URL de Google Maps
  */
 
 // ══════════════════════════════════════════════════════════════════════
-// VALORES DEMO - REEMPLAZAR CON DATOS REALES
+// VALORES DESDE CUSTOMIZER
 // ══════════════════════════════════════════════════════════════════════
 
-$location_address   = 'Av. Principal 1234, Col. Centro';
-$location_city      = 'Ciudad de México, CDMX';
-$location_postal    = 'CP 06000';
-$location_reference = 'A una cuadra del Metro Zócalo, frente al Parque Central';
-$location_hours     = 'Lun - Sáb: 9:00 AM - 7:00 PM';
-$maps_url           = 'https://maps.google.com/?q=19.4326,-99.1332'; // Coordenadas demo (Zócalo CDMX)
+$location_address   = get_theme_mod( 'deoia_location_address', 'Av. Principal 1234, Col. Centro' );
+$location_city      = get_theme_mod( 'deoia_location_city', 'Ciudad de México, CDMX' );
+$location_postal    = get_theme_mod( 'deoia_location_postal', 'CP 06000' );
+$location_reference = get_theme_mod( 'deoia_location_reference', 'A una cuadra del Metro Zócalo, frente al Parque Central' );
+$location_hours     = get_theme_mod( 'deoia_location_hours', 'Lun - Sáb: 9:00 AM - 7:00 PM' );
+$maps_url           = get_theme_mod( 'deoia_location_maps_url', 'https://maps.google.com/?q=19.4326,-99.1332' );
 ?>
 
 <section class="py-16 lg:py-20 px-6" id="ubicacion">

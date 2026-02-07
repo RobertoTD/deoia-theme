@@ -184,6 +184,31 @@ function deoia_hero_customizer( $wp_customize ) {
         'priority'    => 60,
     ) );
 
+    // Mostrar signo + en negocios activos
+    $wp_customize->add_setting( 'hero_trust_show_plus', array(
+        'default'           => true,
+        'sanitize_callback' => 'rest_sanitize_boolean',
+    ) );
+    $wp_customize->add_control( 'hero_trust_show_plus', array(
+        'label'    => __( 'Mostrar signo + antes del número', 'deoia' ),
+        'section'  => 'hero_settings',
+        'type'     => 'checkbox',
+        'priority' => 65,
+    ) );
+
+    // Sufijo/texto después del indicador
+    $wp_customize->add_setting( 'hero_trust_suffix', array(
+        'default'           => 'negocios activos',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'hero_trust_suffix', array(
+        'label'       => __( 'Texto después del indicador (sufijo)', 'deoia' ),
+        'description' => __( 'Ej: negocios activos. Vacío = ocultar.', 'deoia' ),
+        'section'     => 'hero_settings',
+        'type'        => 'text',
+        'priority'    => 66,
+    ) );
+
     // Métrica: Reseñas
     $wp_customize->add_setting( 'hero_review_count', array(
         'default'           => '850',
@@ -419,6 +444,124 @@ function deoia_palette_customizer( $wp_customize ) {
     ) ) );
 }
 add_action( 'customize_register', 'deoia_palette_customizer' );
+
+/**
+ * ════════════════════════════════════════════════════════════════════════════
+ * DEOIA Location Section - Customizer Controls
+ * ════════════════════════════════════════════════════════════════════════════
+ */
+
+/**
+ * Registrar controles del Customizer para la sección de ubicación
+ */
+function deoia_location_customizer( $wp_customize ) {
+    // ═══════════════════════════════════════════════════════════════════════
+    // SECTION: Ubicación
+    // ═══════════════════════════════════════════════════════════════════════
+    $wp_customize->add_section( 'deoia_location', array(
+        'title'       => __( 'Ubicación', 'deoia' ),
+        'panel'       => 'deoia_branding',
+        'priority'    => 40,
+        'description' => __( 'Configura los datos de ubicación y horarios de tu negocio.', 'deoia' ),
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Dirección
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_location_address', array(
+        'default'           => 'Av. Principal 1234, Col. Centro',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_location_address', array(
+        'label'       => __( 'Dirección', 'deoia' ),
+        'description' => __( 'Dirección completa de tu negocio.', 'deoia' ),
+        'section'     => 'deoia_location',
+        'type'        => 'text',
+        'priority'    => 10,
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Ciudad
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_location_city', array(
+        'default'           => 'Ciudad de México, CDMX',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_location_city', array(
+        'label'       => __( 'Ciudad', 'deoia' ),
+        'description' => __( 'Ciudad y estado.', 'deoia' ),
+        'section'     => 'deoia_location',
+        'type'        => 'text',
+        'priority'    => 20,
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Código Postal
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_location_postal', array(
+        'default'           => 'CP 06000',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_location_postal', array(
+        'label'       => __( 'Código Postal', 'deoia' ),
+        'description' => __( 'Código postal (ej: CP 06000).', 'deoia' ),
+        'section'     => 'deoia_location',
+        'type'        => 'text',
+        'priority'    => 30,
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Referencia
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_location_reference', array(
+        'default'           => 'A una cuadra del Metro Zócalo, frente al Parque Central',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_location_reference', array(
+        'label'       => __( 'Referencias', 'deoia' ),
+        'description' => __( 'Punto de referencia o cómo llegar.', 'deoia' ),
+        'section'     => 'deoia_location',
+        'type'        => 'textarea',
+        'priority'    => 40,
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Horario
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_location_hours', array(
+        'default'           => 'Lun - Sáb: 9:00 AM - 7:00 PM',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_location_hours', array(
+        'label'       => __( 'Horario de Atención', 'deoia' ),
+        'description' => __( 'Horario de tu negocio.', 'deoia' ),
+        'section'     => 'deoia_location',
+        'type'        => 'text',
+        'priority'    => 50,
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: URL de Google Maps
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_location_maps_url', array(
+        'default'           => 'https://maps.google.com/?q=19.4326,-99.1332',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_location_maps_url', array(
+        'label'       => __( 'URL de Google Maps', 'deoia' ),
+        'description' => __( 'Enlace a tu ubicación en Google Maps.', 'deoia' ),
+        'section'     => 'deoia_location',
+        'type'        => 'url',
+        'priority'    => 60,
+    ) );
+}
+add_action( 'customize_register', 'deoia_location_customizer' );
 
 /**
  * Generar CSS dinámico con las variables de paleta

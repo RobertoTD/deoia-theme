@@ -8,10 +8,18 @@
                 <!-- Logo & Copyright -->
                 <div class="flex items-center gap-4">
                     <div class="flex items-center gap-2">
+                        <?php
+                        $deoia_svg_logo_id = get_theme_mod( 'deoia_svg_logo' );
+                        $deoia_svg_logo_url = $deoia_svg_logo_id ? wp_get_attachment_url( $deoia_svg_logo_id ) : '';
+                        ?>
                         <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background-image: linear-gradient(to bottom right, var(--deoia-primary), var(--deoia-secondary));">
-                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
+                            <?php if ( $deoia_svg_logo_url ) : ?>
+                                <img src="<?php echo esc_url( $deoia_svg_logo_url ); ?>" class="w-4 h-4" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+                            <?php else : ?>
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                            <?php endif; ?>
                         </div>
                         <span class="font-bold" style="color: var(--deoia-text);"><?php bloginfo( 'name' ); ?></span>
                     </div>

@@ -86,11 +86,7 @@
 
   /* CTA buttons gradient hover */
   .deoia-cta-primary {
-    background-image: linear-gradient(
-      to right,
-      var(--deoia-primary),
-      var(--deoia-secondary)
-    );
+    background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary));
     transition: all 0.3s ease;
   }
   .deoia-cta-primary:hover {
@@ -113,8 +109,8 @@
 
   /* Glow shadows using primary/accent colors */
   .deoia-shadow-glow {
-    box-shadow: 0 0 60px
-        color-mix(in srgb, var(--deoia-primary) 30%, transparent),
+    box-shadow:
+      0 0 60px color-mix(in srgb, var(--deoia-primary) 30%, transparent),
       0 0 100px color-mix(in srgb, var(--deoia-accent) 20%, transparent);
   }
 
@@ -124,8 +120,7 @@
   }
   .deoia-card-hover:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 40px
-      color-mix(in srgb, var(--deoia-primary) 15%, transparent);
+    box-shadow: 0 10px 40px color-mix(in srgb, var(--deoia-primary) 15%, transparent);
   }
 
   /* Form inputs */
@@ -137,8 +132,7 @@
   .deoia-input:focus {
     border-color: var(--deoia-primary);
     outline: none;
-    box-shadow: 0 0 0 3px
-      color-mix(in srgb, var(--deoia-primary) 25%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--deoia-primary) 25%, transparent);
   }
   .deoia-input::placeholder {
     color: var(--deoia-muted);

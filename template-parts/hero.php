@@ -53,15 +53,24 @@
                     </div>
 
                     <!-- Trust Indicators -->
+                    <?php
+                    $trust_count = trim( (string) get_theme_mod( 'hero_trust_count', '2,500' ) );
+                    $trust_show_plus = (bool) get_theme_mod( 'hero_trust_show_plus', true );
+                    $trust_suffix = trim( (string) get_theme_mod( 'hero_trust_suffix', 'negocios activos' ) );
+                    $review_count = trim( (string) get_theme_mod( 'hero_review_count', '850' ) );
+                    ?>
                     <div class="mt-10 pt-8 border-t border-slate-100 flex flex-wrap items-center gap-8">
+                        <?php if ( $trust_count !== '' ) : ?>
                         <div class="flex items-center gap-2">
                             <div class="flex -space-x-2">
                                 <div class="w-8 h-8 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full border-2 border-white"></div>
                                 <div class="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full border-2 border-white"></div>
                                 <div class="w-8 h-8 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full border-2 border-white"></div>
                             </div>
-                            <span class="text-sm text-slate-600"><strong class="text-slate-800">+<?php echo esc_html( get_theme_mod( 'hero_trust_count', '2,500' ) ); ?></strong> negocios activos</span>
+                            <span class="text-sm text-slate-600"><strong class="text-slate-800"><?php echo $trust_show_plus ? '+' : ''; ?><?php echo esc_html( $trust_count ); ?></strong><?php if ( $trust_suffix !== '' ) : ?> <?php echo esc_html( $trust_suffix ); ?><?php endif; ?></span>
                         </div>
+                        <?php endif; ?>
+                        <?php if ( $review_count !== '' ) : ?>
                         <div class="flex items-center gap-1">
                             <div class="flex">
                                 <?php for($i = 0; $i < 5; $i++): ?>
@@ -70,8 +79,9 @@
                                 </svg>
                                 <?php endfor; ?>
                             </div>
-                            <span class="text-sm text-slate-600 ml-1"><strong class="text-slate-800">4.9</strong> (<?php echo esc_html( get_theme_mod( 'hero_review_count', '850' ) ); ?>+ reseñas)</span>
+                            <span class="text-sm text-slate-600 ml-1"><strong class="text-slate-800">4.9</strong> (<?php echo esc_html( $review_count ); ?>+ reseñas)</span>
                         </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
