@@ -16,7 +16,7 @@
                             <?php if ( $deoia_svg_logo_url ) : ?>
                                 <img src="<?php echo esc_url( $deoia_svg_logo_url ); ?>" class="w-4 h-4" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
                             <?php else : ?>
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4" style="color: var(--deoia-text-inverse);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                 </svg>
                             <?php endif; ?>

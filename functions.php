@@ -101,6 +101,61 @@ function deoia_customize_register( $wp_customize ) {
 add_action( 'customize_register', 'deoia_customize_register' );
 
 /**
+ * ════════════════════════════════════════════════════════════════════════════
+ * DEOIA Identity Section - Customizer Controls
+ * ════════════════════════════════════════════════════════════════════════════
+ */
+
+/**
+ * Registrar controles de identidad visual del header
+ */
+function deoia_identity_customizer( $wp_customize ) {
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SECTION: Identidad de Marca
+    // ═══════════════════════════════════════════════════════════════════════
+    $wp_customize->add_section( 'deoia_identity', array(
+        'title'       => __( 'Identidad de Marca', 'deoia' ),
+        'panel'       => 'deoia_branding',
+        'priority'    => 5,
+        'description' => __( 'Controla cómo se muestra el logo y el nombre del sitio en el header.', 'deoia' ),
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Toggle: Mostrar título del sitio en header
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_show_site_title', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_show_site_title', array(
+        'label'       => __( 'Mostrar título del sitio en header', 'deoia' ),
+        'description' => __( 'Muestra el nombre del sitio junto al logo en la barra de navegación.', 'deoia' ),
+        'section'     => 'deoia_identity',
+        'type'        => 'checkbox',
+        'priority'    => 10,
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Toggle: Usar modo isotipo (logo en visor)
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_use_isotipo_mode', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_use_isotipo_mode', array(
+        'label'       => __( 'Usar modo isotipo (logo en visor)', 'deoia' ),
+        'description' => __( 'ON: muestra el logo dentro del visor cuadrado con glow y fondo degradado. OFF: muestra el logo sin visor, como lockup horizontal.', 'deoia' ),
+        'section'     => 'deoia_identity',
+        'type'        => 'checkbox',
+        'priority'    => 20,
+    ) );
+}
+add_action( 'customize_register', 'deoia_identity_customizer' );
+
+/**
  * Personalizador: Hero Section
  */
 function deoia_hero_customizer( $wp_customize ) {
@@ -442,8 +497,121 @@ function deoia_palette_customizer( $wp_customize ) {
         'section'     => 'deoia_palette',
         'priority'    => 60,
     ) ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Color de Fondo del Sitio
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_color_bg_site', array(
+        'default'           => '#f8fafc',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'deoia_color_bg_site', array(
+        'label'       => __( 'Color de fondo del sitio', 'deoia' ),
+        'description' => __( 'Color de fondo principal del sitio (body).', 'deoia' ),
+        'section'     => 'deoia_palette',
+        'priority'    => 70,
+    ) ) );
 }
 add_action( 'customize_register', 'deoia_palette_customizer' );
+
+/**
+ * ════════════════════════════════════════════════════════════════════════════
+ * DEOIA Text Colors Section - Customizer Controls
+ * ════════════════════════════════════════════════════════════════════════════
+ */
+
+/**
+ * Registrar controles del Customizer para colores de texto DEOIA
+ */
+function deoia_text_colors_customizer( $wp_customize ) {
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SECTION: Colores de Texto
+    // ═══════════════════════════════════════════════════════════════════════
+    $wp_customize->add_section( 'deoia_text_colors', array(
+        'title'       => __( 'Colores de Texto', 'deoia' ),
+        'panel'       => 'deoia_branding',
+        'priority'    => 20,
+        'description' => __( 'Personaliza los colores de texto del sitio para adaptarlos al branding de tu negocio.', 'deoia' ),
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Texto Principal
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_color_text', array(
+        'default'           => '#ffffff',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'deoia_color_text', array(
+        'label'       => __( 'Texto Principal', 'deoia' ),
+        'description' => __( 'Color de texto principal para fondos oscuros (footer, widget de reservas).', 'deoia' ),
+        'section'     => 'deoia_text_colors',
+        'priority'    => 10,
+    ) ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Texto Secundario
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_color_text_secondary', array(
+        'default'           => '#e2e8f0',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'deoia_color_text_secondary', array(
+        'label'       => __( 'Texto Secundario', 'deoia' ),
+        'description' => __( 'Color para textos complementarios y descripciones en fondos oscuros.', 'deoia' ),
+        'section'     => 'deoia_text_colors',
+        'priority'    => 20,
+    ) ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Texto Atenuado
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_color_muted', array(
+        'default'           => '#94a3b8',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'deoia_color_muted', array(
+        'label'       => __( 'Texto Atenuado', 'deoia' ),
+        'description' => __( 'Color para texto de menor importancia, placeholders y ayuda.', 'deoia' ),
+        'section'     => 'deoia_text_colors',
+        'priority'    => 30,
+    ) ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Texto Etiquetas / Metadata
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_color_muted_dark', array(
+        'default'           => '#64748b',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'deoia_color_muted_dark', array(
+        'label'       => __( 'Texto Etiquetas / Metadata', 'deoia' ),
+        'description' => __( 'Color para etiquetas, subtítulos y texto descriptivo en fondos claros.', 'deoia' ),
+        'section'     => 'deoia_text_colors',
+        'priority'    => 40,
+    ) ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Texto Invertido (Botones)
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_color_text_inverse', array(
+        'default'           => '#ffffff',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'deoia_color_text_inverse', array(
+        'label'       => __( 'Texto Invertido (Botones)', 'deoia' ),
+        'description' => __( 'Color del texto sobre botones de acción y fondos con gradiente.', 'deoia' ),
+        'section'     => 'deoia_text_colors',
+        'priority'    => 50,
+    ) ) );
+}
+add_action( 'customize_register', 'deoia_text_colors_customizer' );
 
 /**
  * ════════════════════════════════════════════════════════════════════════════
@@ -580,6 +748,14 @@ function deoia_output_palette_css() {
     $glow_1    = get_theme_mod( 'deoia_color_glow_1', $defaults['glow_1'] );
     $glow_2    = get_theme_mod( 'deoia_color_glow_2', $defaults['glow_2'] );
 
+    // Obtener colores de texto con fallback a defaults de input.css
+    $text           = get_theme_mod( 'deoia_color_text', '#ffffff' );
+    $text_secondary = get_theme_mod( 'deoia_color_text_secondary', '#e2e8f0' );
+    $muted          = get_theme_mod( 'deoia_color_muted', '#94a3b8' );
+    $muted_dark     = get_theme_mod( 'deoia_color_muted_dark', '#64748b' );
+    $text_inverse   = get_theme_mod( 'deoia_color_text_inverse', '#ffffff' );
+    $bg_site        = get_theme_mod( 'deoia_color_bg_site', '#f8fafc' );
+
     ?>
     <style id="deoia-palette-css">
         html:root {
@@ -589,6 +765,12 @@ function deoia_output_palette_css() {
             --deoia-bg-card: <?php echo esc_attr( $bg_card ); ?>;
             --deoia-bg-glow-1: <?php echo esc_attr( $glow_1 ); ?>;
             --deoia-bg-glow-2: <?php echo esc_attr( $glow_2 ); ?>;
+            --deoia-text: <?php echo esc_attr( $text ); ?>;
+            --deoia-text-secondary: <?php echo esc_attr( $text_secondary ); ?>;
+            --deoia-muted: <?php echo esc_attr( $muted ); ?>;
+            --deoia-muted-dark: <?php echo esc_attr( $muted_dark ); ?>;
+            --deoia-text-inverse: <?php echo esc_attr( $text_inverse ); ?>;
+            --deoia-bg-site: <?php echo esc_attr( $bg_site ); ?>;
         }
     </style>
     <?php

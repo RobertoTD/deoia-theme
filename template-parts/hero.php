@@ -26,19 +26,18 @@
                     </div>
 
                     <!-- Headline -->
-                    <h1 class="text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight mb-6" style="color: var(--deoia-bg-card);">
-                        <?php echo esc_html( get_theme_mod( 'hero_headline_main', 'Automatiza tu agenda y' ) ); ?> 
-                        <span class="bg-clip-text text-transparent" style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary));"><?php echo esc_html( get_theme_mod( 'hero_headline_accent', 'multiplica tus ingresos' ) ); ?></span>
+                    <h1 class="text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight mb-6">
+                        <span class="bg-clip-text text-transparent" style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary));"><?php echo esc_html( get_theme_mod( 'hero_headline_main', 'Automatiza tu agenda y' ) ); ?> <?php echo esc_html( get_theme_mod( 'hero_headline_accent', 'multiplica tus ingresos' ) ); ?></span>
                     </h1>
 
                     <!-- Subheadline -->
-                    <p class="text-lg text-slate-600 mb-8 max-w-xl leading-relaxed">
+                    <p class="text-lg mb-8 max-w-xl leading-relaxed" style="color: var(--deoia-muted-dark);">
                         <?php echo esc_html( get_theme_mod( 'hero_subheadline', 'Olvídate de las llamadas perdidas y las citas olvidadas. Deja que tus clientes reserven 24/7 mientras tú te enfocas en lo que mejor haces.' ) ); ?>
                     </p>
 
                     <!-- CTAs -->
                     <div class="flex flex-wrap gap-4">
-                        <a href="#demo" class="inline-flex items-center gap-2 text-white font-semibold px-8 py-4 rounded-2xl shadow-xl hover:scale-105 transition-all duration-300" style="background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
+                        <a href="#demo" class="inline-flex items-center gap-2 font-semibold px-8 py-4 rounded-2xl shadow-xl hover:scale-105 transition-all duration-300" style="color: var(--deoia-text-inverse); background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
                             <?php echo esc_html( get_theme_mod( 'hero_cta_text_1', 'Comenzar Gratis' ) ); ?>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -67,7 +66,7 @@
                                 <div class="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full border-2 border-white"></div>
                                 <div class="w-8 h-8 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full border-2 border-white"></div>
                             </div>
-                            <span class="text-sm text-slate-600"><strong class="text-slate-800"><?php echo $trust_show_plus ? '+' : ''; ?><?php echo esc_html( $trust_count ); ?></strong><?php if ( $trust_suffix !== '' ) : ?> <?php echo esc_html( $trust_suffix ); ?><?php endif; ?></span>
+                            <span class="text-sm" style="color: var(--deoia-muted-dark);"><strong style="color: var(--deoia-bg-card);"><?php echo $trust_show_plus ? '+' : ''; ?><?php echo esc_html( $trust_count ); ?></strong><?php if ( $trust_suffix !== '' ) : ?> <?php echo esc_html( $trust_suffix ); ?><?php endif; ?></span>
                         </div>
                         <?php endif; ?>
                         <?php if ( $review_count !== '' ) : ?>
@@ -79,7 +78,7 @@
                                 </svg>
                                 <?php endfor; ?>
                             </div>
-                            <span class="text-sm text-slate-600 ml-1"><strong class="text-slate-800">4.9</strong> (<?php echo esc_html( $review_count ); ?>+ reseñas)</span>
+                            <span class="text-sm ml-1" style="color: var(--deoia-muted-dark);"><strong style="color: var(--deoia-bg-card);">4.9</strong> (<?php echo esc_html( $review_count ); ?>+ reseñas)</span>
                         </div>
                         <?php endif; ?>
                     </div>

@@ -18,6 +18,7 @@
   /* Fondos */
   --deoia-bg-card: #0f172a; /* slate-900 - Fondo de tarjetas premium */
   --deoia-bg-card-alt: #1e293b; /* slate-800 - Fondo alternativo */
+  --deoia-bg-site: #f8fafc; /* slate-50 - Fondo del sitio (body) */
 
   /* Glows decorativos */
   --deoia-bg-glow-1: #8b5cf6; /* violet-500 - Glow principal */
@@ -29,6 +30,7 @@
   --deoia-muted: #94a3b8; /* Texto muted (slate-400) */
   --deoia-muted-dark: #64748b; /* Texto muy muted (slate-500) */
   --deoia-disabled: #475569; /* Texto disabled (slate-600) */
+  --deoia-text-inverse: #ffffff; /* Texto sobre botones y gradientes */
 
   /* Bordes */
   --deoia-border: #334155; /* Borde principal (slate-700) */
@@ -45,6 +47,14 @@
   --deoia-warning-bg: rgba(245, 158, 11, 0.2);
   --deoia-error: #ef4444; /* red-500 */
   --deoia-error-bg: rgba(239, 68, 68, 0.2);
+}
+
+/* ==========================================================================
+   DEOIA Global Styles - Background del sitio
+   ========================================================================== */
+
+body {
+  background-color: var(--deoia-bg-site);
 }
 
 /* ==========================================================================
@@ -136,5 +146,14 @@
   }
   .deoia-input::placeholder {
     color: var(--deoia-muted);
+  }
+
+  /* Logo en modo lockup (sin visor) */
+  .deoia-logo-lockup {
+    filter: drop-shadow(0 8px 12px color-mix(in srgb, var(--deoia-primary) 20%, transparent));
+    transition: all 0.3s ease;
+  }
+  .deoia-logo-lockup:hover {
+    filter: drop-shadow(0 10px 15px color-mix(in srgb, var(--deoia-primary) 30%, transparent));
   }
 }
