@@ -576,9 +576,24 @@ function deoia_text_colors_customizer( $wp_customize ) {
     ) );
     $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'deoia_color_muted', array(
         'label'       => __( 'Texto Atenuado', 'deoia' ),
-        'description' => __( 'Color para texto de menor importancia, placeholders y ayuda.', 'deoia' ),
+        'description' => __( 'Color para texto de menor importancia, placeholders y ayuda (fondos oscuros).', 'deoia' ),
         'section'     => 'deoia_text_colors',
         'priority'    => 30,
+    ) ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Control: Texto Atenuado en Superficies Claras
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_color_muted_light', array(
+        'default'           => '#64748b',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'deoia_color_muted_light', array(
+        'label'       => __( 'Texto Atenuado en Superficies Claras', 'deoia' ),
+        'description' => __( 'Color para texto atenuado en cards blancas (ubicación, servicios, microcopy).', 'deoia' ),
+        'section'     => 'deoia_text_colors',
+        'priority'    => 35,
     ) ) );
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -752,6 +767,7 @@ function deoia_output_palette_css() {
     $text           = get_theme_mod( 'deoia_color_text', '#ffffff' );
     $text_secondary = get_theme_mod( 'deoia_color_text_secondary', '#e2e8f0' );
     $muted          = get_theme_mod( 'deoia_color_muted', '#94a3b8' );
+    $muted_light    = get_theme_mod( 'deoia_color_muted_light', '#64748b' );
     $muted_dark     = get_theme_mod( 'deoia_color_muted_dark', '#64748b' );
     $text_inverse   = get_theme_mod( 'deoia_color_text_inverse', '#ffffff' );
     $bg_site        = get_theme_mod( 'deoia_color_bg_site', '#f8fafc' );
@@ -768,6 +784,7 @@ function deoia_output_palette_css() {
             --deoia-text: <?php echo esc_attr( $text ); ?>;
             --deoia-text-secondary: <?php echo esc_attr( $text_secondary ); ?>;
             --deoia-muted: <?php echo esc_attr( $muted ); ?>;
+            --deoia-muted-light: <?php echo esc_attr( $muted_light ); ?>;
             --deoia-muted-dark: <?php echo esc_attr( $muted_dark ); ?>;
             --deoia-text-inverse: <?php echo esc_attr( $text_inverse ); ?>;
             --deoia-bg-site: <?php echo esc_attr( $bg_site ); ?>;

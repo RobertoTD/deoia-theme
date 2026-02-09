@@ -28,7 +28,7 @@
   --deoia-text: #ffffff; /* Texto principal (blanco) */
   --deoia-text-secondary: #e2e8f0; /* Texto secundario (slate-200) */
   --deoia-muted: #94a3b8; /* Texto muted (slate-400) - para fondos oscuros */
-  --deoia-muted-inverted: #6b5f58; /* Texto muted para fondos claros */
+  --deoia-muted-light: #64748b; /* Texto atenuado para fondos claros */
   --deoia-muted-dark: #64748b; /* Texto muy muted (slate-500) */
   --deoia-disabled: #475569; /* Texto disabled (slate-600) */
   --deoia-text-inverse: #ffffff; /* Texto sobre botones y gradientes */
