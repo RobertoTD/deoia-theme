@@ -63,7 +63,7 @@
                         <?php the_content(); ?>
                     </div>
                     <?php if ( ! empty( $caracteristicas ) ) : ?>
-                    <ul class="space-y-2 text-sm" style="color: var(--deoia-muted);">
+                    <ul class="space-y-2 text-sm" style="color: var(--deoia-muted-inverted);">
                         <?php foreach ( $caracteristicas as $caracteristica ) : ?>
                         <li class="flex items-center gap-2">
                             <svg class="w-4 h-4" style="color: var(--deoia-success);" fill="currentColor" viewBox="0 0 20 20">
@@ -83,7 +83,7 @@
                 ?>
                 <!-- Mensaje cuando no hay servicios -->
                 <div class="w-full text-center py-12">
-                    <p style="color: var(--deoia-muted);">No hay servicios configurados. Añade servicios desde el panel de administración.</p>
+                    <p style="color: var(--deoia-muted-inverted);">No hay servicios configurados. Añade servicios desde el panel de administración.</p>
                 </div>
                 <?php endif; ?>
 

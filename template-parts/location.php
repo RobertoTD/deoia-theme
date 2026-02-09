@@ -104,7 +104,7 @@ $maps_url           = get_theme_mod( 'deoia_location_maps_url', 'https://maps.go
                                 <p class="font-semibold" style="color: var(--deoia-bg-card);">
                                     <?php echo esc_html( $location_address ); ?>
                                 </p>
-                                <p class="text-sm" style="color: var(--deoia-muted);">
+                                <p class="text-sm" style="color: var(--deoia-muted-inverted);">
                                     <?php echo esc_html( $location_city ); ?> · <?php echo esc_html( $location_postal ); ?>
                                 </p>
                             </div>
@@ -119,7 +119,7 @@ $maps_url           = get_theme_mod( 'deoia_location_maps_url', 'https://maps.go
                             </div>
                             <div>
                                 <p class="font-medium text-sm" style="color: var(--deoia-muted-dark);">Referencia</p>
-                                <p class="text-sm" style="color: var(--deoia-muted);">
+                                <p class="text-sm" style="color: var(--deoia-muted-inverted);">
                                     <?php echo esc_html( $location_reference ); ?>
                                 </p>
                             </div>
@@ -134,7 +134,7 @@ $maps_url           = get_theme_mod( 'deoia_location_maps_url', 'https://maps.go
                             </div>
                             <div>
                                 <p class="font-medium text-sm" style="color: var(--deoia-muted-dark);">Horario de atención</p>
-                                <p class="text-sm" style="color: var(--deoia-muted);">
+                                <p class="text-sm" style="color: var(--deoia-muted-inverted);">
                                     <?php echo esc_html( $location_hours ); ?>
                                 </p>
                             </div>
