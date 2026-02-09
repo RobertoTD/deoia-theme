@@ -9,13 +9,11 @@
                 <span class="inline-block font-medium text-sm px-4 py-2 rounded-full mb-4" style="background-color: color-mix(in srgb, var(--deoia-primary) 15%, transparent); color: var(--deoia-primary);">
                     Principales Servicios
                 </span>
-                <h2 class="text-3xl lg:text-4xl font-bold mb-4" style="color: var(--deoia-bg-card);">
-                Enfoque terapéutico basado en evidencia
-                </h2>
+                
             </div>
 
             <!-- Bento Grid Secundario -->
-            <div class="flex flex-wrap justify-center gap-6">
+            <div class="flex flex-wrap justify-center gap-6 deoia-services-cards">
                 
                 <?php
                 $servicios_query = new WP_Query( array(

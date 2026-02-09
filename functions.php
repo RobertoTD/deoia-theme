@@ -46,6 +46,30 @@ function deoia_sanitize_svg_attachment( $attachment_id ) {
 }
 
 /**
+ * Sanitización para rango de opacidad del patrón (0–100)
+ */
+function deoia_sanitize_opacity_range( $value ) {
+    $value = absint( $value );
+    return max( 0, min( 100, $value ) );
+}
+
+/**
+ * Sanitización para blend mode del patrón
+ */
+function deoia_sanitize_blend_mode( $value ) {
+    $valid = array( 'normal', 'multiply', 'overlay', 'soft-light', 'screen', 'darken', 'lighten' );
+    return in_array( $value, $valid, true ) ? $value : 'normal';
+}
+
+/**
+ * Sanitización para color base del patrón (clave de variable CSS o vacío)
+ */
+function deoia_sanitize_pattern_color( $value ) {
+    $valid = array( '', 'primary', 'secondary', 'accent', 'muted', 'muted-light', 'muted-dark' );
+    return in_array( $value, $valid, true ) ? $value : '';
+}
+
+/**
  * Personalizador: Logo SVG + Redes Sociales
  */
 function deoia_customize_register( $wp_customize ) {
@@ -747,6 +771,153 @@ function deoia_location_customizer( $wp_customize ) {
 add_action( 'customize_register', 'deoia_location_customizer' );
 
 /**
+ * ════════════════════════════════════════════════════════════════════════════
+ * DEOIA Background Pattern (SVG) - Customizer Controls
+ * ════════════════════════════════════════════════════════════════════════════
+ */
+
+/**
+ * Registrar controles del Customizer para patrón de fondo SVG
+ */
+function deoia_bg_pattern_customizer( $wp_customize ) {
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SECTION: Patrón de Fondo (SVG)
+    // ═══════════════════════════════════════════════════════════════════════
+    $wp_customize->add_section( 'deoia_bg_pattern', array(
+        'title'       => __( 'Patrón de Fondo (SVG)', 'deoia' ),
+        'panel'       => 'deoia_branding',
+        'priority'    => 15,
+        'description' => __( 'Agrega un patrón SVG sutil como textura de fondo del sitio. Si está desactivado o sin SVG, el fondo se mantiene como color sólido.', 'deoia' ),
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Toggle: Activar patrón de fondo
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_bg_pattern_enabled', array(
+        'default'           => false,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_bg_pattern_enabled', array(
+        'label'       => __( 'Activar patrón de fondo', 'deoia' ),
+        'description' => __( 'Habilita un patrón SVG repetible como textura sutil sobre el color de fondo del sitio.', 'deoia' ),
+        'section'     => 'deoia_bg_pattern',
+        'type'        => 'checkbox',
+        'priority'    => 10,
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Media: Subir SVG de patrón
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_bg_pattern_svg', array(
+        'default'           => '',
+        'sanitize_callback' => 'deoia_sanitize_svg_attachment',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'deoia_bg_pattern_svg', array(
+        'label'       => __( 'SVG del Patrón', 'deoia' ),
+        'description' => __( 'Sube un archivo SVG tileable. Recomendación: patrones de heropatterns.com o svgbackgrounds.com.', 'deoia' ),
+        'section'     => 'deoia_bg_pattern',
+        'mime_type'   => 'image/svg+xml',
+        'priority'    => 20,
+    ) ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Range: Intensidad / Opacidad (0–100)
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_bg_pattern_opacity', array(
+        'default'           => 5,
+        'sanitize_callback' => 'deoia_sanitize_opacity_range',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_bg_pattern_opacity', array(
+        'label'       => __( 'Intensidad del patrón (%)', 'deoia' ),
+        'description' => __( 'Controla la opacidad del patrón. Valores bajos (3–8) dan un efecto sutil.', 'deoia' ),
+        'section'     => 'deoia_bg_pattern',
+        'type'        => 'range',
+        'input_attrs' => array(
+            'min'  => 0,
+            'max'  => 100,
+            'step' => 1,
+        ),
+        'priority'    => 30,
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Select: Modo de mezcla
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_bg_pattern_blend', array(
+        'default'           => 'normal',
+        'sanitize_callback' => 'deoia_sanitize_blend_mode',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_bg_pattern_blend', array(
+        'label'       => __( 'Modo de mezcla', 'deoia' ),
+        'description' => __( 'Cómo se mezcla el patrón con el fondo. Normal es la opción más segura.', 'deoia' ),
+        'section'     => 'deoia_bg_pattern',
+        'type'        => 'select',
+        'choices'     => array(
+            'normal'     => __( 'Normal', 'deoia' ),
+            'multiply'   => __( 'Multiply', 'deoia' ),
+            'overlay'    => __( 'Overlay', 'deoia' ),
+            'soft-light' => __( 'Soft Light', 'deoia' ),
+            'screen'     => __( 'Screen', 'deoia' ),
+            'darken'     => __( 'Darken', 'deoia' ),
+            'lighten'    => __( 'Lighten', 'deoia' ),
+        ),
+        'priority'    => 40,
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Select: Color base del patrón (usar CSS vars del theme)
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_bg_pattern_color', array(
+        'default'           => '',
+        'sanitize_callback' => 'deoia_sanitize_pattern_color',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_bg_pattern_color', array(
+        'label'       => __( 'Color base del patrón', 'deoia' ),
+        'description' => __( 'Tiñe el patrón con un color del theme. "Original" respeta los colores propios del SVG.', 'deoia' ),
+        'section'     => 'deoia_bg_pattern',
+        'type'        => 'select',
+        'choices'     => array(
+            ''            => __( 'Original (colores del SVG)', 'deoia' ),
+            'primary'     => __( 'Primario (--deoia-primary)', 'deoia' ),
+            'secondary'   => __( 'Secundario (--deoia-secondary)', 'deoia' ),
+            'accent'      => __( 'Acento (--deoia-accent)', 'deoia' ),
+            'muted'       => __( 'Muted (--deoia-muted)', 'deoia' ),
+            'muted-light' => __( 'Muted Light (--deoia-muted-light)', 'deoia' ),
+            'muted-dark'  => __( 'Muted Dark (--deoia-muted-dark)', 'deoia' ),
+        ),
+        'priority'    => 50,
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Number: Tamaño del tile (px)
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_bg_pattern_size', array(
+        'default'           => 0,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_bg_pattern_size', array(
+        'label'       => __( 'Tamaño del tile (px)', 'deoia' ),
+        'description' => __( '0 = tamaño natural del SVG. Ajusta para escalar el patrón.', 'deoia' ),
+        'section'     => 'deoia_bg_pattern',
+        'type'        => 'number',
+        'input_attrs' => array(
+            'min'  => 0,
+            'max'  => 1000,
+            'step' => 10,
+        ),
+        'priority'    => 60,
+    ) );
+}
+add_action( 'customize_register', 'deoia_bg_pattern_customizer' );
+
+/**
  * Generar CSS dinámico con las variables de paleta
  * Usa html:root para mayor especificidad que :root de Tailwind
  */
@@ -793,6 +964,106 @@ function deoia_output_palette_css() {
     <?php
 }
 add_action( 'wp_footer', 'deoia_output_palette_css', 1 );
+
+/**
+ * Generar CSS del patrón de fondo SVG (solo si está habilitado y hay SVG)
+ * Usa body::before con position:fixed + z-index:-1 para colocar el patrón
+ * entre el background-color del body y todo el contenido, sin romper layouts.
+ * Requiere body { position:relative; z-index:0 } para crear stacking context.
+ */
+function deoia_output_bg_pattern_css() {
+    // Bail early si no está habilitado
+    $enabled = get_theme_mod( 'deoia_bg_pattern_enabled', false );
+    if ( ! $enabled ) {
+        return;
+    }
+
+    // Obtener el attachment del SVG
+    $svg_id = get_theme_mod( 'deoia_bg_pattern_svg', '' );
+    if ( empty( $svg_id ) ) {
+        return;
+    }
+
+    // Verificar que es SVG válido
+    $mime = get_post_mime_type( $svg_id );
+    if ( 'image/svg+xml' !== $mime ) {
+        return;
+    }
+
+    $svg_url = wp_get_attachment_url( $svg_id );
+    if ( ! $svg_url ) {
+        return;
+    }
+
+    // Obtener settings
+    $opacity   = get_theme_mod( 'deoia_bg_pattern_opacity', 5 );
+    $blend     = get_theme_mod( 'deoia_bg_pattern_blend', 'normal' );
+    $color_key = get_theme_mod( 'deoia_bg_pattern_color', '' );
+    $tile_size = get_theme_mod( 'deoia_bg_pattern_size', 0 );
+
+    // Calcular valores CSS
+    $opacity_css = number_format( max( 0, min( 100, absint( $opacity ) ) ) / 100, 2 );
+    $svg_url_esc = esc_url( $svg_url );
+    $blend_esc   = esc_attr( $blend );
+    $size_css    = 'auto';
+    if ( $tile_size > 0 ) {
+        $size_val = absint( $tile_size );
+        $size_css = $size_val . 'px ' . $size_val . 'px';
+    }
+
+    // Mapeo de claves a variables CSS del theme
+    $use_tint  = false;
+    $color_var = '';
+    if ( ! empty( $color_key ) ) {
+        $var_map = array(
+            'primary'     => '--deoia-primary',
+            'secondary'   => '--deoia-secondary',
+            'accent'      => '--deoia-accent',
+            'muted'       => '--deoia-muted',
+            'muted-light' => '--deoia-muted-light',
+            'muted-dark'  => '--deoia-muted-dark',
+        );
+        if ( isset( $var_map[ $color_key ] ) ) {
+            $use_tint  = true;
+            $color_var = $var_map[ $color_key ];
+        }
+    }
+
+    ?>
+    <style id="deoia-bg-pattern-css">
+        body {
+            position: relative;
+            z-index: 0;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            <?php if ( $use_tint ) : ?>
+            -webkit-mask-image: url('<?php echo $svg_url_esc; ?>');
+            mask-image: url('<?php echo $svg_url_esc; ?>');
+            -webkit-mask-repeat: repeat;
+            mask-repeat: repeat;
+            -webkit-mask-size: <?php echo $size_css; ?>;
+            mask-size: <?php echo $size_css; ?>;
+            background-color: var(<?php echo esc_attr( $color_var ); ?>);
+            <?php else : ?>
+            background-image: url('<?php echo $svg_url_esc; ?>');
+            background-repeat: repeat;
+            background-size: <?php echo $size_css; ?>;
+            <?php endif; ?>
+            opacity: <?php echo $opacity_css; ?>;
+            mix-blend-mode: <?php echo $blend_esc; ?>;
+        }
+    </style>
+    <?php
+}
+add_action( 'wp_footer', 'deoia_output_bg_pattern_css', 2 );
 
 /**
  * Script de Customizer para auto-rellenar colores al cambiar preset
