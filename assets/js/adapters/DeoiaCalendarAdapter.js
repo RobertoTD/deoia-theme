@@ -350,10 +350,11 @@
       // Obtener servicio seleccionado
       const servicioSelect = document.querySelector('#servicio');
       const servicioValue = servicioSelect ? servicioSelect.value : '';
-      // Obtener el nombre del servicio (texto visible) en lugar del ID
-      const servicioNombre =
-        servicioSelect && servicioSelect.selectedIndex >= 0
-          ? servicioSelect.options[servicioSelect.selectedIndex].text
+      const selectedOpt = servicioSelect && servicioSelect.selectedIndex >= 0
+          ? servicioSelect.options[servicioSelect.selectedIndex]
+          : null;
+      const servicioNombre = selectedOpt
+          ? (selectedOpt.dataset.baseLabel || selectedOpt.text).replace(/\s*\|\s*Disponible\s*$/, '').trim()
           : '';
 
       if (!servicioValue) {

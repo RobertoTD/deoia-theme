@@ -82,6 +82,7 @@
                       servicio
                         ? String(servicio)
                             .replace(/^fixed::/, '')
+                            .replace(/\s*\|\s*Disponible\s*$/, '')
                             .trim() || 'Servicio no especificado'
                         : 'Servicio no especificado'
                     }</span>
