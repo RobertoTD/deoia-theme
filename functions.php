@@ -16,8 +16,105 @@ function deoia_theme_setup() {
 
     // Soporte para título del sitio
     add_theme_support( 'title-tag' );
+
+    // Gutenberg / Block Editor compatibility
+    add_theme_support( 'wp-block-styles' );
+    add_theme_support( 'align-wide' );
+    add_theme_support( 'editor-styles' );
+    add_editor_style( 'assets/css/editor.css' );
+
+    // Menús de navegación
+    register_nav_menus( array(
+        'deoia_footer_menu' => __( 'Menú del footer', 'deoia' ),
+    ) );
 }
 add_action( 'after_setup_theme', 'deoia_theme_setup' );
+
+/**
+ * Seed inicial al activar el tema: página de privacidad y menú Footer (si no existen).
+ */
+function deoia_theme_seed_on_activation() {
+    $privacy_slug = 'politica-de-privacidad';
+    $privacy_title = __( 'Política de privacidad y ética profesional', 'deoia' );
+
+    // Buscar página existente por slug (no crear duplicados)
+    $existing = get_page_by_path( $privacy_slug, OBJECT, 'page' );
+    if ( $existing ) {
+        $privacy_id = (int) $existing->ID;
+        if ( get_post_status( $privacy_id ) === 'publish' ) {
+            update_option( 'deoia_privacy_page_id', $privacy_id );
+        }
+    } else {
+        // Contenido Gutenberg base editable
+        $privacy_content = '<!-- wp:paragraph -->
+<p>' . esc_html__( 'Este sitio respeta tu privacidad. Utilizamos la información que nos facilitas únicamente para gestionar reservas y mejorar el servicio. No compartimos tus datos con terceros sin tu consentimiento.', 'deoia' ) . '</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>' . esc_html__( 'Puedes ejercer tus derechos de acceso, rectificación, supresión y portabilidad contactando con nosotros. Los datos se tratarán con sujeción a la normativa aplicable en materia de protección de datos.', 'deoia' ) . '</p>
+<!-- /wp:paragraph -->';
+
+        $privacy_id = wp_insert_post( array(
+            'post_title'   => $privacy_title,
+            'post_name'     => $privacy_slug,
+            'post_content'  => $privacy_content,
+            'post_status'  => 'publish',
+            'post_type'    => 'page',
+            'post_author'  => 1,
+        ) );
+        if ( $privacy_id && ! is_wp_error( $privacy_id ) ) {
+            update_option( 'deoia_privacy_page_id', (int) $privacy_id );
+        } else {
+            $privacy_id = 0;
+        }
+    }
+
+    // No pisar menús existentes: solo crear/asignar si la location está vacía
+    $locations = get_theme_mod( 'nav_menu_locations', array() );
+    $footer_location = isset( $locations['deoia_footer_menu'] ) ? (int) $locations['deoia_footer_menu'] : 0;
+    if ( $footer_location > 0 ) {
+        return;
+    }
+
+    // Crear menú "Footer" si no existe y tenemos página de privacidad
+    $footer_menu = get_term_by( 'name', 'Footer', 'nav_menu' );
+    if ( ! $footer_menu ) {
+        $menu_id = wp_create_nav_menu( 'Footer' );
+        if ( is_wp_error( $menu_id ) ) {
+            return;
+        }
+    } else {
+        $menu_id = (int) $footer_menu->term_id;
+    }
+
+    // Añadir la página de privacidad al menú (solo si tenemos ID y el item no existe ya)
+    if ( ! empty( $privacy_id ) && $privacy_id > 0 && get_post_status( $privacy_id ) === 'publish' ) {
+            $menu_items = wp_get_nav_menu_items( $menu_id );
+            $has_privacy = false;
+            if ( is_array( $menu_items ) ) {
+                foreach ( $menu_items as $item ) {
+                    if ( (int) $item->object_id === $privacy_id && $item->object === 'page' ) {
+                        $has_privacy = true;
+                        break;
+                    }
+                }
+            }
+            if ( ! $has_privacy ) {
+                wp_update_nav_menu_item( $menu_id, 0, array(
+                    'menu-item-title'     => $privacy_title,
+                    'menu-item-object'    => 'page',
+                    'menu-item-object-id' => $privacy_id,
+                    'menu-item-type'      => 'post_type',
+                    'menu-item-status'    => 'publish',
+                ) );
+            }
+    }
+
+    // Asignar el menú a la location del footer
+    $locations['deoia_footer_menu'] = $menu_id;
+    set_theme_mod( 'nav_menu_locations', $locations );
+}
+add_action( 'after_switch_theme', 'deoia_theme_seed_on_activation' );
 
 /**
  * Permitir subida de archivos SVG solo para administradores
@@ -88,7 +185,7 @@ function deoia_customize_register( $wp_customize ) {
 
     // Twitter URL
     $wp_customize->add_setting( 'twitter_url', array(
-        'default'           => '',
+        'default'           => 'https://x.com/home',
         'sanitize_callback' => 'esc_url_raw',
     ) );
     $wp_customize->add_control( 'twitter_url', array(
@@ -100,7 +197,7 @@ function deoia_customize_register( $wp_customize ) {
 
     // Instagram URL
     $wp_customize->add_setting( 'instagram_url', array(
-        'default'           => '',
+        'default'           => 'https://www.instagram.com/',
         'sanitize_callback' => 'esc_url_raw',
     ) );
     $wp_customize->add_control( 'instagram_url', array(
@@ -112,7 +209,7 @@ function deoia_customize_register( $wp_customize ) {
 
     // LinkedIn URL
     $wp_customize->add_setting( 'linkedin_url', array(
-        'default'           => '',
+        'default'           => 'https://www.linkedin.com/feed/',
         'sanitize_callback' => 'esc_url_raw',
     ) );
     $wp_customize->add_control( 'linkedin_url', array(

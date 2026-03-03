@@ -15,8 +15,10 @@ if ( have_posts() ) {
 
 
   
-<div class="page-content">
-  <?php the_content(); ?>
+<div class="deoia-content-wrap">
+    <div class="deoia-wysiwyg">
+        <?php the_content(); ?>
+    </div>
 </div>
     
 

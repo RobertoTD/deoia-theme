@@ -58,6 +58,342 @@ body {
   background-color: var(--deoia-bg-site);
 }
 
+/* Navbar clearance for pages with sticky-footer layout (not Home) */
+body:not(.home) #deoia-content {
+  padding-top: 5.5rem;
+}
+
+/* ==========================================================================
+   Portal de Citas Virtuales — styled from theme, rendered by plugin
+   ========================================================================== */
+
+.aa-join-portal {
+  max-width: 480px;
+  margin: 3rem auto;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.aa-join-portal h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--deoia-bg-card);
+  margin: 0 0 0.25rem;
+}
+
+.aa-join-portal .aa-join-meta {
+  color: var(--deoia-muted-light);
+  margin: 0 0 1.5rem;
+  font-size: 0.875rem;
+}
+
+.aa-join-portal .aa-join-error {
+  color: var(--deoia-error);
+  font-weight: 500;
+}
+
+.aa-join-portal .aa-join-warning {
+  color: #92400e;
+  font-weight: 500;
+}
+
+#aa-join-status {
+  margin: 1rem 0;
+  font-size: 0.875rem;
+  color: var(--deoia-muted-light);
+}
+
+#aa-join-countdown {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.75rem 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--deoia-bg-card);
+}
+
+#aa-join-btn {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary));
+  color: var(--deoia-text-inverse);
+  border-radius: 0.75rem;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);
+  transition: all 0.3s ease;
+}
+
+#aa-join-btn:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
+
+/* ==========================================================================
+   DEOIA Editorial — Content wrapper + WYSIWYG typography
+   ========================================================================== */
+
+.deoia-content-wrap {
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+@media (min-width: 640px) {
+  .deoia-content-wrap {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.deoia-entry-header {
+  margin-bottom: 2rem;
+}
+
+.deoia-entry-title {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--deoia-bg-card);
+}
+
+@media (min-width: 640px) {
+  .deoia-entry-title {
+    font-size: 2.5rem;
+  }
+}
+
+.deoia-wysiwyg {
+  color: #1e293b;
+  line-height: 1.75;
+  font-size: 1rem;
+}
+
+.deoia-wysiwyg > *:first-child {
+  margin-top: 0;
+}
+
+.deoia-wysiwyg > *:last-child {
+  margin-bottom: 0;
+}
+
+.deoia-wysiwyg p {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+
+.deoia-wysiwyg h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+  line-height: 1.2;
+  color: var(--deoia-bg-card);
+}
+
+.deoia-wysiwyg h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 1.75em;
+  margin-bottom: 0.65em;
+  line-height: 1.3;
+  color: var(--deoia-bg-card);
+}
+
+.deoia-wysiwyg h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.4;
+  color: var(--deoia-bg-card);
+}
+
+.deoia-wysiwyg h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 1.25em;
+  margin-bottom: 0.5em;
+  color: var(--deoia-bg-card);
+}
+
+.deoia-wysiwyg a {
+  color: var(--deoia-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+
+.deoia-wysiwyg a:hover {
+  color: var(--deoia-secondary);
+}
+
+.deoia-wysiwyg strong {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.deoia-wysiwyg ul,
+.deoia-wysiwyg ol {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.75em;
+}
+
+.deoia-wysiwyg ul {
+  list-style-type: disc;
+}
+
+.deoia-wysiwyg ol {
+  list-style-type: decimal;
+}
+
+.deoia-wysiwyg li {
+  margin-top: 0.35em;
+  margin-bottom: 0.35em;
+}
+
+.deoia-wysiwyg li > ul,
+.deoia-wysiwyg li > ol {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.deoia-wysiwyg blockquote {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  padding-left: 1.25em;
+  border-left: 4px solid var(--deoia-primary);
+  color: #475569;
+  font-style: italic;
+}
+
+.deoia-wysiwyg hr {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+}
+
+.deoia-wysiwyg img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.deoia-wysiwyg figure {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.deoia-wysiwyg figcaption {
+  font-size: 0.875rem;
+  color: var(--deoia-muted-light);
+  text-align: center;
+  margin-top: 0.5em;
+}
+
+.deoia-wysiwyg pre {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  padding: 1em 1.25em;
+  background-color: #f1f5f9;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.deoia-wysiwyg code {
+  font-size: 0.875em;
+  background-color: #f1f5f9;
+  padding: 0.15em 0.35em;
+  border-radius: 0.25rem;
+}
+
+.deoia-wysiwyg pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: inherit;
+}
+
+.deoia-wysiwyg table {
+  width: 100%;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.deoia-wysiwyg th,
+.deoia-wysiwyg td {
+  padding: 0.75em 1em;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+.deoia-wysiwyg th {
+  font-weight: 600;
+  background-color: #f8fafc;
+  color: var(--deoia-bg-card);
+}
+
+/* Gutenberg-specific blocks */
+.deoia-wysiwyg .wp-block-separator {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+}
+
+.deoia-wysiwyg .wp-block-separator.is-style-wide {
+  max-width: 100%;
+}
+
+.deoia-wysiwyg .wp-block-separator.is-style-dots {
+  border: 0;
+  text-align: center;
+  letter-spacing: 1em;
+}
+
+.deoia-wysiwyg .wp-block-image {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.deoia-wysiwyg .wp-block-buttons {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.deoia-wysiwyg .wp-block-columns {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.deoia-wysiwyg .alignwide {
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.deoia-wysiwyg .alignfull {
+  max-width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  width: 100vw;
+}
+
 /* ==========================================================================
    DEOIA Component Styles - Hover/Focus states using CSS Variables
    ========================================================================== */

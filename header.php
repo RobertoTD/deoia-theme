@@ -7,7 +7,7 @@
     
     <?php wp_head(); ?> 
 </head>
-<body <?php body_class( 'antialiased' ); ?>>
+<body <?php body_class( is_front_page() ? 'antialiased' : 'antialiased min-h-screen flex flex-col' ); ?>>
 
     <!-- ═══════════════════════════════════════════════════════════════════════
          NAVBAR FLOTANTE
@@ -88,3 +88,7 @@
             </div>
         </div>
     </nav>
+
+<?php if ( ! is_front_page() ) : ?>
+    <main id="deoia-content" class="flex-1">
+<?php endif; ?>

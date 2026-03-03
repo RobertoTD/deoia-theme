@@ -1,0 +1,132 @@
+/*
+ * DEOIA Editor Styles
+ * Applied inside the Gutenberg block editor to match frontend typography.
+ * WP wraps this automatically in .editor-styles-wrapper.
+ */
+
+:root {
+  --deoia-primary: #8b5cf6;
+  --deoia-secondary: #6366f1;
+  --deoia-bg-card: #0f172a;
+  --deoia-muted-light: #64748b;
+}
+
+.editor-styles-wrapper {
+  color: #1e293b;
+  line-height: 1.75;
+  font-size: 1rem;
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.editor-styles-wrapper p {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+
+.editor-styles-wrapper h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--deoia-bg-card);
+}
+
+.editor-styles-wrapper h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--deoia-bg-card);
+}
+
+.editor-styles-wrapper h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--deoia-bg-card);
+}
+
+.editor-styles-wrapper h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--deoia-bg-card);
+}
+
+.editor-styles-wrapper a {
+  color: var(--deoia-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.editor-styles-wrapper ul {
+  list-style-type: disc;
+  padding-left: 1.75em;
+}
+
+.editor-styles-wrapper ol {
+  list-style-type: decimal;
+  padding-left: 1.75em;
+}
+
+.editor-styles-wrapper li {
+  margin-top: 0.35em;
+  margin-bottom: 0.35em;
+}
+
+.editor-styles-wrapper blockquote {
+  padding-left: 1.25em;
+  border-left: 4px solid var(--deoia-primary);
+  color: #475569;
+  font-style: italic;
+}
+
+.editor-styles-wrapper hr {
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+}
+
+.editor-styles-wrapper img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+.editor-styles-wrapper figcaption {
+  font-size: 0.875rem;
+  color: var(--deoia-muted-light);
+  text-align: center;
+  margin-top: 0.5em;
+}
+
+.editor-styles-wrapper pre {
+  padding: 1em 1.25em;
+  background-color: #f1f5f9;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.editor-styles-wrapper code {
+  font-size: 0.875em;
+  background-color: #f1f5f9;
+  padding: 0.15em 0.35em;
+  border-radius: 0.25rem;
+}
+
+.editor-styles-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.editor-styles-wrapper th,
+.editor-styles-wrapper td {
+  padding: 0.75em 1em;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+.editor-styles-wrapper th {
+  font-weight: 600;
+  background-color: #f8fafc;
+  color: var(--deoia-bg-card);
+}
