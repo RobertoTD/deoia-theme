@@ -1,23 +1,18 @@
-
+<?php $deoia_show_calendar = get_theme_mod( 'deoia_show_calendar_in_hero', true ); ?>
 
     <section class="min-h-screen pt-28 pb-16 px-6">
             <!-- Bento Grid Principal -->
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <div class="grid grid-cols-1 <?php echo $deoia_show_calendar ? 'lg:grid-cols-5' : ''; ?> gap-6">
                 
+                <?php if ( $deoia_show_calendar ) : ?>
                 <!-- ══ CELDA A: Widget de Reservas (primera posición / izquierda en desktop) ══ -->
                 <div id="reservar" class="lg:col-span-2">
-                    <?php 
-                    // Mostrar calendario solo si el toggle está activo en Customizer
-                    if ( get_theme_mod( 'deoia_show_calendar_in_hero', true ) ) :
-                        // Ejecutar el shortcode del plugin de agenda
-                        // El adaptador premium (DeoiaCalendarAdapter.js) se encargará de aplicar los estilos
-                        echo do_shortcode('[agenda_automatizada]'); 
-                    endif;
-                    ?>
+                    <?php echo do_shortcode('[agenda_automatizada]'); ?>
                 </div>
+                <?php endif; ?>
 
                 <!-- ══ CELDA B: Mensaje Principal (segunda posición / derecha en desktop) ══ -->
-                <div class="lg:col-span-3 bg-white rounded-3xl p-8 lg:p-12 shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col justify-center">
+                <div class="<?php echo $deoia_show_calendar ? 'lg:col-span-3' : ''; ?> bg-white rounded-3xl p-8 lg:p-12 shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col justify-center">
                     
                     <!-- Badge -->
                     <div class="inline-flex items-center gap-2 font-medium text-sm px-4 py-2 rounded-full w-fit mb-6" style="background-color: color-mix(in srgb, var(--deoia-primary) 15%, transparent); color: var(--deoia-primary);">

@@ -25,6 +25,8 @@ if ( have_posts() ) {
 
 <?php get_template_part('template-parts/after-content'); ?>
 
-<?php get_template_part('template-parts/location'); ?>
+<?php if ( get_theme_mod( 'deoia_location_visible', true ) ) : ?>
+    <?php get_template_part('template-parts/location'); ?>
+<?php endif; ?>
 
 <?php get_footer(); ?>

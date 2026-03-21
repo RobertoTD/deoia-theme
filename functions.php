@@ -770,6 +770,22 @@ function deoia_location_customizer( $wp_customize ) {
     ) );
 
     // ─────────────────────────────────────────────────────────────────────────
+    // Control: Mostrar / Ocultar sección
+    // ─────────────────────────────────────────────────────────────────────────
+    $wp_customize->add_setting( 'deoia_location_visible', array(
+        'default'           => true,
+        'sanitize_callback' => 'wp_validate_boolean',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_location_visible', array(
+        'label'       => __( 'Mostrar sección de Ubicación', 'deoia' ),
+        'description' => __( 'Desmarca para ocultar la sección completa de ubicación en la página principal.', 'deoia' ),
+        'section'     => 'deoia_location',
+        'type'        => 'checkbox',
+        'priority'    => 1,
+    ) );
+
+    // ─────────────────────────────────────────────────────────────────────────
     // Control: Dirección
     // ─────────────────────────────────────────────────────────────────────────
     $wp_customize->add_setting( 'deoia_location_address', array(
