@@ -347,6 +347,42 @@ function deoia_hero_customizer( $wp_customize ) {
         'priority' => 50,
     ) );
 
+    // URL Botón Principal
+    $wp_customize->add_setting( 'hero_cta_url_1', array(
+        'default'           => '#demo',
+        'sanitize_callback' => 'esc_url_raw',
+    ) );
+    $wp_customize->add_control( 'hero_cta_url_1', array(
+        'label'    => __( 'URL Botón Principal', 'deoia' ),
+        'section'  => 'hero_settings',
+        'type'     => 'url',
+        'priority' => 51,
+    ) );
+
+    // CTA Botón Secundario
+    $wp_customize->add_setting( 'hero_cta_text_2', array(
+        'default'           => 'Ver Demo',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'hero_cta_text_2', array(
+        'label'    => __( 'Texto Botón Secundario', 'deoia' ),
+        'section'  => 'hero_settings',
+        'type'     => 'text',
+        'priority' => 52,
+    ) );
+
+    // URL Botón Secundario
+    $wp_customize->add_setting( 'hero_cta_url_2', array(
+        'default'           => '#video',
+        'sanitize_callback' => 'esc_url_raw',
+    ) );
+    $wp_customize->add_control( 'hero_cta_url_2', array(
+        'label'    => __( 'URL Botón Secundario', 'deoia' ),
+        'section'  => 'hero_settings',
+        'type'     => 'url',
+        'priority' => 53,
+    ) );
+
     // Métrica: Negocios Activos
     $wp_customize->add_setting( 'hero_trust_count', array(
         'default'           => '2,500',

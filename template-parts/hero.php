@@ -32,17 +32,17 @@
 
                     <!-- CTAs -->
                     <div class="flex flex-wrap gap-4">
-                        <a href="#demo" class="inline-flex items-center gap-2 font-semibold px-8 py-4 rounded-2xl shadow-xl hover:scale-105 transition-all duration-300" style="color: var(--deoia-text-inverse); background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
+                        <a href="<?php echo esc_url( get_theme_mod( 'hero_cta_url_1', '#demo' ) ); ?>" class="inline-flex items-center gap-2 font-semibold px-8 py-4 rounded-2xl shadow-xl hover:scale-105 transition-all duration-300" style="color: var(--deoia-text-inverse); background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
                             <?php echo esc_html( get_theme_mod( 'hero_cta_text_1', 'Comenzar Gratis' ) ); ?>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                             </svg>
                         </a>
-                        <a href="#video" class="inline-flex items-center gap-2 font-semibold px-8 py-4 rounded-2xl hover:scale-105 transition-all duration-300" style="background-color: color-mix(in srgb, var(--deoia-bg-card) 10%, white); color: var(--deoia-bg-card);">
+                        <a href="<?php echo esc_url( get_theme_mod( 'hero_cta_url_2', '#video' ) ); ?>" class="inline-flex items-center gap-2 font-semibold px-8 py-4 rounded-2xl hover:scale-105 transition-all duration-300" style="background-color: color-mix(in srgb, var(--deoia-bg-card) 10%, white); color: var(--deoia-bg-card);">
                             <svg class="w-5 h-5" style="color: var(--deoia-primary);" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
-                            Ver Demo
+                            <?php echo esc_html( get_theme_mod( 'hero_cta_text_2', 'Ver Demo' ) ); ?>
                         </a>
                     </div>
 
