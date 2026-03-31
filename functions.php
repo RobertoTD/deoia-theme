@@ -31,6 +31,20 @@ function deoia_theme_setup() {
 add_action( 'after_setup_theme', 'deoia_theme_setup' );
 
 /**
+ * Registra estilos de bloque personalizados para Gutenberg.
+ */
+function deoia_register_block_styles() {
+    register_block_style(
+        'core/paragraph',
+        array(
+            'name'  => 'deoia-badge',
+            'label' => __( 'Etiqueta Deoia', 'deoia' ),
+        )
+    );
+}
+add_action( 'init', 'deoia_register_block_styles' );
+
+/**
  * Seed inicial al activar el tema: página de privacidad y menú Footer (si no existen).
  */
 function deoia_theme_seed_on_activation() {
@@ -944,7 +958,7 @@ function deoia_bg_pattern_customizer( $wp_customize ) {
     // Toggle: Activar patrón de fondo
     // ─────────────────────────────────────────────────────────────────────────
     $wp_customize->add_setting( 'deoia_bg_pattern_enabled', array(
-        'default'           => false,
+        'default'           => true,
         'sanitize_callback' => 'wp_validate_boolean',
         'transport'         => 'refresh',
     ) );
@@ -966,7 +980,7 @@ function deoia_bg_pattern_customizer( $wp_customize ) {
     ) );
     $wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'deoia_bg_pattern_svg', array(
         'label'       => __( 'SVG del Patrón', 'deoia' ),
-        'description' => __( 'Sube un archivo SVG tileable. Recomendación: patrones de heropatterns.com o svgbackgrounds.com.', 'deoia' ),
+        'description' => __( 'Sube un archivo SVG tileable. Si no eliges uno, se usa el patrón incluido del tema por defecto. Recomendación: patrones de heropatterns.com o svgbackgrounds.com.', 'deoia' ),
         'section'     => 'deoia_bg_pattern',
         'mime_type'   => 'image/svg+xml',
         'priority'    => 20,
@@ -976,7 +990,7 @@ function deoia_bg_pattern_customizer( $wp_customize ) {
     // Range: Intensidad / Opacidad (0–100)
     // ─────────────────────────────────────────────────────────────────────────
     $wp_customize->add_setting( 'deoia_bg_pattern_opacity', array(
-        'default'           => 5,
+        'default'           => 20,
         'sanitize_callback' => 'deoia_sanitize_opacity_range',
         'transport'         => 'refresh',
     ) );
@@ -997,7 +1011,7 @@ function deoia_bg_pattern_customizer( $wp_customize ) {
     // Select: Modo de mezcla
     // ─────────────────────────────────────────────────────────────────────────
     $wp_customize->add_setting( 'deoia_bg_pattern_blend', array(
-        'default'           => 'normal',
+        'default'           => 'darken',
         'sanitize_callback' => 'deoia_sanitize_blend_mode',
         'transport'         => 'refresh',
     ) );
@@ -1022,7 +1036,7 @@ function deoia_bg_pattern_customizer( $wp_customize ) {
     // Select: Color base del patrón (usar CSS vars del theme)
     // ─────────────────────────────────────────────────────────────────────────
     $wp_customize->add_setting( 'deoia_bg_pattern_color', array(
-        'default'           => '',
+        'default'           => 'secondary',
         'sanitize_callback' => 'deoia_sanitize_pattern_color',
         'transport'         => 'refresh',
     ) );
@@ -1047,7 +1061,7 @@ function deoia_bg_pattern_customizer( $wp_customize ) {
     // Number: Tamaño del tile (px)
     // ─────────────────────────────────────────────────────────────────────────
     $wp_customize->add_setting( 'deoia_bg_pattern_size', array(
-        'default'           => 0,
+        'default'           => 300,
         'sanitize_callback' => 'absint',
         'transport'         => 'refresh',
     ) );
@@ -1065,6 +1079,20 @@ function deoia_bg_pattern_customizer( $wp_customize ) {
     ) );
 }
 add_action( 'customize_register', 'deoia_bg_pattern_customizer' );
+
+/**
+ * Obtiene la URL del patrón SVG incluido por defecto en el tema.
+ */
+function deoia_get_default_bg_pattern_url() {
+    $relative_path = 'assets/svg/patterns/patronDeoiaSVG.svg';
+    $absolute_path = get_theme_file_path( $relative_path );
+
+    if ( ! file_exists( $absolute_path ) ) {
+        return '';
+    }
+
+    return get_theme_file_uri( $relative_path );
+}
 
 /**
  * Generar CSS dinámico con las variables de paleta
@@ -1122,33 +1150,35 @@ add_action( 'wp_footer', 'deoia_output_palette_css', 1 );
  */
 function deoia_output_bg_pattern_css() {
     // Bail early si no está habilitado
-    $enabled = get_theme_mod( 'deoia_bg_pattern_enabled', false );
+    $enabled = get_theme_mod( 'deoia_bg_pattern_enabled', true );
     if ( ! $enabled ) {
         return;
     }
 
-    // Obtener el attachment del SVG
+    // Obtener el attachment del SVG o usar el patrón incluido del tema
     $svg_id = get_theme_mod( 'deoia_bg_pattern_svg', '' );
-    if ( empty( $svg_id ) ) {
-        return;
+    $svg_url = '';
+
+    if ( ! empty( $svg_id ) ) {
+        $mime = get_post_mime_type( $svg_id );
+        if ( 'image/svg+xml' === $mime ) {
+            $svg_url = wp_get_attachment_url( $svg_id );
+        }
     }
 
-    // Verificar que es SVG válido
-    $mime = get_post_mime_type( $svg_id );
-    if ( 'image/svg+xml' !== $mime ) {
-        return;
+    if ( ! $svg_url ) {
+        $svg_url = deoia_get_default_bg_pattern_url();
     }
 
-    $svg_url = wp_get_attachment_url( $svg_id );
     if ( ! $svg_url ) {
         return;
     }
 
     // Obtener settings
-    $opacity   = get_theme_mod( 'deoia_bg_pattern_opacity', 5 );
-    $blend     = get_theme_mod( 'deoia_bg_pattern_blend', 'normal' );
-    $color_key = get_theme_mod( 'deoia_bg_pattern_color', '' );
-    $tile_size = get_theme_mod( 'deoia_bg_pattern_size', 0 );
+    $opacity   = get_theme_mod( 'deoia_bg_pattern_opacity', 20 );
+    $blend     = get_theme_mod( 'deoia_bg_pattern_blend', 'darken' );
+    $color_key = get_theme_mod( 'deoia_bg_pattern_color', 'secondary' );
+    $tile_size = get_theme_mod( 'deoia_bg_pattern_size', 300 );
 
     // Calcular valores CSS
     $opacity_css = number_format( max( 0, min( 100, absint( $opacity ) ) ) / 100, 2 );
@@ -1248,21 +1278,21 @@ function deoia_customizer_preview_js() {
 add_action( 'customize_controls_print_footer_scripts', 'deoia_customizer_preview_js' );
 
 /**
- * Custom Post Type: Servicios
+ * Custom Post Type: Cards
  */
 function deoia_registrar_cpt_servicios() {
     $labels = array(
-        'name'                  => 'Servicios',
-        'singular_name'         => 'Servicio',
-        'menu_name'             => 'Servicios',
+        'name'                  => 'Cards',
+        'singular_name'         => 'Card',
+        'menu_name'             => 'Cards',
         'add_new'               => 'Añadir Nuevo',
-        'add_new_item'          => 'Añadir Nuevo Servicio',
-        'edit_item'             => 'Editar Servicio',
-        'new_item'              => 'Nuevo Servicio',
-        'view_item'             => 'Ver Servicio',
-        'search_items'          => 'Buscar Servicios',
-        'not_found'             => 'No se encontraron servicios',
-        'not_found_in_trash'    => 'No hay servicios en la papelera',
+        'add_new_item'          => 'Añadir Nueva Card',
+        'edit_item'             => 'Editar Card',
+        'new_item'              => 'Nueva Card',
+        'view_item'             => 'Ver Card',
+        'search_items'          => 'Buscar Cards',
+        'not_found'             => 'No se encontraron cards',
+        'not_found_in_trash'    => 'No hay cards en la papelera',
     );
 
     $args = array(
@@ -1277,7 +1307,7 @@ function deoia_registrar_cpt_servicios() {
         'has_archive'        => true,
         'hierarchical'       => false,
         'menu_position'      => 5,
-        'menu_icon'          => 'dashicons-heart',
+        'menu_icon'          => 'dashicons-screenoptions',
         'supports'           => array( 'title', 'editor' ),
     );
 
@@ -1365,6 +1395,106 @@ function deoia_guardar_servicio_meta( $post_id ) {
     }
 }
 add_action( 'save_post_deoia_servicio', 'deoia_guardar_servicio_meta' );
+
+/**
+ * Render reusable de la sección de Cards.
+ */
+function deoia_render_cards_section() {
+    $cards_query = new WP_Query( array(
+        'post_type'      => 'deoia_servicio',
+        'posts_per_page' => -1,
+        'orderby'        => 'menu_order',
+        'order'          => 'ASC',
+    ) );
+
+    if ( ! $cards_query->have_posts() ) {
+        wp_reset_postdata();
+        return '';
+    }
+
+    ob_start();
+    ?>
+    <section class="py-0 px-6" id="para-quien" style="padding-top: 0rem; padding-bottom: 0rem;">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-wrap justify-center gap-6 deoia-services-cards">
+                <?php
+                while ( $cards_query->have_posts() ) : $cards_query->the_post();
+                    $icono_clases = get_post_meta( get_the_ID(), 'servicio_icono_clases', true );
+                    $icono_svg = get_post_meta( get_the_ID(), 'servicio_icono_svg', true );
+                    $caracteristicas_raw = get_post_meta( get_the_ID(), 'servicio_caracteristicas', true );
+                    $caracteristicas = array_filter( array_map( 'trim', explode( "\n", $caracteristicas_raw ) ) );
+
+                    if ( empty( $icono_clases ) ) {
+                        $icono_clases = 'from-violet-500 to-indigo-500';
+                    }
+                ?>
+                <div class="group bg-white rounded-3xl p-8 shadow-xl border hover:-translate-y-2 transition-all duration-500 w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)]" style="border-color: color-mix(in srgb, var(--deoia-border) 20%, transparent); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300" style="background-image: linear-gradient(to bottom right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
+                        <?php if ( ! empty( $icono_svg ) ) : ?>
+                        <svg class="w-7 h-7" fill="white" stroke="white" stroke-width="1.5" viewBox="0 0 24 24">
+                            <?php echo $icono_svg; ?>
+                        </svg>
+                        <?php else : ?>
+                        <svg class="w-7 h-7" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        <?php endif; ?>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--deoia-bg-card);"><?php the_title(); ?></h3>
+                    <div class="mb-4 leading-relaxed" style="color: var(--deoia-muted-dark);">
+                        <?php the_content(); ?>
+                    </div>
+                    <?php if ( ! empty( $caracteristicas ) ) : ?>
+                    <ul class="space-y-2 text-sm" style="color: var(--deoia-muted-light);">
+                        <?php foreach ( $caracteristicas as $caracteristica ) : ?>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4" style="color: var(--deoia-success);" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <?php echo esc_html( $caracteristica ); ?>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <?php endif; ?>
+                </div>
+                <?php endwhile; ?>
+            </div>
+        </div>
+    </section>
+    <?php
+
+    wp_reset_postdata();
+    return ob_get_clean();
+}
+
+/**
+ * Shortcode para renderizar Cards dentro de Gutenberg o contenido clásico.
+ */
+function deoia_cards_shortcode() {
+    return deoia_render_cards_section();
+}
+add_shortcode( 'deoia_cards', 'deoia_cards_shortcode' );
+
+/**
+ * Instrucciones de uso del shortcode en el admin de Cards.
+ */
+function deoia_cards_admin_shortcode_notice() {
+    if ( ! is_admin() ) {
+        return;
+    }
+
+    $screen = get_current_screen();
+
+    if ( ! $screen || 'deoia_servicio' !== $screen->post_type ) {
+        return;
+    }
+    ?>
+    <div class="notice notice-info">
+        <p><strong>Shortcode de Cards:</strong> usa <code>[deoia_cards]</code> en un bloque <code>Shortcode</code> de Gutenberg para mostrar esta sección donde quieras.</p>
+    </div>
+    <?php
+}
+add_action( 'admin_notices', 'deoia_cards_admin_shortcode_notice' );
 
 /**
  * Sanitización personalizada para SVG

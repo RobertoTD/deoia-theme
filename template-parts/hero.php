@@ -1,6 +1,6 @@
 <?php $deoia_show_calendar = get_theme_mod( 'deoia_show_calendar_in_hero', true ); ?>
 
-    <section class="min-h-screen pt-28 pb-16 px-6">
+    <section class="pt-24 pb-6 px-6 sm:pt-28 sm:pb-8">
             <!-- Bento Grid Principal -->
             <div class="grid grid-cols-1 <?php echo $deoia_show_calendar ? 'lg:grid-cols-5' : ''; ?> gap-6">
                 
@@ -26,7 +26,7 @@
                     </h1>
 
                     <!-- Subheadline -->
-                    <p class="text-lg mb-8 max-w-xl leading-relaxed" style="color: var(--deoia-muted-dark);">
+                    <p class="text-lg mb-8 max-w-xl lg:max-w-4xl leading-relaxed" style="color: var(--deoia-muted-dark);">
                         <?php echo esc_html( get_theme_mod( 'hero_subheadline', 'Olvídate de las llamadas perdidas y las citas olvidadas. Deja que tus clientes reserven 24/7 mientras tú te enfocas en lo que mejor haces.' ) ); ?>
                     </p>
 

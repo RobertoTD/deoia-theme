@@ -138,13 +138,16 @@ body:not(.home) #deoia-content {
    ========================================================================== */
 
 .deoia-content-wrap {
-  max-width: 48rem;
   margin-left: auto;
   margin-right: auto;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+body.home .deoia-content-wrap {
+  padding-top: 1rem;
 }
 
 @media (min-width: 640px) {
@@ -234,6 +237,44 @@ body:not(.home) #deoia-content {
 
 .deoia-wysiwyg a:hover {
   color: var(--deoia-secondary);
+}
+
+.deoia-wysiwyg .is-style-deoia-badge {
+  display: inline-block;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.deoia-wysiwyg .is-style-deoia-badge:not(.has-background):not(.has-text-color) {
+  color: var(--deoia-primary);
+  background-color: color-mix(in srgb, var(--deoia-primary) 15%, transparent);
+}
+
+.deoia-wysiwyg .wp-block-button__link {
+  text-decoration: none;
+  border-radius: 1rem;
+  font-weight: 600;
+  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.deoia-wysiwyg .wp-block-button__link:hover {
+  text-decoration: none;
+}
+
+.deoia-wysiwyg .wp-block-button:not(.is-style-outline) > .wp-block-button__link:not(.has-background):not(.has-text-color) {
+  color: var(--deoia-text-inverse);
+  background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary));
+  box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);
+}
+
+.deoia-wysiwyg .wp-block-button:not(.is-style-outline) > .wp-block-button__link:not(.has-background):not(.has-text-color):hover {
+  color: var(--deoia-text-inverse);
+  filter: brightness(1.05);
 }
 
 .deoia-wysiwyg strong {

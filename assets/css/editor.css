@@ -56,6 +56,22 @@
   text-underline-offset: 2px;
 }
 
+.editor-styles-wrapper .is-style-deoia-badge {
+  display: inline-block;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.editor-styles-wrapper .is-style-deoia-badge:not(.has-background):not(.has-text-color) {
+  color: var(--deoia-primary);
+  background-color: color-mix(in srgb, var(--deoia-primary) 15%, transparent);
+}
+
 .editor-styles-wrapper ul {
   list-style-type: disc;
   padding-left: 1.75em;
