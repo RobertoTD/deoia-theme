@@ -180,6 +180,12 @@ body.home .deoia-content-wrap {
   font-size: 1rem;
 }
 
+.deoia-wysiwyg > *:not(.alignwide):not(.alignfull) {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .deoia-wysiwyg > *:first-child {
   margin-top: 0;
 }
@@ -237,22 +243,6 @@ body.home .deoia-content-wrap {
 
 .deoia-wysiwyg a:hover {
   color: var(--deoia-secondary);
-}
-
-.deoia-wysiwyg .is-style-deoia-badge {
-  display: inline-block;
-  margin-top: 0;
-  margin-bottom: 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1.2;
-}
-
-.deoia-wysiwyg .is-style-deoia-badge:not(.has-background):not(.has-text-color) {
-  color: var(--deoia-primary);
-  background-color: color-mix(in srgb, var(--deoia-primary) 15%, transparent);
 }
 
 .deoia-wysiwyg .wp-block-button__link {
@@ -423,7 +413,7 @@ body.home .deoia-content-wrap {
 }
 
 .deoia-wysiwyg .alignwide {
-  max-width: 56rem;
+  max-width: 90rem;
   margin-left: auto;
   margin-right: auto;
 }

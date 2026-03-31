@@ -31,20 +31,6 @@ function deoia_theme_setup() {
 add_action( 'after_setup_theme', 'deoia_theme_setup' );
 
 /**
- * Registra estilos de bloque personalizados para Gutenberg.
- */
-function deoia_register_block_styles() {
-    register_block_style(
-        'core/paragraph',
-        array(
-            'name'  => 'deoia-badge',
-            'label' => __( 'Etiqueta Deoia', 'deoia' ),
-        )
-    );
-}
-add_action( 'init', 'deoia_register_block_styles' );
-
-/**
  * Seed inicial al activar el tema: página de privacidad y menú Footer (si no existen).
  */
 function deoia_theme_seed_on_activation() {
