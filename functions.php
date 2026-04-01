@@ -169,6 +169,28 @@ function deoia_sanitize_pattern_color( $value ) {
 }
 
 /**
+ * Sanitización para enlaces CTA del navbar.
+ * Permite anchors, rutas relativas y URLs absolutas.
+ */
+function deoia_sanitize_cta_link( $value ) {
+    $value = trim( (string) $value );
+
+    if ( '' === $value ) {
+        return '';
+    }
+
+    if ( '#' === substr( $value, 0, 1 ) ) {
+        return sanitize_text_field( $value );
+    }
+
+    if ( '/' === substr( $value, 0, 1 ) ) {
+        return esc_url_raw( home_url( $value ) );
+    }
+
+    return esc_url_raw( $value );
+}
+
+/**
  * Personalizador: Logo SVG + Redes Sociales
  */
 function deoia_customize_register( $wp_customize ) {
@@ -277,6 +299,45 @@ function deoia_identity_customizer( $wp_customize ) {
     ) );
 }
 add_action( 'customize_register', 'deoia_identity_customizer' );
+
+/**
+ * Registrar controles del CTA del navbar.
+ */
+function deoia_navbar_customizer( $wp_customize ) {
+    $wp_customize->add_section( 'deoia_navbar', array(
+        'title'       => __( 'CTA del Navbar', 'deoia' ),
+        'panel'       => 'deoia_branding',
+        'priority'    => 6,
+        'description' => __( 'Configura el texto y el enlace del boton principal del navbar.', 'deoia' ),
+    ) );
+
+    $wp_customize->add_setting( 'deoia_navbar_cta_text', array(
+        'default'           => '+ Agendar Cita',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_navbar_cta_text', array(
+        'label'       => __( 'Texto del boton', 'deoia' ),
+        'description' => __( 'Ejemplo: + Agendar Cita, Ver promociones, Reservar ahora.', 'deoia' ),
+        'section'     => 'deoia_navbar',
+        'type'        => 'text',
+        'priority'    => 10,
+    ) );
+
+    $wp_customize->add_setting( 'deoia_navbar_cta_url', array(
+        'default'           => '#reservar',
+        'sanitize_callback' => 'deoia_sanitize_cta_link',
+        'transport'         => 'refresh',
+    ) );
+    $wp_customize->add_control( 'deoia_navbar_cta_url', array(
+        'label'       => __( 'Enlace del boton', 'deoia' ),
+        'description' => __( 'Acepta anchors como #reservar, rutas como /contacto o URLs completas.', 'deoia' ),
+        'section'     => 'deoia_navbar',
+        'type'        => 'text',
+        'priority'    => 20,
+    ) );
+}
+add_action( 'customize_register', 'deoia_navbar_customizer' );
 
 /**
  * Personalizador: Hero Section

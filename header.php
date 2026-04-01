@@ -24,6 +24,8 @@
             $deoia_svg_logo_url = $deoia_svg_logo_id ? wp_get_attachment_url( $deoia_svg_logo_id ) : '';
             $deoia_custom_logo_id = get_theme_mod( 'custom_logo' );
             $deoia_has_custom_logo = has_custom_logo();
+            $deoia_navbar_cta_text = get_theme_mod( 'deoia_navbar_cta_text', '+ Agendar Cita' );
+            $deoia_navbar_cta_url  = get_theme_mod( 'deoia_navbar_cta_url', '#reservar' );
             ?>
             <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="flex items-center gap-2 group flex-shrink-0 min-w-0">
 
@@ -79,11 +81,8 @@
                 </div>
 
                 <!-- CTA Button (visible por defecto, el plugin lo controla si está activo) -->
-                <a href="#reservar" id="deoia-navbar-cta" class="inline-flex items-center gap-0.5 md:gap-1 text-sm md:text-base font-semibold px-2.5 md:px-4 py-2.5 rounded-xl shadow-lg hover:scale-105 transition-all duration-300 whitespace-nowrap" style="color: var(--deoia-text-inverse); background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                    </svg>
-                    Agendar Cita
+                <a href="<?php echo esc_url( $deoia_navbar_cta_url ); ?>" id="deoia-navbar-cta" class="inline-flex items-center gap-0.5 md:gap-1 text-sm md:text-base font-semibold px-2.5 md:px-4 py-2.5 rounded-xl shadow-lg hover:scale-105 transition-all duration-300 whitespace-nowrap" style="color: var(--deoia-text-inverse); background-image: linear-gradient(to right, var(--deoia-primary), var(--deoia-secondary)); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--deoia-primary) 30%, transparent);">
+                    <?php echo esc_html( $deoia_navbar_cta_text ); ?>
                 </a>
             </div>
         </div>

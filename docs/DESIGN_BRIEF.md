@@ -110,6 +110,21 @@
 </span>
 ```
 
+**Bloque Gutenberg `Etiqueta Deoia`:**
+
+- Uso: microtítulos editoriales, eyebrow labels, separadores cortos de sección.
+- Comportamiento: el bloque usa un contenedor alineable (`div`) y un elemento visual interno (`span`), para respetar la alineación nativa de Gutenberg.
+- Estilo por defecto: `var(--deoia-primary)` + fondo sutil con `color-mix(... 15%, transparent)`.
+- Ajustes actuales del bloque: texto, alineación `left/center/right` y tamaño de fuente.
+
+**Markup conceptual del bloque:**
+
+```html
+<div class="wp-block-deoia-badge has-text-align-center">
+  <span class="deoia-badge__label">Texto de la etiqueta</span>
+</div>
+```
+
 ---
 
 ## Tipografía
@@ -212,6 +227,10 @@ Usar `color-mix(in srgb, VAR PORCENTAJE, transparent)` para:
 | ---------------------------------- | ------------------------------------------- |
 | `src/input.css`                    | Variables CSS + componentes Tailwind custom |
 | `tailwind.config.js`               | Content paths, safelist                     |
+| `includes/blocks/deoia-badge-block.php` | Registro PHP del bloque `Etiqueta Deoia` |
+| `assets/js/blocks/deoia-badge-block.js` | Editor y markup guardado del bloque |
+| `assets/css/blocks/deoia-badge-editor.css` | Estilos del bloque en Gutenberg |
+| `assets/css/blocks/deoia-badge-frontend.css` | Estilos del bloque en frontend |
 | `header.php`                       | Navbar flotante                             |
 | `template-parts/hero.php`          | Hero con bento grid                         |
 | `template-parts/after-content.php` | Sección servicios                           |

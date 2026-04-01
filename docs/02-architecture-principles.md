@@ -89,22 +89,42 @@ THEME ROOT
   Dependencia de terceros para actualizaciones del tema.  
   Tratar como librería vendor: evitar mezclar lógica propia aquí.
 
-## Planned Gutenberg Block Layer
+## Gutenberg Block Layer
 
-Para el bloque futuro **Etiqueta Deoia**, la arquitectura planeada es:
+El tema ya incorpora un bloque Gutenberg propio: **Etiqueta Deoia**.
 
 - **`includes/blocks/deoia-badge-block.php`**  
-  Registro PHP del bloque, hooks, render callback y enqueue del bloque.  
+  Registro PHP del bloque, registro de assets y wiring con `register_block_type()`.  
   Regla: la responsabilidad PHP del bloque sale de `functions.php` y vive aquí.
 
 - **`assets/js/blocks/deoia-badge-block.js`**  
-  Registro del bloque en Gutenberg, definición del editor, toolbar/controles y markup del bloque en el editor.
+  Registro del bloque en Gutenberg, atributos, toolbar de alineación, control de tamaño de fuente y markup estático guardado.
 
 - **`assets/css/blocks/deoia-badge-editor.css`**  
   Estilos exclusivos del bloque dentro del editor.
 
 - **`assets/css/blocks/deoia-badge-frontend.css`**  
   Estilos exclusivos del bloque en el frontend.
+
+### Bloque `Etiqueta Deoia`
+
+- **Nombre del bloque:** `deoia/badge`
+- **Markup guardado:** contenedor `div` + `span` visual interno
+- **Atributos actuales:**
+  - `content`
+  - `textAlign`
+  - `fontSize`
+- **Responsabilidad del contenedor (`div`):** alineación nativa de Gutenberg
+- **Responsabilidad del elemento visual (`span`):** look de badge, color y fondo del sistema visual del tema
+
+### Principio aplicado
+
+Este bloque reemplaza el intento previo de usar una variante cosmética sobre `Paragraph`.
+
+Regla adoptada:
+
+- si un feature necesita separar **alineación del contenedor** y **apariencia del elemento visual interno**,
+- entonces debe resolverse como **bloque propio** y no como estilo de `core/paragraph`.
 
 ## Responsibility Rules
 
@@ -128,6 +148,12 @@ Si un feature necesita:
 - y separación clara entre alineación / contenedor / elemento visual,
 
 entonces debe ser un **bloque Gutenberg propio**, no una variante cosmética sobre `Paragraph`.
+
+Caso real en este tema:
+
+- `Etiqueta Deoia` usa `div` como wrapper alineable
+- y `span` como badge visual
+- permitiendo que Gutenberg controle alineación mientras el tema controla apariencia
 
 ## Regla Global
 
