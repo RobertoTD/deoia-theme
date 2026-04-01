@@ -1,5 +1,7 @@
 <?php
 
+require_once get_theme_file_path( 'includes/blocks/deoia-badge-block.php' );
+
 /**
  * Configuración del tema
  */

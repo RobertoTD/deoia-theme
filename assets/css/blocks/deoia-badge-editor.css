@@ -1,1 +1,30 @@
-/* Estilos exclusivos del futuro bloque Etiqueta Deoia dentro del editor Gutenberg. */
+/* Estilos exclusivos del bloque Etiqueta Deoia dentro del editor Gutenberg. */
+
+.editor-styles-wrapper .wp-block-deoia-badge {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.editor-styles-wrapper .wp-block-deoia-badge.has-text-align-left {
+  text-align: left;
+}
+
+.editor-styles-wrapper .wp-block-deoia-badge.has-text-align-center {
+  text-align: center;
+}
+
+.editor-styles-wrapper .wp-block-deoia-badge.has-text-align-right {
+  text-align: right;
+}
+
+.editor-styles-wrapper .wp-block-deoia-badge .deoia-badge__label {
+  display: inline-block;
+  max-width: 100%;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--deoia-primary);
+  background-color: color-mix(in srgb, var(--deoia-primary) 15%, transparent);
+}
