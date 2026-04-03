@@ -1,5 +1,5 @@
 <section class="no-results not-found">
-    <div class="deoia-content-wrap">
+    <div class="deoia-content-wrap deoia-content-surface">
         <header class="deoia-entry-header">
             <h1 class="deoia-entry-title">No se encontró contenido</h1>
         </header>

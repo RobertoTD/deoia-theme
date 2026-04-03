@@ -150,10 +150,42 @@ body.home .deoia-content-wrap {
   padding-top: 1rem;
 }
 
+#deoia-content > .site-main {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+
+body.page #deoia-content,
+body.page #deoia-content > .site-main,
+body.page #deoia-content > .site-main > article {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.deoia-content-surface {
+  flex: 1;
+  max-width: 86rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+  padding-top: 2rem;
+  padding-bottom: 2.25rem;
+  background-color: rgb(255 255 255 / 0.96);
+  border: 1px solid color-mix(in srgb, var(--deoia-muted-light) 14%, white);
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px rgb(15 23 42 / 0.04);
+}
+
 @media (min-width: 640px) {
   .deoia-content-wrap {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  .deoia-content-surface {
+    margin-top: 2.5rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
   }
 }
 
