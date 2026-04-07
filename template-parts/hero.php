@@ -1,4 +1,10 @@
-<?php $deoia_show_calendar = get_theme_mod( 'deoia_show_calendar_in_hero', true ); ?>
+<?php
+$deoia_show_calendar   = get_theme_mod( 'deoia_show_calendar_in_hero', true );
+$deoia_video_url       = get_theme_mod( 'hero_cta_url_2', '#video' );
+$deoia_video_embed_url = deoia_get_youtube_embed_url( $deoia_video_url );
+$deoia_has_video_url   = '' !== trim( (string) $deoia_video_url ) && '#video' !== trim( (string) $deoia_video_url );
+$deoia_invalid_video   = $deoia_has_video_url && '' === $deoia_video_embed_url;
+?>
 
     <section class="pt-24 pb-6 px-6 sm:pt-28 sm:pb-8">
             <!-- Bento Grid Principal -->
@@ -38,13 +44,29 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                             </svg>
                         </a>
-                        <a href="<?php echo esc_url( get_theme_mod( 'hero_cta_url_2', '#video' ) ); ?>" class="inline-flex items-center gap-2 font-semibold px-8 py-4 rounded-2xl hover:scale-105 transition-all duration-300" style="background-color: color-mix(in srgb, var(--deoia-bg-card) 10%, white); color: var(--deoia-bg-card);">
+                        <a
+                            href="<?php echo esc_url( $deoia_video_url ); ?>"
+                            <?php if ( '' !== $deoia_video_embed_url ) : ?>
+                                data-deoia-video-trigger
+                                data-video-embed="<?php echo esc_attr( $deoia_video_embed_url ); ?>"
+                                aria-controls="deoia-video-modal"
+                                aria-haspopup="dialog"
+                            <?php endif; ?>
+                            class="inline-flex items-center gap-2 font-semibold px-8 py-4 rounded-2xl hover:scale-105 transition-all duration-300"
+                            style="background-color: color-mix(in srgb, var(--deoia-bg-card) 10%, white); color: var(--deoia-bg-card);"
+                        >
                             <svg class="w-5 h-5" style="color: var(--deoia-primary);" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
                             <?php echo esc_html( get_theme_mod( 'hero_cta_text_2', 'Ver Demo' ) ); ?>
                         </a>
                     </div>
+
+                    <?php if ( $deoia_invalid_video ) : ?>
+                    <p class="mt-4 text-sm" style="color: #b45309;">
+                        <?php esc_html_e( 'La URL configurada para el video demo no es una URL válida de YouTube. Pega un enlace de YouTube para abrirlo dentro del sitio.', 'deoia' ); ?>
+                    </p>
+                    <?php endif; ?>
 
                     <!-- Trust Indicators -->
                     <?php
@@ -79,4 +101,39 @@
                     </div>
                 </div>
             </div>
+
+            <?php if ( '' !== $deoia_video_embed_url ) : ?>
+            <div
+                id="deoia-video-modal"
+                class="hidden fixed inset-0 z-50 items-center justify-center bg-black/70 p-4"
+                role="dialog"
+                aria-modal="true"
+                aria-hidden="true"
+                aria-label="<?php esc_attr_e( 'Video de demostración', 'deoia' ); ?>"
+            >
+                <div class="relative w-full max-w-4xl overflow-hidden rounded-3xl border border-white/10 bg-black shadow-2xl">
+                    <button
+                        type="button"
+                        data-deoia-video-close
+                        class="absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white transition hover:bg-black/80"
+                        aria-label="<?php esc_attr_e( 'Cerrar video', 'deoia' ); ?>"
+                    >
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+
+                    <iframe
+                        data-deoia-video-frame
+                        class="aspect-video w-full"
+                        src=""
+                        title="<?php esc_attr_e( 'Video de demostración de Deoia', 'deoia' ); ?>"
+                        frameborder="0"
+                        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                        allowfullscreen
+                        referrerpolicy="strict-origin-when-cross-origin"
+                    ></iframe>
+                </div>
+            </div>
+            <?php endif; ?>
     </section>

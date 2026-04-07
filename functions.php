@@ -340,6 +340,58 @@ function deoia_navbar_customizer( $wp_customize ) {
 add_action( 'customize_register', 'deoia_navbar_customizer' );
 
 /**
+ * Convierte una URL de YouTube en una URL embebible segura.
+ *
+ * @param string $url URL ingresada en el customizer.
+ * @return string
+ */
+function deoia_get_youtube_embed_url( $url ) {
+    $url = trim( (string) $url );
+
+    if ( '' === $url ) {
+        return '';
+    }
+
+    $parts = wp_parse_url( $url );
+
+    if ( empty( $parts['host'] ) ) {
+        return '';
+    }
+
+    $host     = strtolower( $parts['host'] );
+    $video_id = '';
+
+    if ( false !== strpos( $host, 'youtu.be' ) && ! empty( $parts['path'] ) ) {
+        $video_id = trim( $parts['path'], '/' );
+    }
+
+    if ( false !== strpos( $host, 'youtube.com' ) || false !== strpos( $host, 'youtube-nocookie.com' ) ) {
+        if ( ! empty( $parts['query'] ) ) {
+            parse_str( $parts['query'], $query_args );
+
+            if ( ! empty( $query_args['v'] ) ) {
+                $video_id = $query_args['v'];
+            }
+        }
+
+        if ( '' === $video_id && ! empty( $parts['path'] ) && preg_match( '#/(embed|shorts)/([^/?]+)#', $parts['path'], $matches ) ) {
+            $video_id = $matches[2];
+        }
+    }
+
+    $video_id = trim( preg_replace( '/[^A-Za-z0-9_-]/', '', $video_id ) );
+
+    if ( '' === $video_id ) {
+        return '';
+    }
+
+    return sprintf(
+        'https://www.youtube-nocookie.com/embed/%s?autoplay=1&rel=0&modestbranding=1&playsinline=1&cc_load_policy=1&cc_lang_pref=es&hl=es&iv_load_policy=3',
+        rawurlencode( $video_id )
+    );
+}
+
+/**
  * Personalizador: Hero Section
  */
 function deoia_hero_customizer( $wp_customize ) {
@@ -440,10 +492,11 @@ function deoia_hero_customizer( $wp_customize ) {
         'sanitize_callback' => 'esc_url_raw',
     ) );
     $wp_customize->add_control( 'hero_cta_url_2', array(
-        'label'    => __( 'URL Botón Secundario', 'deoia' ),
-        'section'  => 'hero_settings',
-        'type'     => 'url',
-        'priority' => 53,
+        'label'       => __( 'URL del video demo', 'deoia' ),
+        'description' => __( 'Pega una URL de YouTube. El botón "Ver Demo" abrirá el video en un modal dentro del sitio.', 'deoia' ),
+        'section'     => 'hero_settings',
+        'type'        => 'url',
+        'priority'    => 53,
     ) );
 
     // Métrica: Negocios Activos
@@ -1669,6 +1722,16 @@ function deoia_cargar_scripts() {
         filemtime(get_stylesheet_directory() . '/assets/js/DeoiaRegisterAdapters.js'),
         true
     );
+
+    if ( is_front_page() && file_exists( get_stylesheet_directory() . '/assets/js/DeoiaHeroVideoModal.js' ) ) {
+        wp_enqueue_script(
+            'deoia-hero-video-modal',
+            get_stylesheet_directory_uri() . '/assets/js/DeoiaHeroVideoModal.js',
+            array(),
+            filemtime( get_stylesheet_directory() . '/assets/js/DeoiaHeroVideoModal.js' ),
+            true
+        );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'deoia_cargar_scripts' );
 
